@@ -7,45 +7,45 @@
 
 @layer base {
   :root {
-    /* Light theme - existing colors improved */
-    --background: 0 0% 98%;
-    --foreground: 224 71.4% 8%;
+    /* Light theme - updated with green-dark palette */
+    --background: 153 10% 96%;
+    --foreground: 153 20% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 8%;
+    --card-foreground: 153 20% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 8%;
+    --popover-foreground: 153 20% 15%;
 
-    --primary: 217 91% 60%; /* Apple Blue */
+    --primary: 160 80% 45%; /* Verde principal */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14.3% 96%;
-    --secondary-foreground: 222.2 47.4% 11%;
+    --secondary: 153 8% 92%;
+    --secondary-foreground: 153 20% 15%;
 
-    --muted: 220 14.3% 96%;
-    --muted-foreground: 220 8.9% 46%;
+    --muted: 153 8% 92%;
+    --muted-foreground: 153 8% 45%;
 
-    --accent: 220 14.3% 94%;
-    --accent-foreground: 222.2 47.4% 11%;
+    --accent: 153 8% 88%;
+    --accent-foreground: 153 20% 15%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 217 91% 60%;
+    --border: 153 8% 85%;
+    --input: 153 8% 85%;
+    --ring: 160 80% 45%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 224 71.4% 8%;
-    --sidebar-primary: 217 91% 60%;
+    --sidebar-background: 153 10% 96%;
+    --sidebar-foreground: 153 20% 15%;
+    --sidebar-primary: 160 80% 45%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14.3% 94%;
-    --sidebar-accent-foreground: 222.2 47.4% 11%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-accent: 153 8% 88%;
+    --sidebar-accent-foreground: 153 20% 15%;
+    --sidebar-border: 153 8% 85%;
+    --sidebar-ring: 160 80% 45%;
 
     /* Apple-style shadows */
     --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -69,49 +69,49 @@
   }
 
   .dark {
-    /* Premium dark theme - Apple inspired */
-    --background: 220 13% 9%; /* #171717 */
-    --foreground: 220 9% 95%; /* #F2F2F2 */
+    /* Premium dark theme - com a cor #0a1211 de fundo */
+    --background: 153 13% 7%; /* #0a1211 convertido para HSL */
+    --foreground: 160 30% 90%; /* Verde claro para texto */
 
-    --card: 220 13% 11%; /* #1C1C1C */
-    --card-foreground: 220 9% 95%;
+    --card: 153 13% 10%; /* Cartões um pouco mais claros */
+    --card-foreground: 160 20% 85%;
 
-    --popover: 220 13% 11%;
-    --popover-foreground: 220 9% 95%;
+    --popover: 153 13% 10%;
+    --popover-foreground: 160 20% 85%;
 
-    --primary: 217 91% 65%; /* Brighter blue for dark mode */
-    --primary-foreground: 220 13% 9%;
+    --primary: 160 80% 55%; /* Verde mais brilhante para modo escuro */
+    --primary-foreground: 153 13% 7%;
 
-    --secondary: 220 13% 15%; /* #262626 */
-    --secondary-foreground: 220 9% 85%;
+    --secondary: 153 13% 12%; /* Fundo secundário */
+    --secondary-foreground: 160 15% 80%;
 
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 9% 60%;
+    --muted: 153 13% 12%;
+    --muted-foreground: 160 8% 55%;
 
-    --accent: 220 13% 18%; /* #2D2D2D */
-    --accent-foreground: 220 9% 95%;
+    --accent: 153 13% 15%; /* Cor de destaque */
+    --accent-foreground: 160 20% 85%;
 
-    --destructive: 0 62.8% 50.6%;
+    --destructive: 0 62% 51%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 13% 20%; /* #333333 */
-    --input: 220 13% 18%;
-    --ring: 217 91% 65%;
+    --border: 153 13% 18%; /* Bordas */
+    --input: 153 13% 15%;
+    --ring: 160 80% 55%;
 
-    --sidebar-background: 220 13% 8%; /* Darker sidebar */
-    --sidebar-foreground: 220 9% 90%;
-    --sidebar-primary: 217 91% 65%;
-    --sidebar-primary-foreground: 220 13% 9%;
-    --sidebar-accent: 220 13% 15%;
-    --sidebar-accent-foreground: 220 9% 85%;
-    --sidebar-border: 220 13% 18%;
-    --sidebar-ring: 217 91% 65%;
+    --sidebar-background: 153 13% 5%; /* Sidebar ainda mais escura */
+    --sidebar-foreground: 160 20% 85%;
+    --sidebar-primary: 160 80% 55%;
+    --sidebar-primary-foreground: 153 13% 7%;
+    --sidebar-accent: 153 13% 12%;
+    --sidebar-accent-foreground: 160 15% 80%;
+    --sidebar-border: 153 13% 15%;
+    --sidebar-ring: 160 80% 55%;
 
     /* Enhanced shadows for dark mode */
-    --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-    --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-    --shadow-strong: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+    --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+    --shadow-strong: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.6);
   }
 }
 
@@ -214,11 +214,11 @@
     @apply transform transition-all duration-300 ease-out;
     @apply hover:scale-[1.02] active:scale-[0.98];
     @apply shadow-medium hover:shadow-strong;
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(217 91% 55%) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(160 80% 40%) 100%);
   }
 
   .btn-apple:hover {
-    background: linear-gradient(135deg, hsl(217 91% 65%) 0%, hsl(217 91% 60%) 100%);
+    background: linear-gradient(135deg, hsl(160 80% 60%) 0%, hsl(160 80% 50%) 100%);
   }
 
   .btn-apple-secondary {
@@ -250,7 +250,7 @@
     @apply transform transition-all duration-500 ease-out;
     @apply hover:scale-110 active:scale-95;
     @apply text-primary-foreground;
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(217 91% 55%) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(160 80% 40%) 100%);
   }
 
   /* Premium Input styles */
