@@ -12,7 +12,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useEnhancedToast } from '@/hooks/useEnhancedToast';
 import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-
 interface BudgetFormData {
   deviceType: string;
   deviceModel: string;
@@ -31,17 +30,22 @@ interface BudgetFormData {
   validityDays: string;
   paymentCondition: string;
 }
-
 interface NewBudgetFormProps {
   onBack: () => void;
   initialData?: any;
 }
-
-export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
-  const { showSuccess, showError } = useEnhancedToast();
-  const { user } = useAuth();
+export const NewBudgetForm = ({
+  onBack,
+  initialData
+}: NewBudgetFormProps) => {
+  const {
+    showSuccess,
+    showError
+  } = useEnhancedToast();
+  const {
+    user
+  } = useAuth();
   const queryClient = useQueryClient();
-
   const [formData, setFormData] = useState<BudgetFormData>({
     deviceType: 'Smartphone',
     deviceModel: '',
@@ -60,7 +64,6 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
     validityDays: '',
     paymentCondition: 'À Vista'
   });
-
   useEffect(() => {
     if (initialData) {
       setFormData({
@@ -87,7 +90,10 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
       });
     } else {
       // Set default validity days only when not copying from existing budget
-      setFormData(prev => ({ ...prev, validityDays: '15' }));
+      setFormData(prev => ({
+        ...prev,
+        validityDays: '15'
+      }));
     }
   }, [initialData, showSuccess]);
 
@@ -120,14 +126,12 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
       return data;
     }
   });
-
   const createBudgetMutation = useMutation({
     mutationFn: async (data: BudgetFormData) => {
       if (!user) {
         throw new Error('Usuário não está logado');
       }
       console.log('Creating budget for user:', user.id);
-
       const validityDays = parseInt(data.validityDays) || 15;
       const cashPriceValue = parseFloat(data.cashPrice) || 0;
       const installmentPriceValue = parseFloat(data.installmentPrice) || 0;
@@ -137,30 +141,28 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
       validUntil.setDate(validUntil.getDate() + validityDays);
 
       // Criar orçamento com owner_id explícito
-      const { data: budget, error: budgetError } = await supabase
-        .from('budgets')
-        .insert({
-          owner_id: user.id,
-          device_type: data.deviceType,
-          device_model: data.deviceModel,
-          device_brand: data.deviceBrand,
-          issue: data.issue,
-          part_type: data.partType,
-          warranty_months: data.warrantyMonths,
-          cash_price: Math.round(cashPriceValue * 100),
-          installment_price: data.enableInstallmentPrice ? Math.round(installmentPriceValue * 100) : null,
-          installments: data.enableInstallmentPrice ? data.installments : 1,
-          total_price: Math.round(cashPriceValue * 100),
-          includes_delivery: data.includesDelivery,
-          includes_screen_protector: data.includesScreenProtector,
-          notes: data.notes,
-          status: 'pending',
-          valid_until: validUntil.toISOString(),
-          payment_condition: data.paymentCondition
-        })
-        .select('id')
-        .single();
-
+      const {
+        data: budget,
+        error: budgetError
+      } = await supabase.from('budgets').insert({
+        owner_id: user.id,
+        device_type: data.deviceType,
+        device_model: data.deviceModel,
+        device_brand: data.deviceBrand,
+        issue: data.issue,
+        part_type: data.partType,
+        warranty_months: data.warrantyMonths,
+        cash_price: Math.round(cashPriceValue * 100),
+        installment_price: data.enableInstallmentPrice ? Math.round(installmentPriceValue * 100) : null,
+        installments: data.enableInstallmentPrice ? data.installments : 1,
+        total_price: Math.round(cashPriceValue * 100),
+        includes_delivery: data.includesDelivery,
+        includes_screen_protector: data.includesScreenProtector,
+        notes: data.notes,
+        status: 'pending',
+        valid_until: validUntil.toISOString(),
+        payment_condition: data.paymentCondition
+      }).select('id').single();
       if (budgetError) {
         console.error('Budget creation error:', budgetError);
         throw budgetError;
@@ -168,20 +170,19 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
       console.log('Budget created:', budget.id);
 
       // Criar item do orçamento
-      const { error: partError } = await supabase
-        .from('budget_parts')
-        .insert({
-          budget_id: budget.id,
-          name: `${data.partType} - ${data.deviceModel}`,
-          part_type: data.partType,
-          brand_id: null,
-          quantity: 1,
-          price: Math.round(cashPriceValue * 100),
-          cash_price: Math.round(cashPriceValue * 100),
-          installment_price: data.enableInstallmentPrice ? Math.round(installmentPriceValue * 100) : null,
-          warranty_months: data.warrantyMonths
-        });
-
+      const {
+        error: partError
+      } = await supabase.from('budget_parts').insert({
+        budget_id: budget.id,
+        name: `${data.partType} - ${data.deviceModel}`,
+        part_type: data.partType,
+        brand_id: null,
+        quantity: 1,
+        price: Math.round(cashPriceValue * 100),
+        cash_price: Math.round(cashPriceValue * 100),
+        installment_price: data.enableInstallmentPrice ? Math.round(installmentPriceValue * 100) : null,
+        warranty_months: data.warrantyMonths
+      });
       if (partError) {
         console.error('Budget part creation error:', partError);
         throw partError;
@@ -195,8 +196,12 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
         title: "Orçamento criado com sucesso!",
         description: `O orçamento foi criado e está válido por ${validityDays} dias.`
       });
-      queryClient.invalidateQueries({ queryKey: ['dashboard-stats'] });
-      queryClient.invalidateQueries({ queryKey: ['budgets'] });
+      queryClient.invalidateQueries({
+        queryKey: ['dashboard-stats']
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['budgets']
+      });
       onBack();
     },
     onError: (error: any) => {
@@ -207,7 +212,6 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
       });
     }
   });
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
@@ -226,18 +230,13 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
     }
     createBudgetMutation.mutate(formData);
   };
-
   if (!user) {
-    return (
-      <div className="p-8 text-center">
+    return <div className="p-8 text-center">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Acesso Negado</h1>
         <p className="text-gray-600">Você precisa estar logado para criar orçamentos.</p>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="p-4 sm:p-8">
+  return <div className="p-4 sm:p-8">
       <div className="flex items-center mb-6 sm:mb-8">
         <Button variant="ghost" onClick={onBack} className="mr-4">
           <ArrowLeft className="h-4 w-4 mr-2" />
@@ -289,7 +288,7 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
             </div>
 
             <div>
-              <Label htmlFor="issue">Problema Relatado*</Label>
+              <Label htmlFor="issue">Problema</Label>
               <Textarea id="issue" value={formData.issue} onChange={e => setFormData({
               ...formData,
               issue: e.target.value
@@ -338,60 +337,48 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
           <CardContent className="space-y-4">
             <div>
               <Label htmlFor="cashPrice">Valor à Vista (R$)*</Label>
-              <Input
-                id="cashPrice"
-                type="number"
-                step="0.01"
-                value={formData.cashPrice}
-                onChange={(e) => setFormData({ ...formData, cashPrice: e.target.value })}
-                placeholder="0,00"
-                required
-              />
+              <Input id="cashPrice" type="number" step="0.01" value={formData.cashPrice} onChange={e => setFormData({
+              ...formData,
+              cashPrice: e.target.value
+            })} placeholder="0,00" required />
             </div>
 
             <div className="flex items-center space-x-2">
-              <Switch
-                id="enableInstallmentPrice"
-                checked={formData.enableInstallmentPrice}
-                onCheckedChange={(checked) => setFormData({ ...formData, enableInstallmentPrice: checked })}
-              />
+              <Switch id="enableInstallmentPrice" checked={formData.enableInstallmentPrice} onCheckedChange={checked => setFormData({
+              ...formData,
+              enableInstallmentPrice: checked
+            })} />
               <Label htmlFor="enableInstallmentPrice">Ativar valor parcelado</Label>
             </div>
 
-            {formData.enableInstallmentPrice && (
-              <>
+            {formData.enableInstallmentPrice && <>
                 <div>
                   <Label htmlFor="installmentPrice">Valor Parcelado (R$)</Label>
-                  <Input
-                    id="installmentPrice"
-                    type="number"
-                    step="0.01"
-                    value={formData.installmentPrice}
-                    onChange={(e) => setFormData({ ...formData, installmentPrice: e.target.value })}
-                    placeholder="0,00"
-                  />
+                  <Input id="installmentPrice" type="number" step="0.01" value={formData.installmentPrice} onChange={e => setFormData({
+                ...formData,
+                installmentPrice: e.target.value
+              })} placeholder="0,00" />
                 </div>
 
                 <div>
                   <Label htmlFor="installments">Número de Parcelas</Label>
-                  <Select
-                    value={formData.installments.toString()}
-                    onValueChange={(value) => setFormData({ ...formData, installments: parseInt(value) })}
-                  >
+                  <Select value={formData.installments.toString()} onValueChange={value => setFormData({
+                ...formData,
+                installments: parseInt(value)
+              })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {Array.from({ length: 12 }, (_, i) => i + 1).map(installment => (
-                        <SelectItem key={installment} value={installment.toString()}>
+                      {Array.from({
+                    length: 12
+                  }, (_, i) => i + 1).map(installment => <SelectItem key={installment} value={installment.toString()}>
                           {`${installment}x`}
-                        </SelectItem>
-                      ))}
+                        </SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
-              </>
-            )}
+              </>}
 
             <div>
               <Label htmlFor="paymentCondition">Condição de Pagamento</Label>
@@ -421,15 +408,10 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
           <CardContent className="space-y-4">
             <div>
               <Label htmlFor="validityDays">Validade do Orçamento (dias)</Label>
-              <Input
-                id="validityDays"
-                type="number"
-                min="1"
-                max="365"
-                value={formData.validityDays}
-                onChange={(e) => setFormData({ ...formData, validityDays: e.target.value })}
-                placeholder="15"
-              />
+              <Input id="validityDays" type="number" min="1" max="365" value={formData.validityDays} onChange={e => setFormData({
+              ...formData,
+              validityDays: e.target.value
+            })} placeholder="15" />
               <p className="text-sm mt-1 text-[#b3b2b2]">
                 O orçamento será válido por {formData.validityDays || '15'} dias a partir da criação
               </p>
@@ -470,6 +452,5 @@ export const NewBudgetForm = ({ onBack, initialData }: NewBudgetFormProps) => {
           </Button>
         </div>
       </form>
-    </div>
-  );
+    </div>;
 };
