@@ -67,7 +67,7 @@ export const LicenseStatus = () => {
     return {
       title: "Licença Ativa",
       description: `Sua licença expira em ${remainingDays} dias.`,
-      icon: <img src="/icones/limao.png" alt="Licença Ativa" className="h-8 w-8" />,
+      icon: null,
       cardClass: "border-green-500/20 bg-gradient-to-br from-green-500/10 via-green-400/8 to-green-600/15",
       showRenew: false
     };
