@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Eye, EyeOff, User, Shield, Calendar, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useAuth } from '@/hooks/useAuth';
 import { useEnhancedToast } from '@/hooks/useEnhancedToast';
@@ -105,9 +105,6 @@ const AdminUserCreationForm = () => {
         <div className="absolute -bottom-1/2 -left-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
 
-      <div className="absolute top-6 right-6 z-10">
-        <ThemeToggle />
-      </div>
 
       <div className="absolute top-6 left-6 z-10">
         <Link to="/dashboard/admin">

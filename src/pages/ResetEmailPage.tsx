@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, CheckCircle, AlertTriangle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+
 
 export const ResetEmailPage = () => {
   const { updateEmail, user } = useAuth();
@@ -67,9 +67,6 @@ export const ResetEmailPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-primary/5 to-primary/10 p-4 relative overflow-hidden">
-      <div className="absolute top-6 right-6 z-10">
-        <ThemeToggle />
-      </div>
       <div className="w-full max-w-md relative z-10">
         <div className="text-center mb-8">
           <Link to="/">

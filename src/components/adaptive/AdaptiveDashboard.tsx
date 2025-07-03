@@ -7,7 +7,7 @@ import { MobileQuickAccess } from './MobileQuickAccess';
 import { LicenseStatus } from '@/components/dashboard/LicenseStatus';
 import { HelpAndSupport } from '@/components/dashboard/HelpAndSupport';
 import { UserProfile } from '@/components/dashboard/types';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+
 import { Button } from '@/components/ui/button';
 import { LogOut, User } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -48,7 +48,6 @@ export const AdaptiveDashboard = ({
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <ThemeToggle />
           <Button
             variant="ghost"
             size="sm"
@@ -80,7 +79,6 @@ export const AdaptiveDashboard = ({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <ThemeToggle />
             <Button
               variant="ghost"
               size="sm"

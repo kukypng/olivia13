@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useAuth } from '@/hooks/useAuth';
 import { Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+
 import { supabase } from '@/integrations/supabase/client';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 export const AuthPage = () => {
@@ -158,9 +158,6 @@ export const AuthPage = () => {
       </div>
 
       {/* Theme toggle */}
-      <div className="absolute top-6 right-6 z-10">
-        <ThemeToggle />
-      </div>
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo/Brand */}

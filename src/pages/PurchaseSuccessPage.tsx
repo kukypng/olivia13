@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, MessageCircle, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+
 export const PurchaseSuccessPage = () => {
   return <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-primary/10 relative overflow-hidden">
       {/* Background decoration */}
@@ -15,9 +15,6 @@ export const PurchaseSuccessPage = () => {
       </div>
 
       {/* Theme toggle */}
-      <div className="absolute top-6 right-6 z-10">
-        <ThemeToggle />
-      </div>
 
       {/* Back button */}
       <div className="absolute top-6 left-6 z-10">

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, Star, MessageCircle, ArrowLeft, AlertCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+
 import { ConfirmationDialog } from '@/components/ConfirmationDialog';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -170,9 +170,6 @@ export const PlansPage = () => {
         <div className="absolute -bottom-1/2 -left-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
 
-      <div className="absolute top-6 right-6 z-10">
-        <ThemeToggle />
-      </div>
 
       <div className="absolute top-6 left-6 z-10">
         <Button variant="ghost" size="sm" onClick={() => navigate('/')}>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Home, FileText, Plus, Settings, Menu, Shield, LogOut, Database } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
+
 import { useAuth } from '@/hooks/useAuth';
 import { Badge } from '@/components/ui/badge';
 interface TabletHeaderNavProps {
@@ -67,9 +67,6 @@ export const TabletHeaderNav = ({
               {profile.role.toUpperCase()}
             </Badge>
           </div>}
-        
-        <ThemeToggle />
-        
         <Button onClick={() => onTabChange('new-budget')} size="sm" className="gap-2 bg-primary hover:bg-primary/90">
           <Plus className="h-4 w-4" />
           Novo Orçamento

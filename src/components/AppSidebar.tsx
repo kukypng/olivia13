@@ -24,7 +24,7 @@ import {
   Users,
   Database
 } from 'lucide-react';
-import { ThemeToggle } from './ui/theme-toggle';
+
 
 interface AppSidebarProps {
   activeTab: string;
@@ -92,7 +92,6 @@ export const AppSidebar = ({ activeTab, onTabChange }: AppSidebarProps) => {
 
       <SidebarFooter className="p-2 mt-auto">
         <div className="flex flex-col gap-2 items-center">
-            {state === 'expanded' && <ThemeToggle />}
             <SidebarMenu className="w-full">
                 <SidebarMenuItem className="p-1">
                     <SidebarMenuButton
