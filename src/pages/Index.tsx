@@ -21,24 +21,21 @@ const Index = () => {
 
   // Landing page para usuários não logados
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       {/* Header */}
-      <header className="backdrop-blur-sm border-b shadow-sm sticky top-0 z-50 bg-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-black">
-          <div className="flex justify-between items-center py-4 bg-black">
-            <Link to="/" className="flex items-center space-x-2">
+      <header className="glass border-b shadow-soft sticky top-0 z-50 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <Link to="/" className="flex items-center space-x-2 interactive-scale">
               <img src="/icone.png" alt="Oliver Logo" className="h-8 w-8" />
-              <h1 className="text-2xl font-bold text-white">Oliver</h1>
+              <h1 className="text-2xl font-bold text-foreground">Oliver</h1>
             </Link>
             <div className="flex items-center space-x-2">
-              <Button asChild variant="ghost" className="text-white hover:bg-primary/10">
-                
-              </Button>
-              <Button asChild variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+              <Button asChild variant="outline" className="btn-apple-secondary interactive-scale">
                 <Link to="/auth">Login</Link>
               </Button>
-               <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                
+               <Button asChild className="btn-apple interactive-scale">
+                <Link to="/plans">Começar Agora</Link>
               </Button>
             </div>
           </div>
@@ -46,39 +43,46 @@ const Index = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-6xl font-bold mb-6 text-white">
-            Gerencie seus <span className="text-primary">Orçamentos</span>
-            <br />
-            de forma profissional
-          </h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto text-white">
-            Sistema completo para assistências técnicas gerenciarem orçamentos, 
-            clientes e relatórios de forma eficiente e organizada.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="text-lg px-8 py-3 bg-primary hover:bg-primary/90 text-primary-foreground">
-              <Link to="/plans">Começar Agora</Link>
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="text-lg px-8 py-3 border-primary text-primary hover:bg-primary hover:text-primary-foreground" 
-              onClick={() => window.open('https://wa.me/556496028022', '_blank')}
-            >
-              Entre em contato
-            </Button>
+      <section className="relative overflow-hidden py-24 px-4 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 bg-gradient-to-b from-background/95 to-background"></div>
+        <div className="relative max-w-4xl mx-auto text-center">
+          <div className="animate-fade-in-up">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-foreground leading-tight">
+              Gerencie seus <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Orçamentos</span>
+              <br />
+              de forma profissional
+            </h2>
+            <p className="text-lg sm:text-xl mb-8 max-w-2xl mx-auto text-muted-foreground leading-relaxed">
+              Sistema completo para assistências técnicas gerenciarem orçamentos, 
+              clientes e relatórios de forma eficiente e organizada.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button asChild className="btn-apple text-lg px-8 py-4">
+                <Link to="/plans">Começar Agora</Link>
+              </Button>
+              <Button 
+                variant="outline"
+                className="btn-apple-secondary text-lg px-8 py-4" 
+                onClick={() => window.open('https://wa.me/556496028022', '_blank')}
+              >
+                Entre em contato
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-black">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-6xl mx-auto">
-          <h3 className="text-3xl font-bold text-center mb-12 text-white">
-            Funcionalidades Principais
-          </h3>
+          <div className="text-center mb-16 animate-fade-in-up">
+            <h3 className="text-3xl lg:text-4xl font-bold mb-4 text-foreground">
+              Funcionalidades Principais
+            </h3>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Descubra como nosso sistema pode transformar a gestão da sua assistência técnica
+            </p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[{
             icon: FileText,
@@ -106,15 +110,15 @@ const Index = () => {
             description: "Cálculo automático de totais, impostos e condições de pagamento personalizadas."
           }].map((feature, index) => {
             const Icon = feature.icon;
-            return <Card key={index} className="border-0 shadow-md card-hover overflow-hidden">
-                    <CardHeader className="bg-neutral-900">
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 bg-primary/10">
-                        <Icon className="h-6 w-6 text-primary" />
+            return <Card key={index} className="glass-card group hover:shadow-strong transition-all duration-300 animate-scale-in" style={{animationDelay: `${index * 100}ms`}}>
+                    <CardHeader>
+                      <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
+                        <Icon className="h-7 w-7 text-primary group-hover:scale-110 transition-transform duration-300" />
                       </div>
-                      <CardTitle className="text-xl text-white">{feature.title}</CardTitle>
+                      <CardTitle className="text-xl text-foreground group-hover:text-primary transition-colors duration-300">{feature.title}</CardTitle>
                     </CardHeader>
-                    <CardContent className="bg-neutral-900">
-                      <p className="text-white">{feature.description}</p>
+                    <CardContent>
+                      <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
                     </CardContent>
                   </Card>;
           })}
@@ -123,29 +127,37 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-black">
-        <div className="max-w-4xl mx-auto text-center">
-          <h3 className="text-3xl font-bold mb-6 text-white">
-            Pronto para otimizar sua assistência técnica?
-          </h3>
-          <p className="text-xl mb-8 text-white">
-            Junte-se a centenas de profissionais que já utilizam o Oliver 
-            para gerenciar seus negócios de forma mais eficiente.
-          </p>
-          <Button asChild size="lg" className="text-lg px-8 py-3 bg-primary hover:bg-primary/90 text-primary-foreground">
-            <Link to="/plans">Começar Agora</Link>
-          </Button>
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-primary/10"></div>
+        <div className="relative max-w-4xl mx-auto text-center">
+          <div className="animate-fade-in-up">
+            <h3 className="text-3xl lg:text-4xl font-bold mb-6 text-foreground">
+              Pronto para otimizar sua assistência técnica?
+            </h3>
+            <p className="text-lg lg:text-xl mb-8 text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Junte-se a centenas de profissionais que já utilizam o Oliver 
+              para gerenciar seus negócios de forma mais eficiente.
+            </p>
+            <Button asChild className="btn-apple text-lg px-8 py-4">
+              <Link to="/plans">Começar Agora</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 sm:px-6 lg:px-8 bg-black">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <img src="/icone.png" alt="Oliver Logo" className="h-6 w-6" />
-            <span className="text-xl font-bold text-white">Oliver</span>
+      <footer className="glass border-t py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-2 mb-6">
+              <img src="/icone.png" alt="Oliver Logo" className="h-8 w-8" />
+              <span className="text-2xl font-bold text-foreground">Oliver</span>
+            </div>
+            <p className="text-muted-foreground mb-4">© 2025 Oliver. Sistema profissional para gestão de orçamentos.</p>
+            <p className="text-sm text-muted-foreground/80">
+              Transformando a gestão de assistências técnicas através da tecnologia
+            </p>
           </div>
-          <p className="text-white">© 2025 Oliver. Sistema profissional para gestão de orçamentos.</p>
         </div>
       </footer>
     </div>
