@@ -6,6 +6,7 @@ import { AdminLogs } from '@/components/AdminLogs';
 import { AdminDebugPanel } from '@/components/AdminDebugPanel';
 import { AdminTestPanel } from '@/components/AdminTestPanel';
 import { SiteSettingsContent } from '@/components/SiteSettingsContent';
+import { AdminImageManager } from '@/components/admin/AdminImageManager';
 import { Users, Shield, UserPlus, Settings, ChevronLeft, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';

@@ -8,7 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Trash2, Save, Globe, MessageSquare, Star, Lock } from 'lucide-react';
+import { Plus, Trash2, Save, Globe, MessageSquare, Star, Lock, Image } from 'lucide-react';
+import { AdminImageManager } from '@/components/admin/AdminImageManager';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -363,6 +364,20 @@ export const SiteSettingsContent = () => {
               onChange={(e) => handleInputChange('support_text', e.target.value)}
             />
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Image Management */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Image className="h-5 w-5" />
+            Gestão de Imagens
+          </CardTitle>
+          <CardDescription>Faça upload e gerencie imagens do sistema</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <AdminImageManager />
         </CardContent>
       </Card>
 
