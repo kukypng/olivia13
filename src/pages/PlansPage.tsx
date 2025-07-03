@@ -175,25 +175,25 @@ export const PlansPage = () => {
     show_support_info: true,
     additional_info: '✓ Sem taxa de setup • ✓ Cancele quando quiser • ✓ Suporte brasileiro'
   };
-  return <div className="min-h-screen relative overflow-hidden" style={{backgroundColor: '#252425'}}>
-      {/* Enhanced Background decoration */}
+  return <div className="min-h-screen relative overflow-hidden" style={{backgroundColor: 'hsl(210 10% 11%)'}}>
+      {/* Enhanced Background decoration com as novas cores */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/2 -right-1/2 w-96 h-96 bg-gradient-to-br from-primary/20 to-primary/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-1/2 -left-1/2 w-96 h-96 bg-gradient-to-tr from-primary/10 to-primary/5 rounded-full blur-3xl animate-pulse" style={{
+        <div className="absolute -top-1/2 -right-1/2 w-96 h-96 bg-gradient-to-br from-primary/15 to-primary/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-1/2 -left-1/2 w-96 h-96 bg-gradient-to-tr from-secondary/10 to-primary/5 rounded-full blur-3xl animate-pulse" style={{
         animationDelay: '1s'
       }}></div>
-        <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-2xl animate-pulse" style={{
+        <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-primary/8 rounded-full blur-2xl animate-pulse" style={{
         animationDelay: '2s'
       }}></div>
       </div>
 
       {/* Navigation */}
       <div className="absolute top-6 left-6 z-10 flex gap-3">
-        <Button variant="ghost" size="sm" onClick={() => navigate('/')} className="interactive-scale glass backdrop-blur-xl text-white hover:text-primary">
+        <Button variant="ghost" size="sm" onClick={() => navigate('/')} className="interactive-scale glass backdrop-blur-xl text-white hover:text-primary hover:bg-primary/10">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Início
         </Button>
-        <Button variant="outline" size="sm" asChild className="interactive-scale glass backdrop-blur-xl text-white hover:text-primary border-white/20 hover:border-primary">
+        <Button variant="outline" size="sm" asChild className="interactive-scale glass backdrop-blur-xl text-white hover:text-primary border-white/20 hover:border-primary hover:bg-primary/5">
           <Link to="/auth">Login</Link>
         </Button>
       </div>

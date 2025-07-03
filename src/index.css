@@ -69,43 +69,43 @@
   }
 
   .dark {
-    /* Nova paleta moderna - #252425 como fundo principal */
-    --background: 318 4% 14%; /* #252425 convertido para HSL */
-    --foreground: 0 0% 97%; /* Branco suave para texto */
+    /* Nova paleta baseada na imagem - tons de laranja e fundo escuro */
+    --background: 210 10% 11%; /* Fundo azul escuro similar à imagem */
+    --foreground: 0 0% 97%; /* Branco para texto */
 
-    --card: 318 6% 17%; /* Cartões ligeiramente mais claros #2C2A2D */
+    --card: 210 8% 15%; /* Cards um pouco mais claros */
     --card-foreground: 0 0% 95%;
 
-    --popover: 318 6% 17%;
+    --popover: 210 8% 15%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 171 100% 41%; /* #00D4AA - Verde turquesa vibrante */
-    --primary-foreground: 318 4% 14%;
+    --primary: 35 95% 74%; /* #f1ca84 - Laranja dourado principal */
+    --primary-foreground: 210 10% 11%;
 
-    --secondary: 166 100% 36%; /* #00B894 - Verde mais escuro */
+    --secondary: 35 80% 60%; /* #ecb251 - Laranja mais escuro */
     --secondary-foreground: 0 0% 97%;
 
-    --muted: 318 8% 19%; /* Tom de cinza mais claro para elementos muted */
-    --muted-foreground: 219 14% 63%; /* #A29BFE - Azul claro suave */
+    --muted: 210 12% 18%; /* Tom de cinza para elementos muted */
+    --muted-foreground: 35 30% 70%; /* Laranja suave para texto muted */
 
-    --accent: 211 100% 50%; /* #0984E3 - Azul vibrante para destaques */
-    --accent-foreground: 0 0% 97%;
+    --accent: 35 95% 74%; /* Mesmo tom do primary para destaques */
+    --accent-foreground: 210 10% 11%;
 
-    --destructive: 0 73% 57%; /* #E74C3C - Vermelho moderno */
+    --destructive: 0 73% 57%; /* Vermelho para ações destrutivas */
     --destructive-foreground: 0 0% 98%;
 
-    --border: 318 10% 22%; /* #3A3738 - Bordas mais definidas */
-    --input: 318 8% 19%;
-    --ring: 171 100% 41%; /* Mesmo tom do primary */
+    --border: 210 15% 25%; /* Bordas mais definidas */
+    --input: 210 12% 18%;
+    --ring: 35 95% 74%; /* Mesmo tom do primary */
 
-    --sidebar-background: 318 8% 12%; /* #1F1D1E - Sidebar mais escura */
+    --sidebar-background: 210 12% 8%; /* Sidebar mais escura */
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 171 100% 41%;
-    --sidebar-primary-foreground: 318 4% 14%;
-    --sidebar-accent: 318 8% 19%;
+    --sidebar-primary: 35 95% 74%;
+    --sidebar-primary-foreground: 210 10% 11%;
+    --sidebar-accent: 210 12% 18%;
     --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 318 10% 18%;
-    --sidebar-ring: 171 100% 41%;
+    --sidebar-border: 210 15% 20%;
+    --sidebar-ring: 35 95% 74%;
 
     /* Enhanced shadows for dark mode */
     --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
@@ -125,8 +125,8 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     overscroll-behavior: none;
-    /* Fundo preto sólido #252425 */
-    background: #252425 !important;
+    /* Fundo escuro similar à imagem */
+    background: hsl(210 10% 11%) !important;
   }
 
   /* Apple-style scrollbars */
