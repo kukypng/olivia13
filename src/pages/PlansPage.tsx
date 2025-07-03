@@ -188,10 +188,13 @@ export const PlansPage = () => {
       </div>
 
       {/* Navigation */}
-      <div className="absolute top-6 left-6 z-10">
+      <div className="absolute top-6 left-6 z-10 flex gap-3">
         <Button variant="ghost" size="sm" onClick={() => navigate('/')} className="interactive-scale glass backdrop-blur-xl">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Voltar
+          Início
+        </Button>
+        <Button variant="outline" size="sm" asChild className="interactive-scale glass backdrop-blur-xl">
+          <Link to="/auth">Login</Link>
         </Button>
       </div>
 
