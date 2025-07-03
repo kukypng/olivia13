@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { AlertCircle, Trash2, RotateCcw, AlertTriangle } from '@/components/ui/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/useToast';
 import { useBudgetDeletion } from '@/hooks/useBudgetDeletion';
+import { TrashCard } from '@/components/trash/TrashCard';
+import { TrashFiltersComponent, TrashFilters } from '@/components/trash/TrashFilters';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,6 +33,13 @@ export const TrashManagement = () => {
   const queryClient = useQueryClient();
   const { handleRestore, isRestoring } = useBudgetDeletion();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [filters, setFilters] = useState<TrashFilters>({
+    search: '',
+    sortBy: 'date',
+    sortOrder: 'desc',
+    deviceType: '',
+    expirationFilter: 'all'
+  });
 
   // Buscar orçamentos excluídos
   const { data: deletedBudgets, isLoading, refetch } = useQuery({
@@ -254,13 +261,85 @@ export const TrashManagement = () => {
     });
   };
 
-  const getDaysUntilDeletion = (createdAt: string) => {
-    const createdDate = new Date(createdAt);
-    const now = new Date();
-    const diffTime = now.getTime() - createdDate.getTime();
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    return Math.max(0, 90 - diffDays);
-  };
+  // Filtrar e ordenar dados
+  const { filteredBudgets, deviceTypes } = useMemo(() => {
+    if (!deletedBudgets) return { filteredBudgets: [], deviceTypes: [] };
+
+    // Extrair tipos de dispositivos únicos
+    const types = [...new Set(deletedBudgets.map(item => 
+      item.budget_data.device_type
+    ).filter(Boolean))];
+
+    // Aplicar filtros
+    let filtered = deletedBudgets.filter(item => {
+      // Filtro de busca
+      if (filters.search) {
+        const searchLower = filters.search.toLowerCase();
+        const matchesSearch = 
+          item.budget_data.device_model?.toLowerCase().includes(searchLower) ||
+          item.budget_data.client_name?.toLowerCase().includes(searchLower) ||
+          item.deletion_reason?.toLowerCase().includes(searchLower);
+        if (!matchesSearch) return false;
+      }
+
+      // Filtro por tipo de dispositivo
+      if (filters.deviceType && item.budget_data.device_type !== filters.deviceType) {
+        return false;
+      }
+
+      // Filtro por expiração
+      if (filters.expirationFilter !== 'all') {
+        const createdDate = new Date(item.created_at);
+        const now = new Date();
+        const diffTime = now.getTime() - createdDate.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const daysLeft = Math.max(0, 90 - diffDays);
+
+        if (filters.expirationFilter === 'expiring' && daysLeft > 7) {
+          return false;
+        }
+        if (filters.expirationFilter === 'recent' && diffDays > 7) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    // Aplicar ordenação
+    filtered.sort((a, b) => {
+      let comparison = 0;
+
+      switch (filters.sortBy) {
+        case 'name':
+          comparison = (a.budget_data.device_model || '').localeCompare(
+            b.budget_data.device_model || ''
+          );
+          break;
+        case 'value':
+          comparison = (a.budget_data.total_price || 0) - (b.budget_data.total_price || 0);
+          break;
+        case 'expiration':
+          const getDaysLeft = (createdAt: string) => {
+            const createdDate = new Date(createdAt);
+            const now = new Date();
+            const diffTime = now.getTime() - createdDate.getTime();
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            return Math.max(0, 90 - diffDays);
+          };
+          comparison = getDaysLeft(a.created_at) - getDaysLeft(b.created_at);
+          break;
+        case 'date':
+        default:
+          comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+          break;
+      }
+
+      return filters.sortOrder === 'asc' ? comparison : -comparison;
+    });
+
+    return { filteredBudgets: filtered, deviceTypes: types };
+  }, [deletedBudgets, filters]);
 
   if (isLoading) {
     return (
@@ -290,12 +369,29 @@ export const TrashManagement = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Filtros */}
+        {deletedBudgets && deletedBudgets.length > 0 && (
+          <TrashFiltersComponent
+            filters={filters}
+            onFiltersChange={setFilters}
+            totalCount={deletedBudgets.length}
+            filteredCount={filteredBudgets.length}
+            deviceTypes={deviceTypes}
+          />
+        )}
+
+        {/* Ações principais */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             {deletedBudgets && deletedBudgets.length > 0 && (
               <>
                 <AlertCircle className="h-4 w-4" />
-                <span>{deletedBudgets.length} orçamento(s) na lixeira</span>
+                <span>
+                  {filteredBudgets.length === deletedBudgets.length
+                    ? `${deletedBudgets.length} orçamento(s) na lixeira`
+                    : `${filteredBudgets.length} de ${deletedBudgets.length} orçamento(s)`
+                  }
+                </span>
               </>
             )}
           </div>
@@ -354,110 +450,28 @@ export const TrashManagement = () => {
         </div>
 
         {!deletedBudgets || deletedBudgets.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
-            <Trash2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>Nenhum orçamento na lixeira</p>
+          <div className="text-center py-12 text-muted-foreground">
+            <Trash2 className="h-16 w-16 mx-auto mb-4 opacity-50" />
+            <h3 className="text-lg font-medium mb-2">Lixeira vazia</h3>
+            <p>Nenhum orçamento foi excluído recentemente</p>
+          </div>
+        ) : filteredBudgets.length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground">
+            <Trash2 className="h-16 w-16 mx-auto mb-4 opacity-50" />
+            <h3 className="text-lg font-medium mb-2">Nenhum resultado encontrado</h3>
+            <p>Ajuste os filtros para ver mais resultados</p>
           </div>
         ) : (
           <div className="space-y-4">
-            {deletedBudgets.map((item) => (
-              <div key={item.id} className="border rounded-lg p-4 space-y-3">
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-medium">
-                        {item.budget_data.device_model || 'Dispositivo não informado'}
-                      </h4>
-                      <Badge variant="outline" className="text-xs">
-                        {item.budget_data.device_type || 'Tipo não informado'}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Cliente: {item.budget_data.client_name || 'Não informado'}
-                    </p>
-                    <p className="text-sm font-medium">
-                      Valor: {formatPrice(item.budget_data.total_price || 0)}
-                    </p>
-                  </div>
-                  <Badge variant="secondary" className="text-xs">
-                    {formatDate(item.created_at)}
-                  </Badge>
-                </div>
-                
-                {item.deletion_reason && (
-                  <p className="text-sm text-muted-foreground">
-                    <strong>Motivo:</strong> {item.deletion_reason}
-                  </p>
-                )}
-                
-                <Separator />
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleRestoreBudget(item.budget_data.id)}
-                      disabled={isRestoring}
-                      className="flex items-center gap-2"
-                    >
-                      <RotateCcw className="h-4 w-4" />
-                      Restaurar
-                    </Button>
-                    
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          className="flex items-center gap-2"
-                          disabled={permanentDeleteMutation.isPending}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          Excluir Permanentemente
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle className="flex items-center gap-2">
-                            <AlertTriangle className="h-5 w-5 text-destructive" />
-                            Exclusão Permanente
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            <strong>Esta ação não pode ser desfeita!</strong>
-                            <br />
-                            O orçamento será completamente removido da base de dados e não poderá ser recuperado.
-                            <br /><br />
-                            Orçamento: <strong>{item.budget_data.device_model}</strong>
-                            <br />
-                            Cliente: <strong>{item.budget_data.client_name || 'Não informado'}</strong>
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => permanentDeleteMutation.mutate(item.budget_data.id)}
-                            className="bg-destructive hover:bg-destructive/90"
-                            disabled={permanentDeleteMutation.isPending}
-                          >
-                            {permanentDeleteMutation.isPending ? 'Excluindo...' : 'Confirmar Exclusão'}
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                  
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <AlertCircle className="h-3 w-3" />
-                    <span>
-                      {getDaysUntilDeletion(item.created_at) > 0 
-                        ? `Será excluído automaticamente em ${getDaysUntilDeletion(item.created_at)} dias`
-                        : 'Programado para exclusão automática'
-                      }
-                    </span>
-                  </div>
-                </div>
-              </div>
+            {filteredBudgets.map((item) => (
+              <TrashCard
+                key={item.id}
+                item={item}
+                onRestore={handleRestoreBudget}
+                onPermanentDelete={(budgetId) => permanentDeleteMutation.mutate(budgetId)}
+                isRestoring={isRestoring}
+                isPermanentDeleting={permanentDeleteMutation.isPending}
+              />
             ))}
           </div>
         )}

@@ -1,12 +1,13 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useShopProfile } from '@/hooks/useShopProfile';
-import { Building2, Save, Upload, X, Image } from 'lucide-react';
+import { LogoUploadZone } from '@/components/logo/LogoUploadZone';
+import { Building2, Save } from 'lucide-react';
 
 export const CompanySettings = () => {
   const { 
@@ -19,8 +20,6 @@ export const CompanySettings = () => {
     removeLogo,
     isRemovingLogo
   } = useShopProfile();
-  
-  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
     shop_name: '',
@@ -71,11 +70,8 @@ export const CompanySettings = () => {
     handleInputChange('cnpj', formatted);
   };
 
-  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      uploadLogo(file);
-    }
+  const handleLogoUpload = (file: File) => {
+    uploadLogo(file);
   };
 
   const handleRemoveLogo = () => {
@@ -119,51 +115,13 @@ export const CompanySettings = () => {
         {/* Logo Section */}
         <div className="space-y-2">
           <Label>Logo da Empresa</Label>
-          <div className="flex items-center space-x-4">
-            <div className="w-20 h-20 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
-              {shopProfile?.logo_url ? (
-                <img 
-                  src={shopProfile.logo_url} 
-                  alt="Logo da empresa" 
-                  className="w-full h-full object-contain rounded-lg"
-                />
-              ) : (
-                <Image className="h-8 w-8 text-gray-400" />
-              )}
-            </div>
-            <div className="flex flex-col space-y-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploadingLogo}
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                {isUploadingLogo ? 'Enviando...' : 'Enviar Logo'}
-              </Button>
-              {shopProfile?.logo_url && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleRemoveLogo}
-                  disabled={isRemovingLogo}
-                >
-                  <X className="h-4 w-4 mr-2" />
-                  {isRemovingLogo ? 'Removendo...' : 'Remover'}
-                </Button>
-              )}
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/png,image/jpeg,image/webp,image/gif"
-                onChange={handleLogoUpload}
-                className="hidden"
-              />
-            </div>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Formatos aceitos: PNG, JPEG, WebP, GIF. Tamanho máximo: 3MB
-          </p>
+          <LogoUploadZone
+            currentLogoUrl={shopProfile?.logo_url}
+            onUpload={handleLogoUpload}
+            onRemove={handleRemoveLogo}
+            isUploading={isUploadingLogo}
+            isRemoving={isRemovingLogo}
+          />
         </div>
 
         <div className="space-y-2">
