@@ -69,43 +69,43 @@
   }
 
   .dark {
-    /* Premium dark theme - com a cor #0a1211 de fundo */
-    --background: 153 13% 7%; /* #0a1211 convertido para HSL */
-    --foreground: 160 30% 90%; /* Verde claro para texto */
+    /* Nova paleta moderna - #252425 como fundo principal */
+    --background: 318 4% 14%; /* #252425 convertido para HSL */
+    --foreground: 0 0% 97%; /* Branco suave para texto */
 
-    --card: 153 13% 10%; /* Cartões um pouco mais claros */
-    --card-foreground: 160 20% 85%;
+    --card: 318 6% 17%; /* Cartões ligeiramente mais claros #2C2A2D */
+    --card-foreground: 0 0% 95%;
 
-    --popover: 153 13% 10%;
-    --popover-foreground: 160 20% 85%;
+    --popover: 318 6% 17%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 160 80% 55%; /* Verde mais brilhante para modo escuro */
-    --primary-foreground: 153 13% 7%;
+    --primary: 171 100% 41%; /* #00D4AA - Verde turquesa vibrante */
+    --primary-foreground: 318 4% 14%;
 
-    --secondary: 153 13% 12%; /* Fundo secundário */
-    --secondary-foreground: 160 15% 80%;
+    --secondary: 166 100% 36%; /* #00B894 - Verde mais escuro */
+    --secondary-foreground: 0 0% 97%;
 
-    --muted: 153 13% 12%;
-    --muted-foreground: 160 8% 55%;
+    --muted: 318 8% 19%; /* Tom de cinza mais claro para elementos muted */
+    --muted-foreground: 219 14% 63%; /* #A29BFE - Azul claro suave */
 
-    --accent: 153 13% 15%; /* Cor de destaque */
-    --accent-foreground: 160 20% 85%;
+    --accent: 211 100% 50%; /* #0984E3 - Azul vibrante para destaques */
+    --accent-foreground: 0 0% 97%;
 
-    --destructive: 0 62% 51%;
+    --destructive: 0 73% 57%; /* #E74C3C - Vermelho moderno */
     --destructive-foreground: 0 0% 98%;
 
-    --border: 153 13% 18%; /* Bordas */
-    --input: 153 13% 15%;
-    --ring: 160 80% 55%;
+    --border: 318 10% 22%; /* #3A3738 - Bordas mais definidas */
+    --input: 318 8% 19%;
+    --ring: 171 100% 41%; /* Mesmo tom do primary */
 
-    --sidebar-background: 153 13% 5%; /* Sidebar ainda mais escura */
-    --sidebar-foreground: 160 20% 85%;
-    --sidebar-primary: 160 80% 55%;
-    --sidebar-primary-foreground: 153 13% 7%;
-    --sidebar-accent: 153 13% 12%;
-    --sidebar-accent-foreground: 160 15% 80%;
-    --sidebar-border: 153 13% 15%;
-    --sidebar-ring: 160 80% 55%;
+    --sidebar-background: 318 8% 12%; /* #1F1D1E - Sidebar mais escura */
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 171 100% 41%;
+    --sidebar-primary-foreground: 318 4% 14%;
+    --sidebar-accent: 318 8% 19%;
+    --sidebar-accent-foreground: 0 0% 90%;
+    --sidebar-border: 318 10% 18%;
+    --sidebar-ring: 171 100% 41%;
 
     /* Enhanced shadows for dark mode */
     --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
@@ -214,11 +214,12 @@
     @apply transform transition-all duration-300 ease-out;
     @apply hover:scale-[1.02] active:scale-[0.98];
     @apply shadow-medium hover:shadow-strong;
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(160 80% 40%) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
   }
 
   .btn-apple:hover {
-    background: linear-gradient(135deg, hsl(160 80% 60%) 0%, hsl(160 80% 50%) 100%);
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--primary)) 100%);
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
   }
 
   .btn-apple-secondary {
@@ -250,7 +251,12 @@
     @apply transform transition-all duration-500 ease-out;
     @apply hover:scale-110 active:scale-95;
     @apply text-primary-foreground;
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(160 80% 40%) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    box-shadow: 0 8px 32px hsl(var(--primary) / 0.3);
+  }
+
+  .fab:hover {
+    box-shadow: 0 12px 40px hsl(var(--primary) / 0.5);
   }
 
   /* Premium Input styles */

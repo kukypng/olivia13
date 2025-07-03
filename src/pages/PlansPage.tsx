@@ -198,7 +198,7 @@ export const PlansPage = () => {
         </Button>
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 py-12 space-y-20 bg-gray-900">
+      <div className="relative z-10 container mx-auto px-4 py-12 space-y-20">
         {/* Hero Section */}
         <section className="text-center animate-fade-in-up">
           <div className="flex items-center justify-center space-x-3 mb-8">
@@ -392,7 +392,7 @@ export const PlansPage = () => {
               <Button onClick={handlePlanSelection} className="btn-apple text-lg px-8 py-4">
                 {config.cta_button_text}
               </Button>
-              <p className="text-sm text-white">
+              <p className="text-sm text-muted-foreground">
                 Já tem uma conta?{' '}
                 <Link to="/auth" className="font-semibold text-primary hover:underline">
                   Faça login aqui
