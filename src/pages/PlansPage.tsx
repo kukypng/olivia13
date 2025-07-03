@@ -140,7 +140,12 @@ export const PlansPage = () => {
 
 
       <div className="absolute top-6 left-6 z-10">
-        <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => navigate('/')}
+          className="backdrop-blur-md bg-background/80 border-border/50 hover:bg-accent/50 hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+        >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Voltar
         </Button>
