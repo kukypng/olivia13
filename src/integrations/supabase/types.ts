@@ -9,54 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      admin_audit_log: {
-        Row: {
-          action_details: Json | null
-          action_type: string
-          admin_user_id: string | null
-          created_at: string | null
-          id: string
-          ip_address: unknown | null
-          target_user_id: string | null
-          user_agent: string | null
-        }
-        Insert: {
-          action_details?: Json | null
-          action_type: string
-          admin_user_id?: string | null
-          created_at?: string | null
-          id?: string
-          ip_address?: unknown | null
-          target_user_id?: string | null
-          user_agent?: string | null
-        }
-        Update: {
-          action_details?: Json | null
-          action_type?: string
-          admin_user_id?: string | null
-          created_at?: string | null
-          id?: string
-          ip_address?: unknown | null
-          target_user_id?: string | null
-          user_agent?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "admin_audit_log_admin_user_id_fkey"
-            columns: ["admin_user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "admin_audit_log_target_user_id_fkey"
-            columns: ["target_user_id"]
-            isOneToOne: false
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       admin_logs: {
         Row: {
           action: string
@@ -81,27 +33,6 @@ export type Database = {
           details?: Json | null
           id?: string
           target_user_id?: string | null
-        }
-        Relationships: []
-      }
-      admin_users: {
-        Row: {
-          created_at: string
-          id: string
-          password: string
-          username: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          password: string
-          username: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          password?: string
-          username?: string
         }
         Relationships: []
       }
@@ -416,27 +347,6 @@ export type Database = {
         }
         Relationships: []
       }
-      profiles: {
-        Row: {
-          created_at: string
-          id: string
-          name: string
-          role: string
-        }
-        Insert: {
-          created_at?: string
-          id: string
-          name: string
-          role?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          name?: string
-          role?: string
-        }
-        Relationships: []
-      }
       shop_profiles: {
         Row: {
           address: string
@@ -538,47 +448,6 @@ export type Database = {
           whatsapp_number?: string
         }
         Relationships: []
-      }
-      user_activity_metrics: {
-        Row: {
-          avg_session_duration: unknown | null
-          created_at: string | null
-          id: string
-          last_activity_at: string | null
-          login_count: number | null
-          total_budgets_created: number | null
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          avg_session_duration?: unknown | null
-          created_at?: string | null
-          id?: string
-          last_activity_at?: string | null
-          login_count?: number | null
-          total_budgets_created?: number | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          avg_session_duration?: unknown | null
-          created_at?: string | null
-          id?: string
-          last_activity_at?: string | null
-          login_count?: number | null
-          total_budgets_created?: number | null
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "user_activity_metrics_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: true
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       user_profiles: {
         Row: {
@@ -695,14 +564,6 @@ export type Database = {
         }
         Returns: Json
       }
-      admin_log_audit_action: {
-        Args: {
-          p_target_user_id: string
-          p_action_type: string
-          p_action_details?: Json
-        }
-        Returns: undefined
-      }
       admin_renew_user_license: {
         Args: { p_user_id: string; p_additional_days: number }
         Returns: boolean
@@ -725,10 +586,6 @@ export type Database = {
         Args: { p_user_id: string }
         Returns: boolean
       }
-      cleanup_expired_users: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
       cleanup_old_deleted_budgets: {
         Args: Record<PropertyKey, never>
         Returns: number
@@ -746,14 +603,6 @@ export type Database = {
           is_active: boolean
           is_admin: boolean
         }[]
-      }
-      delete_all_user_budgets: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      delete_budget_with_parts: {
-        Args: { p_budget_id: string }
-        Returns: boolean
       }
       get_shop_profile: {
         Args: { p_user_id: string }
@@ -780,10 +629,6 @@ export type Database = {
         }
         Returns: boolean
       }
-      is_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
       is_current_user_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
@@ -793,10 +638,6 @@ export type Database = {
         Returns: boolean
       }
       is_user_admin: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
-      is_user_expired: {
         Args: Record<PropertyKey, never>
         Returns: boolean
       }
