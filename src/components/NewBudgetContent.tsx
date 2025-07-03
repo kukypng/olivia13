@@ -13,7 +13,6 @@ import { useEnhancedToast } from '@/hooks/useEnhancedToast';
 import { usePdfGeneration } from '@/hooks/usePdfGeneration';
 import { ConfirmationDialog } from './ConfirmationDialog';
 import { generateWhatsAppMessage, shareViaWhatsApp } from '@/utils/whatsappUtils';
-
 export const NewBudgetContent = () => {
   const [showForm, setShowForm] = useState(false);
   const [copiedBudgetData, setCopiedBudgetData] = useState<any | null>(null);
@@ -84,7 +83,6 @@ export const NewBudgetContent = () => {
       description: "Um PDF do orçamento será gerado e a opção de compartilhamento será exibida."
     });
   };
-
   const handleShareWhatsApp = (budget: any) => {
     setConfirmation({
       action: () => {
@@ -106,7 +104,6 @@ export const NewBudgetContent = () => {
       description: "Você será redirecionado para o WhatsApp para enviar os detalhes do orçamento."
     });
   };
-
   const handleFormBack = () => {
     setShowForm(false);
     setCopiedBudgetData(null);
@@ -147,66 +144,19 @@ export const NewBudgetContent = () => {
         <div className="animate-slide-up" style={{
         animationDelay: '200ms'
       }}>
-          <h2 className="text-xl lg:text-2xl font-bold text-foreground mb-4">Orçamentos Recentes</h2>
+          
           <Card className="glass-card border-0">
-            <CardContent className="p-4 lg:p-6 space-y-3">
-              {isLoading && <>
-                  <RecentBudgetSkeleton />
-                  <RecentBudgetSkeleton />
-                  <RecentBudgetSkeleton />
-                </>}
-              {!isLoading && recentBudgets && recentBudgets.length > 0 ? recentBudgets.map((budget: any, index: number) => <div key={budget.id} className="flex items-center justify-between p-4 glass-card border border-white/10 rounded-2xl hover:bg-muted/20 transition-all duration-300 group" style={{
-              animationDelay: `${index * 50}ms`
-            }}>
-                    <div className="flex-1 min-w-0 pr-3">
-                      <div className="flex flex-col space-y-2">
-                        <div>
-                          <p className="font-semibold text-sm lg:text-base text-foreground group-hover:text-orange-600 transition-colors truncate">
-                            {budget.device_model || 'Modelo não informado'}
-                          </p>
-                          <p className="text-xs lg:text-sm text-muted-foreground truncate">{new Date(budget.created_at).toLocaleDateString('pt-BR')}</p>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <p className="font-bold text-sm lg:text-base text-foreground">
-                            R$ {((budget.total_price || 0) / 100).toLocaleString('pt-BR', {
-                        minimumFractionDigits: 2
-                      })}
-                          </p>
-                          
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex space-x-1 ml-2">
-                      <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-xl text-green-600 hover:text-green-700 hover:bg-green-500/10" onClick={() => handleShareWhatsApp(budget)}>
-                        <MessageCircle className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-xl hover:bg-orange-50 hover:text-orange-600" onClick={() => handleViewPdf(budget)} disabled={isGenerating}>
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-9 w-9 p-0 rounded-xl hover:bg-blue-500/10 hover:text-blue-600" onClick={() => handleEdit(budget)}>
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      
-                    </div>
-                  </div>) : null}
-              {!isLoading && (!recentBudgets || recentBudgets.length === 0) && <p className="text-muted-foreground text-center py-4">Nenhum orçamento recente encontrado.</p>}
-            </CardContent>
+            
           </Card>
         </div>
       </div>
       {selectedBudget && <EditBudgetModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} budget={selectedBudget} />}
-      <ConfirmationDialog
-        open={!!confirmation}
-        onOpenChange={() => setConfirmation(null)}
-        onConfirm={() => {
-          if (confirmation) {
-            confirmation.action();
-            setConfirmation(null);
-          }
-        }}
-        title={confirmation?.title || ''}
-        description={confirmation?.description || ''}
-      />
+      <ConfirmationDialog open={!!confirmation} onOpenChange={() => setConfirmation(null)} onConfirm={() => {
+      if (confirmation) {
+        confirmation.action();
+        setConfirmation(null);
+      }
+    }} title={confirmation?.title || ''} description={confirmation?.description || ''} />
     </>;
 };
 const RecentBudgetSkeleton = () => <div className="flex items-center justify-between p-4 border border-border/10 rounded-2xl">
