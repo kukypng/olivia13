@@ -143,7 +143,14 @@ export const PlansPage = () => {
         <Button 
           variant="outline" 
           size="sm" 
-          onClick={() => navigate('/')}
+          onClick={() => {
+            try {
+              navigate('/', { replace: true });
+            } catch (error) {
+              console.error('Navigation error:', error);
+              window.location.href = '/';
+            }
+          }}
           className="backdrop-blur-md bg-background/80 border-border/50 hover:bg-accent/50 hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
