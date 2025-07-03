@@ -8,18 +8,7 @@ import { useToast } from '@/hooks/useToast';
 import { useBudgetDeletion } from '@/hooks/useBudgetDeletion';
 import { TrashCard } from '@/components/trash/TrashCard';
 import { TrashFiltersComponent, TrashFilters } from '@/components/trash/TrashFilters';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 interface DeletedBudget {
   id: string;
   budget_data: any;
@@ -27,11 +16,16 @@ interface DeletedBudget {
   deletion_reason?: string;
   can_restore: boolean;
 }
-
 export const TrashManagement = () => {
-  const { showSuccess, showError } = useToast();
+  const {
+    showSuccess,
+    showError
+  } = useToast();
   const queryClient = useQueryClient();
-  const { handleRestore, isRestoring } = useBudgetDeletion();
+  const {
+    handleRestore,
+    isRestoring
+  } = useBudgetDeletion();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [filters, setFilters] = useState<TrashFilters>({
     search: '',
@@ -42,25 +36,32 @@ export const TrashManagement = () => {
   });
 
   // Buscar orçamentos excluídos
-  const { data: deletedBudgets, isLoading, refetch } = useQuery({
+  const {
+    data: deletedBudgets,
+    isLoading,
+    refetch
+  } = useQuery({
     queryKey: ['deleted-budgets'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('budget_deletion_audit')
-        .select('*')
-        .eq('deleted_by', (await supabase.auth.getUser()).data.user?.id)
-        .eq('can_restore', true)
-        .order('created_at', { ascending: false });
-      
+      const {
+        data,
+        error
+      } = await supabase.from('budget_deletion_audit').select('*').eq('deleted_by', (await supabase.auth.getUser()).data.user?.id).eq('can_restore', true).order('created_at', {
+        ascending: false
+      });
       if (error) throw error;
       return data as DeletedBudget[];
-    },
+    }
   });
 
   // Função para invalidar todas as queries relacionadas
   const invalidateAllQueries = () => {
-    queryClient.invalidateQueries({ queryKey: ['deleted-budgets'] });
-    queryClient.invalidateQueries({ queryKey: ['budgets'] });
+    queryClient.invalidateQueries({
+      queryKey: ['deleted-budgets']
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['budgets']
+    });
     // Forçar refetch da query atual
     refetch();
   };
@@ -70,96 +71,83 @@ export const TrashManagement = () => {
     mutationFn: async (budgetId: string) => {
       const currentUser = await supabase.auth.getUser();
       const userId = currentUser.data.user?.id;
-      
       if (!userId) {
         throw new Error('Usuário não autenticado');
       }
-
       console.log(`Iniciando exclusão permanente do orçamento ${budgetId}`);
 
       // Verificar se o orçamento existe na lixeira
-      const { data: auditCheck } = await supabase
-        .from('budget_deletion_audit')
-        .select('id, can_restore')
-        .eq('budget_id', budgetId)
-        .eq('deleted_by', userId)
-        .single();
-
+      const {
+        data: auditCheck
+      } = await supabase.from('budget_deletion_audit').select('id, can_restore').eq('budget_id', budgetId).eq('deleted_by', userId).single();
       if (!auditCheck || !auditCheck.can_restore) {
         throw new Error('Orçamento não encontrado na lixeira ou já foi excluído permanentemente');
       }
 
       // Primeiro, excluir as partes do orçamento
-      const { error: partsError } = await supabase
-        .from('budget_parts')
-        .delete()
-        .eq('budget_id', budgetId);
-      
+      const {
+        error: partsError
+      } = await supabase.from('budget_parts').delete().eq('budget_id', budgetId);
       if (partsError) {
         console.error('Erro ao excluir partes:', partsError);
         throw new Error(`Erro ao excluir partes do orçamento: ${partsError.message}`);
       }
-
       console.log(`Partes do orçamento ${budgetId} excluídas com sucesso`);
 
       // Depois, excluir o orçamento principal
-      const { error: budgetError } = await supabase
-        .from('budgets')
-        .delete()
-        .eq('id', budgetId)
-        .eq('owner_id', userId);
-      
+      const {
+        error: budgetError
+      } = await supabase.from('budgets').delete().eq('id', budgetId).eq('owner_id', userId);
       if (budgetError) {
         console.error('Erro ao excluir orçamento:', budgetError);
         throw new Error(`Erro ao excluir orçamento da base de dados: ${budgetError.message}`);
       }
-
       console.log(`Orçamento ${budgetId} excluído com sucesso`);
 
       // Por fim, marcar como não restaurável na auditoria - CRÍTICO para remover da lixeira
-      const { error: auditError, data: auditData } = await supabase
-        .from('budget_deletion_audit')
-        .update({ can_restore: false })
-        .eq('budget_id', budgetId)
-        .eq('deleted_by', userId)
-        .select();
-      
+      const {
+        error: auditError,
+        data: auditData
+      } = await supabase.from('budget_deletion_audit').update({
+        can_restore: false
+      }).eq('budget_id', budgetId).eq('deleted_by', userId).select();
       if (auditError) {
         console.error('ERRO CRÍTICO ao atualizar auditoria:', auditError);
         throw new Error(`Falha crítica ao atualizar registro de auditoria: ${auditError.message}`);
       }
-
       if (!auditData || auditData.length === 0) {
         console.error('ERRO: Nenhum registro de auditoria foi atualizado');
         throw new Error('Falha ao atualizar o registro de auditoria - item pode ainda aparecer na lixeira');
       }
-
       console.log(`Registro de auditoria atualizado com sucesso para orçamento ${budgetId}`, auditData);
-
-      return { budgetId, success: true };
+      return {
+        budgetId,
+        success: true
+      };
     },
-    onSuccess: async (data) => {
+    onSuccess: async data => {
       console.log(`Exclusão permanente concluída para ${data.budgetId}`);
-      
+
       // Invalidação robusta e aguardar refetch
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['deleted-budgets'] }),
-        queryClient.invalidateQueries({ queryKey: ['budgets'] }),
-        queryClient.refetchQueries({ queryKey: ['deleted-budgets'] })
-      ]);
-      
+      await Promise.all([queryClient.invalidateQueries({
+        queryKey: ['deleted-budgets']
+      }), queryClient.invalidateQueries({
+        queryKey: ['budgets']
+      }), queryClient.refetchQueries({
+        queryKey: ['deleted-budgets']
+      })]);
       showSuccess({
         title: "Orçamento excluído permanentemente",
-        description: "O orçamento foi completamente removido da base de dados e da lixeira.",
+        description: "O orçamento foi completamente removido da base de dados e da lixeira."
       });
     },
     onError: (error: Error) => {
       console.error('Erro na exclusão permanente:', error);
       showError({
         title: "Erro ao excluir permanentemente",
-        description: error.message || "Não foi possível excluir o orçamento permanentemente.",
+        description: error.message || "Não foi possível excluir o orçamento permanentemente."
       });
-    },
+    }
   });
 
   // Excluir todos permanentemente - versão corrigida com validação e tratamento robusto
@@ -167,17 +155,13 @@ export const TrashManagement = () => {
     mutationFn: async () => {
       const currentUser = await supabase.auth.getUser();
       const userId = currentUser.data.user?.id;
-      
       if (!userId) {
         throw new Error('Usuário não autenticado');
       }
-
       if (!deletedBudgets || deletedBudgets.length === 0) {
         throw new Error('Nenhum orçamento na lixeira para excluir');
       }
-
       console.log(`Iniciando exclusão em massa de ${deletedBudgets.length} orçamentos`);
-
       let successCount = 0;
       let errorCount = 0;
       const auditErrors: string[] = [];
@@ -189,11 +173,9 @@ export const TrashManagement = () => {
           console.log(`Processando exclusão do orçamento ${budgetId}`);
 
           // Primeiro, excluir as partes do orçamento
-          const { error: partsError } = await supabase
-            .from('budget_parts')
-            .delete()
-            .eq('budget_id', budgetId);
-          
+          const {
+            error: partsError
+          } = await supabase.from('budget_parts').delete().eq('budget_id', budgetId);
           if (partsError) {
             console.error(`Erro ao excluir partes do orçamento ${budgetId}:`, partsError);
             errorCount++;
@@ -201,12 +183,9 @@ export const TrashManagement = () => {
           }
 
           // Depois, excluir o orçamento principal
-          const { error: budgetError } = await supabase
-            .from('budgets')
-            .delete()
-            .eq('id', budgetId)
-            .eq('owner_id', userId);
-          
+          const {
+            error: budgetError
+          } = await supabase.from('budgets').delete().eq('id', budgetId).eq('owner_id', userId);
           if (budgetError) {
             console.error(`Erro ao excluir orçamento ${budgetId}:`, budgetError);
             errorCount++;
@@ -214,27 +193,24 @@ export const TrashManagement = () => {
           }
 
           // Por fim, marcar como não restaurável na auditoria - CRÍTICO
-          const { error: auditError, data: auditData } = await supabase
-            .from('budget_deletion_audit')
-            .update({ can_restore: false })
-            .eq('budget_id', budgetId)
-            .eq('deleted_by', userId)
-            .select();
-          
+          const {
+            error: auditError,
+            data: auditData
+          } = await supabase.from('budget_deletion_audit').update({
+            can_restore: false
+          }).eq('budget_id', budgetId).eq('deleted_by', userId).select();
           if (auditError) {
             console.error(`ERRO CRÍTICO ao atualizar auditoria do orçamento ${budgetId}:`, auditError);
             auditErrors.push(`${budgetId}: ${auditError.message}`);
             errorCount++;
             continue;
           }
-
           if (!auditData || auditData.length === 0) {
             console.error(`ERRO: Nenhum registro de auditoria foi atualizado para ${budgetId}`);
             auditErrors.push(`${budgetId}: Nenhum registro atualizado`);
             errorCount++;
             continue;
           }
-
           console.log(`Orçamento ${budgetId} excluído permanentemente com sucesso`);
           successCount++;
         } catch (error) {
@@ -242,42 +218,48 @@ export const TrashManagement = () => {
           errorCount++;
         }
       }
-
       console.log(`Exclusão em massa concluída: ${successCount} sucessos, ${errorCount} erros`);
-      
       if (auditErrors.length > 0) {
         console.error('Erros de auditoria:', auditErrors);
       }
-
-      return { successCount, errorCount, totalCount: deletedBudgets.length, auditErrors };
+      return {
+        successCount,
+        errorCount,
+        totalCount: deletedBudgets.length,
+        auditErrors
+      };
     },
-    onSuccess: async ({ successCount, errorCount, totalCount, auditErrors }) => {
+    onSuccess: async ({
+      successCount,
+      errorCount,
+      totalCount,
+      auditErrors
+    }) => {
       console.log(`Exclusão em massa finalizada: ${successCount}/${totalCount} sucessos`);
-      
+
       // Invalidação robusta
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['deleted-budgets'] }),
-        queryClient.invalidateQueries({ queryKey: ['budgets'] }),
-        queryClient.refetchQueries({ queryKey: ['deleted-budgets'] })
-      ]);
-      
+      await Promise.all([queryClient.invalidateQueries({
+        queryKey: ['deleted-budgets']
+      }), queryClient.invalidateQueries({
+        queryKey: ['budgets']
+      }), queryClient.refetchQueries({
+        queryKey: ['deleted-budgets']
+      })]);
       if (errorCount === 0) {
         showSuccess({
           title: "Lixeira esvaziada",
-          description: `${successCount} orçamento(s) foram excluídos permanentemente da base de dados e removidos da lixeira.`,
+          description: `${successCount} orçamento(s) foram excluídos permanentemente da base de dados e removidos da lixeira.`
         });
       } else if (successCount > 0) {
-        const message = auditErrors.length > 0 
-          ? `${successCount} de ${totalCount} orçamentos foram excluídos. ${errorCount} falharam (problemas de auditoria detectados).`
-          : `${successCount} de ${totalCount} orçamentos foram excluídos. ${errorCount} falharam.`;
+        const message = auditErrors.length > 0 ? `${successCount} de ${totalCount} orçamentos foram excluídos. ${errorCount} falharam (problemas de auditoria detectados).` : `${successCount} de ${totalCount} orçamentos foram excluídos. ${errorCount} falharam.`;
         showSuccess({
           title: "Limpeza parcial da lixeira",
-          description: message,
+          description: message
         });
       } else {
         showError({
           title: "Falha ao esvaziar lixeira",
-          description: `Não foi possível excluir nenhum dos ${totalCount} orçamentos da lixeira.`,
+          description: `Não foi possível excluir nenhum dos ${totalCount} orçamentos da lixeira.`
         });
       }
     },
@@ -285,11 +267,10 @@ export const TrashManagement = () => {
       console.error('Erro na exclusão em massa da lixeira:', error);
       showError({
         title: "Erro ao esvaziar lixeira",
-        description: error.message || "Não foi possível esvaziar a lixeira.",
+        description: error.message || "Não foi possível esvaziar a lixeira."
       });
-    },
+    }
   });
-
   const handleRestoreBudget = async (budgetId: string) => {
     try {
       await handleRestore(budgetId);
@@ -298,7 +279,6 @@ export const TrashManagement = () => {
       console.error('Erro ao restaurar:', error);
     }
   };
-
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
@@ -308,7 +288,6 @@ export const TrashManagement = () => {
       setIsRefreshing(false);
     }
   };
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('pt-BR', {
       day: '2-digit',
@@ -318,7 +297,6 @@ export const TrashManagement = () => {
       minute: '2-digit'
     });
   };
-
   const formatPrice = (price: number) => {
     return (price / 100).toLocaleString('pt-BR', {
       style: 'currency',
@@ -327,23 +305,24 @@ export const TrashManagement = () => {
   };
 
   // Filtrar e ordenar dados
-  const { filteredBudgets, deviceTypes } = useMemo(() => {
-    if (!deletedBudgets) return { filteredBudgets: [], deviceTypes: [] };
+  const {
+    filteredBudgets,
+    deviceTypes
+  } = useMemo(() => {
+    if (!deletedBudgets) return {
+      filteredBudgets: [],
+      deviceTypes: []
+    };
 
     // Extrair tipos de dispositivos únicos
-    const types = [...new Set(deletedBudgets.map(item => 
-      item.budget_data.device_type
-    ).filter(Boolean))];
+    const types = [...new Set(deletedBudgets.map(item => item.budget_data.device_type).filter(Boolean))];
 
     // Aplicar filtros
     let filtered = deletedBudgets.filter(item => {
       // Filtro de busca
       if (filters.search) {
         const searchLower = filters.search.toLowerCase();
-        const matchesSearch = 
-          item.budget_data.device_model?.toLowerCase().includes(searchLower) ||
-          item.budget_data.client_name?.toLowerCase().includes(searchLower) ||
-          item.deletion_reason?.toLowerCase().includes(searchLower);
+        const matchesSearch = item.budget_data.device_model?.toLowerCase().includes(searchLower) || item.budget_data.client_name?.toLowerCase().includes(searchLower) || item.deletion_reason?.toLowerCase().includes(searchLower);
         if (!matchesSearch) return false;
       }
 
@@ -359,7 +338,6 @@ export const TrashManagement = () => {
         const diffTime = now.getTime() - createdDate.getTime();
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
         const daysLeft = Math.max(0, 90 - diffDays);
-
         if (filters.expirationFilter === 'expiring' && daysLeft > 7) {
           return false;
         }
@@ -367,19 +345,15 @@ export const TrashManagement = () => {
           return false;
         }
       }
-
       return true;
     });
 
     // Aplicar ordenação
     filtered.sort((a, b) => {
       let comparison = 0;
-
       switch (filters.sortBy) {
         case 'name':
-          comparison = (a.budget_data.device_model || '').localeCompare(
-            b.budget_data.device_model || ''
-          );
+          comparison = (a.budget_data.device_model || '').localeCompare(b.budget_data.device_model || '');
           break;
         case 'value':
           comparison = (a.budget_data.total_price || 0) - (b.budget_data.total_price || 0);
@@ -399,16 +373,15 @@ export const TrashManagement = () => {
           comparison = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
           break;
       }
-
       return filters.sortOrder === 'asc' ? comparison : -comparison;
     });
-
-    return { filteredBudgets: filtered, deviceTypes: types };
+    return {
+      filteredBudgets: filtered,
+      deviceTypes: types
+    };
   }, [deletedBudgets, filters]);
-
   if (isLoading) {
-    return (
-      <Card>
+    return <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Trash2 className="h-5 w-5" />
@@ -418,12 +391,9 @@ export const TrashManagement = () => {
             Carregando orçamentos excluídos...
           </CardDescription>
         </CardHeader>
-      </Card>
-    );
+      </Card>;
   }
-
-  return (
-    <Card>
+  return <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trash2 className="h-5 w-5" />
@@ -435,41 +405,20 @@ export const TrashManagement = () => {
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Filtros */}
-        {deletedBudgets && deletedBudgets.length > 0 && (
-          <TrashFiltersComponent
-            filters={filters}
-            onFiltersChange={setFilters}
-            totalCount={deletedBudgets.length}
-            filteredCount={filteredBudgets.length}
-            deviceTypes={deviceTypes}
-          />
-        )}
+        {deletedBudgets && deletedBudgets.length > 0 && <TrashFiltersComponent filters={filters} onFiltersChange={setFilters} totalCount={deletedBudgets.length} filteredCount={filteredBudgets.length} deviceTypes={deviceTypes} />}
 
         {/* Ações principais */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            {deletedBudgets && deletedBudgets.length > 0 && (
-              <>
+            {deletedBudgets && deletedBudgets.length > 0 && <>
                 <AlertCircle className="h-4 w-4" />
-                <span>
-                  {filteredBudgets.length === deletedBudgets.length
-                    ? `${deletedBudgets.length} orçamento(s) na lixeira`
-                    : `${filteredBudgets.length} de ${deletedBudgets.length} orçamento(s)`
-                  }
-                </span>
-              </>
-            )}
+                
+              </>}
           </div>
           <div className="flex items-center gap-2">
-            {deletedBudgets && deletedBudgets.length > 0 && (
-              <AlertDialog>
+            {deletedBudgets && deletedBudgets.length > 0 && <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    disabled={deleteAllMutation.isPending}
-                    className="flex items-center gap-2"
-                  >
+                  <Button variant="destructive" size="sm" disabled={deleteAllMutation.isPending} className="flex items-center gap-2">
                     <Trash2 className="h-4 w-4" />
                     Esvaziar Lixeira
                   </Button>
@@ -490,57 +439,30 @@ export const TrashManagement = () => {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => deleteAllMutation.mutate()}
-                      className="bg-destructive hover:bg-destructive/90"
-                      disabled={deleteAllMutation.isPending}
-                    >
+                    <AlertDialogAction onClick={() => deleteAllMutation.mutate()} className="bg-destructive hover:bg-destructive/90" disabled={deleteAllMutation.isPending}>
                       {deleteAllMutation.isPending ? 'Esvaziando...' : 'Confirmar Exclusão de Todos'}
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
-              </AlertDialog>
-            )}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              className="flex items-center gap-2"
-            >
+              </AlertDialog>}
+            <Button variant="outline" size="sm" onClick={handleRefresh} disabled={isRefreshing} className="flex items-center gap-2">
               <RotateCcw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
               Atualizar
             </Button>
           </div>
         </div>
 
-        {!deletedBudgets || deletedBudgets.length === 0 ? (
-          <div className="text-center py-12 text-muted-foreground">
+        {!deletedBudgets || deletedBudgets.length === 0 ? <div className="text-center py-12 text-muted-foreground">
             <Trash2 className="h-16 w-16 mx-auto mb-4 opacity-50" />
             <h3 className="text-lg font-medium mb-2">Lixeira vazia</h3>
             <p>Nenhum orçamento foi excluído recentemente</p>
-          </div>
-        ) : filteredBudgets.length === 0 ? (
-          <div className="text-center py-12 text-muted-foreground">
+          </div> : filteredBudgets.length === 0 ? <div className="text-center py-12 text-muted-foreground">
             <Trash2 className="h-16 w-16 mx-auto mb-4 opacity-50" />
             <h3 className="text-lg font-medium mb-2">Nenhum resultado encontrado</h3>
             <p>Ajuste os filtros para ver mais resultados</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {filteredBudgets.map((item) => (
-              <TrashCard
-                key={item.id}
-                item={item}
-                onRestore={handleRestoreBudget}
-                onPermanentDelete={(budgetId) => permanentDeleteMutation.mutate(budgetId)}
-                isRestoring={isRestoring}
-                isPermanentDeleting={permanentDeleteMutation.isPending}
-              />
-            ))}
-          </div>
-        )}
+          </div> : <div className="space-y-4">
+            {filteredBudgets.map(item => <TrashCard key={item.id} item={item} onRestore={handleRestoreBudget} onPermanentDelete={budgetId => permanentDeleteMutation.mutate(budgetId)} isRestoring={isRestoring} isPermanentDeleting={permanentDeleteMutation.isPending} />)}
+          </div>}
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
