@@ -65,7 +65,7 @@ export const TrashManagement = () => {
     refetch();
   };
 
-  // Excluir permanentemente - versão corrigida com melhor sincronização
+  // Excluir permanentemente - versão corrigida com validação e tratamento de erro melhorado
   const permanentDeleteMutation = useMutation({
     mutationFn: async (budgetId: string) => {
       const currentUser = await supabase.auth.getUser();
@@ -73,6 +73,20 @@ export const TrashManagement = () => {
       
       if (!userId) {
         throw new Error('Usuário não autenticado');
+      }
+
+      console.log(`Iniciando exclusão permanente do orçamento ${budgetId}`);
+
+      // Verificar se o orçamento existe na lixeira
+      const { data: auditCheck } = await supabase
+        .from('budget_deletion_audit')
+        .select('id, can_restore')
+        .eq('budget_id', budgetId)
+        .eq('deleted_by', userId)
+        .single();
+
+      if (!auditCheck || !auditCheck.can_restore) {
+        throw new Error('Orçamento não encontrado na lixeira ou já foi excluído permanentemente');
       }
 
       // Primeiro, excluir as partes do orçamento
@@ -83,8 +97,10 @@ export const TrashManagement = () => {
       
       if (partsError) {
         console.error('Erro ao excluir partes:', partsError);
-        throw new Error('Erro ao excluir partes do orçamento');
+        throw new Error(`Erro ao excluir partes do orçamento: ${partsError.message}`);
       }
+
+      console.log(`Partes do orçamento ${budgetId} excluídas com sucesso`);
 
       // Depois, excluir o orçamento principal
       const { error: budgetError } = await supabase
@@ -95,28 +111,46 @@ export const TrashManagement = () => {
       
       if (budgetError) {
         console.error('Erro ao excluir orçamento:', budgetError);
-        throw new Error('Erro ao excluir orçamento da base de dados');
+        throw new Error(`Erro ao excluir orçamento da base de dados: ${budgetError.message}`);
       }
 
-      // Por fim, marcar como não restaurável na auditoria
-      const { error: auditError } = await supabase
+      console.log(`Orçamento ${budgetId} excluído com sucesso`);
+
+      // Por fim, marcar como não restaurável na auditoria - CRÍTICO para remover da lixeira
+      const { error: auditError, data: auditData } = await supabase
         .from('budget_deletion_audit')
         .update({ can_restore: false })
         .eq('budget_id', budgetId)
-        .eq('deleted_by', userId);
+        .eq('deleted_by', userId)
+        .select();
       
       if (auditError) {
-        console.error('Erro ao atualizar auditoria:', auditError);
+        console.error('ERRO CRÍTICO ao atualizar auditoria:', auditError);
+        throw new Error(`Falha crítica ao atualizar registro de auditoria: ${auditError.message}`);
       }
+
+      if (!auditData || auditData.length === 0) {
+        console.error('ERRO: Nenhum registro de auditoria foi atualizado');
+        throw new Error('Falha ao atualizar o registro de auditoria - item pode ainda aparecer na lixeira');
+      }
+
+      console.log(`Registro de auditoria atualizado com sucesso para orçamento ${budgetId}`, auditData);
 
       return { budgetId, success: true };
     },
-    onSuccess: () => {
-      // Invalidar todas as queries e forçar re-fetch
-      invalidateAllQueries();
+    onSuccess: async (data) => {
+      console.log(`Exclusão permanente concluída para ${data.budgetId}`);
+      
+      // Invalidação robusta e aguardar refetch
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['deleted-budgets'] }),
+        queryClient.invalidateQueries({ queryKey: ['budgets'] }),
+        queryClient.refetchQueries({ queryKey: ['deleted-budgets'] })
+      ]);
+      
       showSuccess({
         title: "Orçamento excluído permanentemente",
-        description: "O orçamento foi completamente removido da base de dados.",
+        description: "O orçamento foi completamente removido da base de dados e da lixeira.",
       });
     },
     onError: (error: Error) => {
@@ -128,7 +162,7 @@ export const TrashManagement = () => {
     },
   });
 
-  // Excluir todos permanentemente - versão corrigida com melhor sincronização
+  // Excluir todos permanentemente - versão corrigida com validação e tratamento robusto
   const deleteAllMutation = useMutation({
     mutationFn: async () => {
       const currentUser = await supabase.auth.getUser();
@@ -142,13 +176,17 @@ export const TrashManagement = () => {
         throw new Error('Nenhum orçamento na lixeira para excluir');
       }
 
+      console.log(`Iniciando exclusão em massa de ${deletedBudgets.length} orçamentos`);
+
       let successCount = 0;
       let errorCount = 0;
+      const auditErrors: string[] = [];
 
       // Processar cada orçamento excluído
       for (const item of deletedBudgets) {
         try {
           const budgetId = item.budget_data.id;
+          console.log(`Processando exclusão do orçamento ${budgetId}`);
 
           // Primeiro, excluir as partes do orçamento
           const { error: partsError } = await supabase
@@ -175,17 +213,29 @@ export const TrashManagement = () => {
             continue;
           }
 
-          // Por fim, marcar como não restaurável na auditoria
-          const { error: auditError } = await supabase
+          // Por fim, marcar como não restaurável na auditoria - CRÍTICO
+          const { error: auditError, data: auditData } = await supabase
             .from('budget_deletion_audit')
             .update({ can_restore: false })
             .eq('budget_id', budgetId)
-            .eq('deleted_by', userId);
+            .eq('deleted_by', userId)
+            .select();
           
           if (auditError) {
-            console.error(`Erro ao atualizar auditoria do orçamento ${budgetId}:`, auditError);
+            console.error(`ERRO CRÍTICO ao atualizar auditoria do orçamento ${budgetId}:`, auditError);
+            auditErrors.push(`${budgetId}: ${auditError.message}`);
+            errorCount++;
+            continue;
           }
 
+          if (!auditData || auditData.length === 0) {
+            console.error(`ERRO: Nenhum registro de auditoria foi atualizado para ${budgetId}`);
+            auditErrors.push(`${budgetId}: Nenhum registro atualizado`);
+            errorCount++;
+            continue;
+          }
+
+          console.log(`Orçamento ${budgetId} excluído permanentemente com sucesso`);
           successCount++;
         } catch (error) {
           console.error(`Falha ao processar orçamento:`, error);
@@ -193,21 +243,36 @@ export const TrashManagement = () => {
         }
       }
 
-      return { successCount, errorCount, totalCount: deletedBudgets.length };
+      console.log(`Exclusão em massa concluída: ${successCount} sucessos, ${errorCount} erros`);
+      
+      if (auditErrors.length > 0) {
+        console.error('Erros de auditoria:', auditErrors);
+      }
+
+      return { successCount, errorCount, totalCount: deletedBudgets.length, auditErrors };
     },
-    onSuccess: ({ successCount, errorCount, totalCount }) => {
-      // Invalidar todas as queries e forçar re-fetch
-      invalidateAllQueries();
+    onSuccess: async ({ successCount, errorCount, totalCount, auditErrors }) => {
+      console.log(`Exclusão em massa finalizada: ${successCount}/${totalCount} sucessos`);
+      
+      // Invalidação robusta
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['deleted-budgets'] }),
+        queryClient.invalidateQueries({ queryKey: ['budgets'] }),
+        queryClient.refetchQueries({ queryKey: ['deleted-budgets'] })
+      ]);
       
       if (errorCount === 0) {
         showSuccess({
           title: "Lixeira esvaziada",
-          description: `${successCount} orçamento(s) foram excluídos permanentemente da base de dados.`,
+          description: `${successCount} orçamento(s) foram excluídos permanentemente da base de dados e removidos da lixeira.`,
         });
       } else if (successCount > 0) {
+        const message = auditErrors.length > 0 
+          ? `${successCount} de ${totalCount} orçamentos foram excluídos. ${errorCount} falharam (problemas de auditoria detectados).`
+          : `${successCount} de ${totalCount} orçamentos foram excluídos. ${errorCount} falharam.`;
         showSuccess({
           title: "Limpeza parcial da lixeira",
-          description: `${successCount} de ${totalCount} orçamentos foram excluídos. ${errorCount} falharam.`,
+          description: message,
         });
       } else {
         showError({
