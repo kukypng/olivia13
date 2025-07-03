@@ -86,8 +86,6 @@ export const TrashCard: React.FC<TrashCardProps> = ({
             </Badge>
           </div>
 
-          {/* Motivo da exclusão */}
-          {item.deletion_reason}
 
           <Separator />
 
