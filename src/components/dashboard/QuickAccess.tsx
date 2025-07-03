@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, List, Settings, Shield, type LucideIcon } from 'lucide-react';
+import { PlusCircle, List, Settings, Shield, Database, type LucideIcon } from 'lucide-react';
 
 interface QuickAccessProps {
   onTabChange: (tab: string) => void;
@@ -20,6 +20,7 @@ interface QuickAccessButton {
 const quickAccessButtons: QuickAccessButton[] = [
   { label: 'Novo Orçamento', icon: PlusCircle, tab: 'new-budget', permission: 'create_budgets', iconColorClass: 'text-green-500' },
   { label: 'Ver Orçamentos', icon: List, tab: 'budgets', permission: 'view_own_budgets', iconColorClass: 'text-blue-500' },
+  { label: 'Gestão de Dados', icon: Database, tab: 'data-management', permission: null, iconColorClass: 'text-purple-500' },
   { label: 'Configurações', icon: Settings, tab: 'settings', permission: null, iconColorClass: 'text-slate-500' },
   { label: 'Painel Admin', icon: Shield, tab: 'admin', permission: 'manage_users', iconColorClass: 'text-red-500' },
 ];
