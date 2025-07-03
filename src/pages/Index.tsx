@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Link, Navigate } from 'react-router-dom';
@@ -6,10 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileText, Calculator, Smartphone, Shield, Star, Activity } from 'lucide-react';
 import { DashboardSkeleton } from '@/components/ui/loading-states';
-
 const Index = () => {
-  const { user, loading } = useAuth();
-  
+  const {
+    user,
+    loading
+  } = useAuth();
   if (loading) {
     return <DashboardSkeleton />;
   }
@@ -20,14 +20,13 @@ const Index = () => {
   }
 
   // Landing page para usuários não logados
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+  return <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       {/* Header */}
       <header className="glass border-b shadow-soft sticky top-0 z-50 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <Link to="/" className="flex items-center space-x-2 interactive-scale">
-              <img src="/icone.png" alt="Oliver Logo" className="h-8 w-8" />
+              <img alt="Oliver Logo" className="h-8 w-8" src="/lovable-uploads/8677b775-7220-4b80-89d0-0a806ea274ef.png" />
               <h1 className="text-2xl font-bold text-foreground">Oliver</h1>
             </Link>
             <div className="flex items-center space-x-2">
@@ -60,11 +59,7 @@ const Index = () => {
               <Button asChild className="btn-apple text-lg px-8 py-4">
                 <Link to="/plans">Começar Agora</Link>
               </Button>
-              <Button 
-                variant="outline"
-                className="btn-apple-secondary text-lg px-8 py-4" 
-                onClick={() => window.open('https://wa.me/556496028022', '_blank')}
-              >
+              <Button variant="outline" className="btn-apple-secondary text-lg px-8 py-4" onClick={() => window.open('https://wa.me/556496028022', '_blank')}>
                 Entre em contato
               </Button>
             </div>
@@ -110,7 +105,9 @@ const Index = () => {
             description: "Cálculo automático de totais, impostos e condições de pagamento personalizadas."
           }].map((feature, index) => {
             const Icon = feature.icon;
-            return <Card key={index} className="glass-card group hover:shadow-strong transition-all duration-300 animate-scale-in" style={{animationDelay: `${index * 100}ms`}}>
+            return <Card key={index} className="glass-card group hover:shadow-strong transition-all duration-300 animate-scale-in" style={{
+              animationDelay: `${index * 100}ms`
+            }}>
                     <CardHeader>
                       <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300">
                         <Icon className="h-7 w-7 text-primary group-hover:scale-110 transition-transform duration-300" />
@@ -150,7 +147,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-6">
-              <img src="/icone.png" alt="Oliver Logo" className="h-8 w-8" />
+              <img alt="Oliver Logo" className="h-8 w-8" src="/lovable-uploads/64447f55-5796-432c-9b80-c8d07bc9fe1c.png" />
               <span className="text-2xl font-bold text-foreground">Oliver</span>
             </div>
             <p className="text-muted-foreground mb-4">© 2025 Oliver. Sistema profissional para gestão de orçamentos.</p>
@@ -160,8 +157,6 @@ const Index = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
