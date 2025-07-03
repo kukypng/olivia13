@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Search, SortAsc, SortDesc, Filter, X } from 'lucide-react';
-
 export interface TrashFilters {
   search: string;
   sortBy: 'date' | 'name' | 'value' | 'expiration';
@@ -13,7 +12,6 @@ export interface TrashFilters {
   deviceType: string;
   expirationFilter: 'all' | 'expiring' | 'recent';
 }
-
 interface TrashFiltersProps {
   filters: TrashFilters;
   onFiltersChange: (filters: TrashFilters) => void;
@@ -21,7 +19,6 @@ interface TrashFiltersProps {
   filteredCount: number;
   deviceTypes: string[];
 }
-
 export const TrashFiltersComponent: React.FC<TrashFiltersProps> = ({
   filters,
   onFiltersChange,
@@ -35,14 +32,12 @@ export const TrashFiltersComponent: React.FC<TrashFiltersProps> = ({
       [key]: value
     });
   };
-
   const toggleSortOrder = () => {
     onFiltersChange({
       ...filters,
       sortOrder: filters.sortOrder === 'asc' ? 'desc' : 'asc'
     });
   };
-
   const clearFilters = () => {
     onFiltersChange({
       search: '',
@@ -52,32 +47,21 @@ export const TrashFiltersComponent: React.FC<TrashFiltersProps> = ({
       expirationFilter: 'all'
     });
   };
-
-  const hasActiveFilters = filters.search || (filters.deviceType && filters.deviceType !== 'all') || filters.expirationFilter !== 'all';
-
-  return (
-    <Card>
+  const hasActiveFilters = filters.search || filters.deviceType && filters.deviceType !== 'all' || filters.expirationFilter !== 'all';
+  return <Card>
       <CardContent className="p-4">
         <div className="space-y-4">
           {/* Barra de busca */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Buscar por dispositivo, cliente ou motivo..."
-              value={filters.search}
-              onChange={(e) => updateFilter('search', e.target.value)}
-              className="pl-10"
-            />
+            <Input placeholder="Buscar por dispositivo, cliente ou motivo..." value={filters.search} onChange={e => updateFilter('search', e.target.value)} className="pl-10" />
           </div>
 
           {/* Filtros e ordenação */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             {/* Ordenação */}
             <div className="flex items-center gap-2">
-              <Select
-                value={filters.sortBy}
-                onValueChange={(value) => updateFilter('sortBy', value)}
-              >
+              <Select value={filters.sortBy} onValueChange={value => updateFilter('sortBy', value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Ordenar por" />
                 </SelectTrigger>
@@ -89,39 +73,24 @@ export const TrashFiltersComponent: React.FC<TrashFiltersProps> = ({
                 </SelectContent>
               </Select>
               
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={toggleSortOrder}
-                className="px-3"
-              >
-                {filters.sortOrder === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />}
-              </Button>
+              
             </div>
 
             {/* Filtro por tipo de dispositivo */}
-            <Select
-              value={filters.deviceType}
-              onValueChange={(value) => updateFilter('deviceType', value)}
-            >
+            <Select value={filters.deviceType} onValueChange={value => updateFilter('deviceType', value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Tipo de dispositivo" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todos os tipos</SelectItem>
-                {deviceTypes.map((type) => (
-                  <SelectItem key={type} value={type}>
+                {deviceTypes.map(type => <SelectItem key={type} value={type}>
                     {type}
-                  </SelectItem>
-                ))}
+                  </SelectItem>)}
               </SelectContent>
             </Select>
 
             {/* Filtro por expiração */}
-            <Select
-              value={filters.expirationFilter}
-              onValueChange={(value) => updateFilter('expirationFilter', value)}
-            >
+            <Select value={filters.expirationFilter} onValueChange={value => updateFilter('expirationFilter', value)}>
               <SelectTrigger>
                 <SelectValue placeholder="Filtrar por expiração" />
               </SelectTrigger>
@@ -133,54 +102,35 @@ export const TrashFiltersComponent: React.FC<TrashFiltersProps> = ({
             </Select>
 
             {/* Limpar filtros */}
-            {hasActiveFilters && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={clearFilters}
-                className="flex items-center gap-2"
-              >
+            {hasActiveFilters && <Button variant="outline" size="sm" onClick={clearFilters} className="flex items-center gap-2">
                 <X className="h-4 w-4" />
                 Limpar
-              </Button>
-            )}
+              </Button>}
           </div>
 
           {/* Contador e filtros ativos */}
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center gap-4">
               <span>
-                {filteredCount === totalCount 
-                  ? `${totalCount} item(s) na lixeira`
-                  : `${filteredCount} de ${totalCount} item(s)`
-                }
+                {filteredCount === totalCount ? `${totalCount} item(s) na lixeira` : `${filteredCount} de ${totalCount} item(s)`}
               </span>
               
-              {hasActiveFilters && (
-                <div className="flex items-center gap-2">
+              {hasActiveFilters && <div className="flex items-center gap-2">
                   <Filter className="h-4 w-4" />
                   <span>Filtros ativos:</span>
-                  {filters.search && (
-                    <Badge variant="secondary" className="text-xs">
+                  {filters.search && <Badge variant="secondary" className="text-xs">
                       Busca: "{filters.search}"
-                    </Badge>
-                  )}
-                  {filters.deviceType && (
-                    <Badge variant="secondary" className="text-xs">
+                    </Badge>}
+                  {filters.deviceType && <Badge variant="secondary" className="text-xs">
                       Tipo: {filters.deviceType}
-                    </Badge>
-                  )}
-                  {filters.expirationFilter !== 'all' && (
-                    <Badge variant="secondary" className="text-xs">
+                    </Badge>}
+                  {filters.expirationFilter !== 'all' && <Badge variant="secondary" className="text-xs">
                       {filters.expirationFilter === 'expiring' ? 'Expirando' : 'Recentes'}
-                    </Badge>
-                  )}
-                </div>
-              )}
+                    </Badge>}
+                </div>}
             </div>
           </div>
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>;
 };
