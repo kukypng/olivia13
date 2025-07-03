@@ -45,7 +45,7 @@ export const TabletHeaderNav = ({
   return <div className="flex items-center justify-between h-16 px-6 bg-card/95 backdrop-blur-xl border-b border-border">
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-3">
-          <img alt="Oliver Logo" className="h-8 w-8" src="/lovable-uploads/4d5f6d73-4975-4812-840d-589ed282b592.png" />
+          <img alt="Oliver Logo" className="h-8 w-8" src="/lovable-uploads/b57c2b42-19bd-4dbf-847c-b9c50a82d17c.png" />
           <h1 className="text-xl font-bold text-foreground">Oliver</h1>
         </div>
         
