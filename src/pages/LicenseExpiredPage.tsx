@@ -10,7 +10,7 @@ export const LicenseExpiredPage = () => {
 
   const pageContent = {
     icon: isNewUser
-      ? <img src="/icone.png" alt="Ativar Conta" className="w-12 h-12" />
+      ? <img src="/lovable-uploads/logoo.png" alt="Ativar Conta" className="w-12 h-12" />
       : <img src="/icones/coracao.png" alt="Licença Expirada" className="w-12 h-12" />,
     title: isNewUser ? 'Ative sua Conta' : 'Licença Expirada',
     titleColor: isNewUser ? 'text-primary' : 'text-[#ff0000]',

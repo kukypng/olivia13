@@ -30,7 +30,7 @@ export const PurchaseSuccessPage = () => {
         {/* Header */}
         <div className="text-center mb-16 animate-fade-in">
           <div className="flex items-center justify-center space-x-2 mb-6">
-            <img src="/icone.png" alt="Oliver Logo" className="h-12 w-12" />
+            <img src="/lovable-uploads/logoo.png" alt="Oliver Logo" className="h-12 w-12" />
             <h1 className="text-4xl font-bold text-foreground">Oliver</h1>
           </div>
         </div>

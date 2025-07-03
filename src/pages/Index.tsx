@@ -26,7 +26,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <Link to="/" className="flex items-center space-x-2 interactive-scale">
-              <img alt="Oliver Logo" className="h-8 w-8" src="/lovable-uploads/8677b775-7220-4b80-89d0-0a806ea274ef.png" />
+              <img alt="Oliver Logo" className="h-8 w-8" src="/lovable-uploads/logoo.png" />
               <h1 className="text-2xl font-bold text-foreground">Oliver</h1>
             </Link>
             <div className="flex items-center space-x-2">
@@ -147,7 +147,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-6">
-              <img alt="Oliver Logo" className="h-8 w-8" src="/lovable-uploads/64447f55-5796-432c-9b80-c8d07bc9fe1c.png" />
+              <img alt="Oliver Logo" className="h-8 w-8" src="/lovable-uploads/logoo.png" />
               <span className="text-2xl font-bold text-foreground">Oliver</span>
             </div>
             <p className="text-muted-foreground mb-4">© 2025 Oliver. Sistema profissional para gestão de orçamentos.</p>

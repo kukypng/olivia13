@@ -104,7 +104,7 @@ export const ResetPasswordPage = () => {
         <div className="w-full max-w-md relative z-10">
             <div className="text-center mb-8">
                 <Link to="/">
-                    <img src="/icone.png" alt="Oliver Logo" className="w-24 h-24 mx-auto mb-4" />
+                    <img src="/lovable-uploads/logoo.png" alt="Oliver Logo" className="w-24 h-24 mx-auto mb-4" />
                 </Link>
                 <h1 className="text-4xl font-bold text-foreground tracking-tight">
                     {getTitle()}

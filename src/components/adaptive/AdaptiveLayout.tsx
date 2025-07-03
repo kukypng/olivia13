@@ -38,7 +38,7 @@ export const AdaptiveLayout = ({ children, activeTab, onTabChange }: AdaptiveLay
               navHeight
             )}>
               <div className="flex items-center gap-3">
-                <img src="/lovable-uploads/b57c2b42-19bd-4dbf-847c-b9c50a82d17c.png" alt="Oliver Logo" className="h-9 w-9" />
+                <img src="/lovable-uploads/logoo.png" alt="Oliver Logo" className="h-9 w-9" />
                 <h1 className="text-2xl font-bold text-foreground">Oliver</h1>
               </div>
             </header>

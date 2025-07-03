@@ -202,7 +202,7 @@ export const PlansPage = () => {
         {/* Hero Section */}
         <section className="text-center animate-fade-in-up">
           <div className="flex items-center justify-center space-x-3 mb-8">
-            <img alt="Oliver Logo" className="h-16 w-16 interactive-scale" src="/lovable-uploads/ad2badfc-48f8-49cc-946e-df1239cee95a.png" />
+            <img alt="Oliver Logo" className="h-16 w-16 interactive-scale" src="/lovable-uploads/logoo.png" />
             <h1 className="text-5xl font-bold bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
               Oliver
             </h1>

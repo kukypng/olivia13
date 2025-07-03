@@ -161,7 +161,7 @@ export const AuthPage = () => {
       <div className="w-full max-w-md relative z-10">
         {/* Logo/Brand */}
         <div className="text-center mb-6 sm:mb-8 animate-fade-in">
-          <img alt="Oliver Logo" className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 animate-bounce-subtle invert dark:invert-0 dark:mix-blend-lighten" src="/lovable-uploads/a9a886d6-bb53-49bd-b668-72bab971bc72.png" />
+          <img alt="Oliver Logo" className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 animate-bounce-subtle invert dark:invert-0 dark:mix-blend-lighten" src="/lovable-uploads/logoo.png" />
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2 sm:mb-3 tracking-tight">Oliver</h1>
           <p className="text-base sm:text-lg text-muted-foreground">Sistema de Gestão de Orçamentos</p>
         </div>
