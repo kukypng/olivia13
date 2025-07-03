@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,18 +21,34 @@ interface DeleteBudgetDialogProps {
 
 export const DeleteBudgetDialog = ({ budget, open, onOpenChange }: DeleteBudgetDialogProps) => {
   const { handleSingleDeletion, isDeleting } = useBudgetDeletion();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleDelete = async () => {
     if (!budget || !budget.id) {
       return;
     }
 
-    await handleSingleDeletion({
-      budgetId: budget.id,
-      deletionReason: `Exclusão individual via interface - Cliente: ${budget.client_name || 'N/A'}`
-    });
+    setIsProcessing(true);
+    console.log('DeleteBudgetDialog: Starting deletion for budget:', budget.id);
     
-    onOpenChange(false);
+    try {
+      await handleSingleDeletion({
+        budgetId: budget.id,
+        deletionReason: `Exclusão individual via interface - Cliente: ${budget.client_name || 'N/A'}`
+      });
+      
+      console.log('DeleteBudgetDialog: Deletion completed successfully');
+      
+      // Aguardar um pequeno delay para garantir que a exclusão foi processada
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Fechar dialog apenas após conclusão da exclusão
+      onOpenChange(false);
+    } catch (error) {
+      console.error('DeleteBudgetDialog: Error during deletion:', error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   if (!budget) {
@@ -64,15 +80,15 @@ export const DeleteBudgetDialog = ({ budget, open, onOpenChange }: DeleteBudgetD
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isDeleting}>
+          <AlertDialogCancel disabled={isDeleting || isProcessing}>
             Cancelar
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleDelete}
-            disabled={isDeleting}
+            disabled={isDeleting || isProcessing}
             className="bg-destructive hover:bg-destructive/90"
           >
-            {isDeleting ? (
+            {isDeleting || isProcessing ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
                 Movendo...

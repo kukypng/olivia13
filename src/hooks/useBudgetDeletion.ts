@@ -24,6 +24,34 @@ export const useBudgetDeletion = () => {
   const queryClient = useQueryClient();
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Função para invalidar cache de forma agressiva
+  const invalidateAllBudgetQueries = useCallback(async () => {
+    console.log('Invalidating all budget queries...');
+    await queryClient.invalidateQueries({ queryKey: ['budgets'] });
+    await queryClient.invalidateQueries({ queryKey: ['deleted-budgets'] });
+    // Forçar refetch imediato
+    await queryClient.refetchQueries({ queryKey: ['budgets'] });
+    console.log('Budget queries invalidated and refetched');
+  }, [queryClient]);
+
+  // Update otimista para remover item do cache
+  const optimisticRemove = useCallback((budgetId: string) => {
+    console.log('Applying optimistic removal for budget:', budgetId);
+    queryClient.setQueryData(['budgets'], (oldData: any) => {
+      if (!oldData) return oldData;
+      return oldData.filter((budget: any) => budget.id !== budgetId);
+    });
+  }, [queryClient]);
+
+  // Restaurar item no cache se exclusão falhar
+  const restoreOptimisticUpdate = useCallback((budgetId: string, budgetData: any) => {
+    console.log('Restoring optimistic update for budget:', budgetId);
+    queryClient.setQueryData(['budgets'], (oldData: any) => {
+      if (!oldData) return [budgetData];
+      return [...oldData, budgetData];
+    });
+  }, [queryClient]);
+
   // Single budget soft deletion
   const deleteSingleBudget = useMutation({
     mutationFn: async ({ budgetId, deletionReason }: { budgetId: string; deletionReason?: string }) => {
@@ -46,15 +74,26 @@ export const useBudgetDeletion = () => {
       
       return response;
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['budgets'] });
+    onMutate: async ({ budgetId }) => {
+      // Aplicar update otimista
+      const previousData = queryClient.getQueryData(['budgets']);
+      optimisticRemove(budgetId);
+      return { previousData, budgetId };
+    },
+    onSuccess: async () => {
+      console.log('Budget deletion successful, invalidating cache...');
+      await invalidateAllBudgetQueries();
       showSuccess({
         title: "Orçamento excluído",
         description: "O orçamento foi movido para a lixeira com sucesso.",
       });
     },
-    onError: (error: Error) => {
+    onError: (error: Error, variables, context) => {
       console.error('Erro na exclusão:', error);
+      // Restaurar dados se falhar
+      if (context?.previousData) {
+        queryClient.setQueryData(['budgets'], context.previousData);
+      }
       showError({
         title: "Erro ao excluir",
         description: error.message || "Ocorreu um erro ao excluir o orçamento.",
@@ -83,15 +122,26 @@ export const useBudgetDeletion = () => {
       
       return response;
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['budgets'] });
+    onMutate: async () => {
+      // Limpar cache otimisticamente
+      const previousData = queryClient.getQueryData(['budgets']);
+      queryClient.setQueryData(['budgets'], []);
+      return { previousData };
+    },
+    onSuccess: async (data) => {
+      console.log('Mass deletion successful, invalidating cache...');
+      await invalidateAllBudgetQueries();
       showSuccess({
         title: "Exclusão concluída",
         description: `${data.deleted_count} orçamento(s) foram movidos para a lixeira.`,
       });
     },
-    onError: (error: Error) => {
+    onError: (error: Error, variables, context) => {
       console.error('Erro na exclusão em massa:', error);
+      // Restaurar dados se falhar
+      if (context?.previousData) {
+        queryClient.setQueryData(['budgets'], context.previousData);
+      }
       showError({
         title: "Erro na exclusão",
         description: error.message || "Ocorreu um erro ao excluir os orçamentos.",
@@ -137,8 +187,18 @@ export const useBudgetDeletion = () => {
       
       return { results, successCount, errorCount, totalCount: budgetIds.length };
     },
-    onSuccess: ({ successCount, errorCount, totalCount }) => {
-      queryClient.invalidateQueries({ queryKey: ['budgets'] });
+    onMutate: async ({ budgetIds }) => {
+      // Aplicar update otimista removendo os itens selecionados
+      const previousData = queryClient.getQueryData(['budgets']);
+      queryClient.setQueryData(['budgets'], (oldData: any) => {
+        if (!oldData) return oldData;
+        return oldData.filter((budget: any) => !budgetIds.includes(budget.id));
+      });
+      return { previousData, budgetIds };
+    },
+    onSuccess: async ({ successCount, errorCount, totalCount }) => {
+      console.log('Batch deletion completed, invalidating cache...');
+      await invalidateAllBudgetQueries();
       
       if (errorCount === 0) {
         showSuccess({
@@ -157,8 +217,12 @@ export const useBudgetDeletion = () => {
         });
       }
     },
-    onError: (error: Error) => {
+    onError: (error: Error, variables, context) => {
       console.error('Erro na exclusão em lote:', error);
+      // Restaurar dados se falhar
+      if (context?.previousData) {
+        queryClient.setQueryData(['budgets'], context.previousData);
+      }
       showError({
         title: "Erro na exclusão",
         description: error.message || "Ocorreu um erro ao excluir os orçamentos selecionados.",
@@ -187,9 +251,10 @@ export const useBudgetDeletion = () => {
       
       return response;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['budgets'] });
-      queryClient.invalidateQueries({ queryKey: ['deleted-budgets'] });
+    onSuccess: async () => {
+      console.log('Budget restore successful, invalidating cache...');
+      await invalidateAllBudgetQueries();
+      await queryClient.invalidateQueries({ queryKey: ['deleted-budgets'] });
       showSuccess({
         title: "Orçamento restaurado",
         description: "O orçamento foi restaurado com sucesso.",
@@ -215,10 +280,12 @@ export const useBudgetDeletion = () => {
 
     setIsDeleting(true);
     try {
+      console.log('Starting single deletion for budget:', options.budgetId);
       await deleteSingleBudget.mutateAsync({
         budgetId: options.budgetId,
         deletionReason: options.deletionReason
       });
+      console.log('Single deletion completed successfully');
     } finally {
       setIsDeleting(false);
     }
@@ -227,9 +294,11 @@ export const useBudgetDeletion = () => {
   const handleMassDeletion = useCallback(async (options: DeletionOptions = {}) => {
     setIsDeleting(true);
     try {
+      console.log('Starting mass deletion');
       await deleteAllBudgets.mutateAsync({
         deletionReason: options.deletionReason
       });
+      console.log('Mass deletion completed successfully');
     } finally {
       setIsDeleting(false);
     }
@@ -246,17 +315,21 @@ export const useBudgetDeletion = () => {
 
     setIsDeleting(true);
     try {
+      console.log('Starting batch deletion for budgets:', options.budgetIds);
       await deleteSelectedBudgets.mutateAsync({
         budgetIds: options.budgetIds,
         deletionReason: options.deletionReason
       });
+      console.log('Batch deletion completed successfully');
     } finally {
       setIsDeleting(false);
     }
   }, [deleteSelectedBudgets, showError]);
 
   const handleRestore = useCallback(async (budgetId: string) => {
+    console.log('Starting restore for budget:', budgetId);
     await restoreBudget.mutateAsync(budgetId);
+    console.log('Restore completed successfully');
   }, [restoreBudget]);
 
   return {

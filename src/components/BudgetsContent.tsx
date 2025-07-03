@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -22,7 +23,7 @@ import { BudgetsLoadingState } from './budgets/components/BudgetsLoadingState';
 export const BudgetsContent = () => {
   const { user, profile } = useAuth();
 
-  // Data fetching - agora filtrando orçamentos excluídos
+  // Data fetching com configurações otimizadas para exclusões
   const { data: budgets = [], isLoading, error, refetch } = useQuery({
     queryKey: ['budgets', user?.id],
     queryFn: async () => {
@@ -41,10 +42,16 @@ export const BudgetsContent = () => {
         throw error;
       }
       
-      console.log('Fetched budgets:', data?.length || 0);
-      return data || [];
+      console.log('Fetched budgets:', data?.length || 0, 'budgets');
+      // Adicionar filtro adicional no frontend como fallback
+      const activeBudgets = (data || []).filter(budget => !budget.deleted_at);
+      console.log('Active budgets after filtering:', activeBudgets.length);
+      return activeBudgets;
     },
     enabled: !!user,
+    staleTime: 0, // Reduzir staleTime para exclusões críticas
+    refetchOnWindowFocus: true, // Revalidar ao focar na janela
+    refetchInterval: 10000, // Refetch a cada 10 segundos para casos críticos
     retry: 3,
     retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000)
   });
@@ -85,10 +92,11 @@ export const BudgetsContent = () => {
 
   const animations = useBudgetAnimations(filteredBudgets);
 
-  // Handle delete completion
-  const handleDeleteComplete = () => {
+  // Handle delete completion com refetch forçado
+  const handleDeleteComplete = async () => {
+    console.log('Delete completed, clearing selection and refetching...');
     clearSelection();
-    refetch();
+    await refetch(); // Forçar refetch após exclusão
   };
 
   // Early returns for different states
