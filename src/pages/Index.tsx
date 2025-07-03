@@ -34,7 +34,7 @@ const Index = () => {
                 <Link to="/auth">Login</Link>
               </Button>
                <Button asChild className="btn-apple interactive-scale">
-                <Link to="/plans">Começar Agora</Link>
+                
               </Button>
             </div>
           </div>
