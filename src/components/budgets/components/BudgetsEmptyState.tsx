@@ -7,12 +7,14 @@ interface BudgetsEmptyStateProps {
   hasActiveSearch: boolean;
   searchTerm: string;
   onClearSearch: () => void;
+  onCreateBudget?: () => void;
 }
 
 export const BudgetsEmptyState = ({
   hasActiveSearch,
   searchTerm,
-  onClearSearch
+  onClearSearch,
+  onCreateBudget
 }: BudgetsEmptyStateProps) => {
   if (hasActiveSearch) {
     return (
@@ -39,9 +41,7 @@ export const BudgetsEmptyState = ({
         description="Você ainda não criou nenhum orçamento. Comece criando seu primeiro orçamento para começar a gerenciar suas vendas."
         action={{
           label: "Criar Primeiro Orçamento",
-          onClick: () => {
-            console.log('Navigate to new budget');
-          }
+          onClick: onCreateBudget
         }}
         className="border-0 shadow-none" 
       />

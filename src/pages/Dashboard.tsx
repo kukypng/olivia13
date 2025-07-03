@@ -51,7 +51,7 @@ export const Dashboard = () => {
           />
         );
       case 'budgets':
-        return <BudgetsContent />;
+        return <BudgetsContent onTabChange={setActiveTab} />;
       case 'new-budget':
         return <NewBudgetContent />;
       case 'clients':

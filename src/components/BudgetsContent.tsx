@@ -20,7 +20,11 @@ import { BudgetsList } from './budgets/components/BudgetsList';
 import { BudgetsEmptyState } from './budgets/components/BudgetsEmptyState';
 import { BudgetsLoadingState } from './budgets/components/BudgetsLoadingState';
 
-export const BudgetsContent = () => {
+interface BudgetsContentProps {
+  onTabChange?: (tab: string) => void;
+}
+
+export const BudgetsContent = ({ onTabChange }: BudgetsContentProps) => {
   const { user, profile } = useAuth();
 
   // Data fetching com configurações otimizadas para exclusões
@@ -176,6 +180,7 @@ export const BudgetsContent = () => {
             hasActiveSearch={hasActiveSearch}
             searchTerm={searchTerm}
             onClearSearch={clearSearch}
+            onCreateBudget={() => onTabChange?.('new-budget')}
           />
         </div>
       )}
