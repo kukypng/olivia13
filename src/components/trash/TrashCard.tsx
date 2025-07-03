@@ -54,23 +54,21 @@ export const TrashCard: React.FC<TrashCardProps> = ({
   const daysLeft = getDaysUntilDeletion(item.created_at);
   const isExpiring = daysLeft <= 7;
   return <Card className={cn("transition-all duration-200 hover:shadow-md", "border-l-4", isExpiring ? "border-l-orange-500" : "border-l-muted", className)}>
-      <CardContent className="p-6">
+      <CardContent className="p-4 md:p-6">
         <div className="space-y-4">
           {/* Header com informações principais */}
-          <div className="flex items-start justify-between">
-            <div className="flex-1 space-y-2">
-              <div className="flex items-center gap-3">
+          <div className="flex flex-col space-y-3 md:flex-row md:items-start md:justify-between md:space-y-0">
+            <div className="flex-1 space-y-3">
+              <div className="flex flex-col space-y-2 md:flex-row md:items-center md:gap-3 md:space-y-0">
                 <h4 className="font-semibold text-lg leading-tight">
                   {item.budget_data.device_model || 'Dispositivo não informado'}
                 </h4>
-                <Badge variant="outline" className="text-xs">
+                <Badge variant="outline" className="text-xs w-fit">
                   {item.budget_data.device_type || 'Tipo não informado'}
                 </Badge>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                
-                
+              <div className="flex flex-col space-y-2 md:grid md:grid-cols-2 md:gap-4 md:space-y-0 text-sm">
                 <div className="flex items-center gap-2 font-medium">
                   <DollarSign className="h-4 w-4 text-green-600" />
                   <span>{formatPrice(item.budget_data.total_price || 0)}</span>
@@ -83,7 +81,7 @@ export const TrashCard: React.FC<TrashCardProps> = ({
               </div>
             </div>
             
-            <Badge variant={isExpiring ? "destructive" : "secondary"} className="ml-4 whitespace-nowrap">
+            <Badge variant={isExpiring ? "destructive" : "secondary"} className="whitespace-nowrap w-fit md:ml-4">
               {daysLeft > 0 ? `${daysLeft} dias restantes` : 'Expirando'}
             </Badge>
           </div>
@@ -94,40 +92,42 @@ export const TrashCard: React.FC<TrashCardProps> = ({
           <Separator />
 
           {/* Ações e informações de expiração */}
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => onRestore(item.budget_data.id)} disabled={isRestoring || isPermanentDeleting} className="flex items-center gap-2">
+          <div className="flex flex-col space-y-3 md:flex-row md:items-center md:justify-between md:space-y-0">
+            <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+              <Button variant="outline" size="sm" onClick={() => onRestore(item.budget_data.id)} disabled={isRestoring || isPermanentDeleting} className="flex items-center justify-center gap-2 w-full sm:w-auto">
                 <RotateCcw className={cn("h-4 w-4", isRestoring && "animate-spin")} />
-                {isRestoring ? 'Restaurando...' : 'Restaurar'}
+                <span className="hidden sm:inline">{isRestoring ? 'Restaurando...' : 'Restaurar'}</span>
+                <span className="sm:hidden">{isRestoring ? 'Restaurando...' : 'Restaurar'}</span>
               </Button>
               
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="destructive" size="sm" className="flex items-center gap-2" disabled={isRestoring || isPermanentDeleting}>
+                  <Button variant="destructive" size="sm" className="flex items-center justify-center gap-2 w-full sm:w-auto" disabled={isRestoring || isPermanentDeleting}>
                     <Trash2 className="h-4 w-4" />
-                    {isPermanentDeleting ? 'Excluindo...' : 'Excluir Permanentemente'}
+                    <span className="hidden sm:inline">{isPermanentDeleting ? 'Excluindo...' : 'Excluir Permanentemente'}</span>
+                    <span className="sm:hidden">{isPermanentDeleting ? 'Excluindo...' : 'Excluir'}</span>
                   </Button>
                 </AlertDialogTrigger>
-                <AlertDialogContent>
+                <AlertDialogContent className="w-[95vw] max-w-md">
                   <AlertDialogHeader>
-                    <AlertDialogTitle className="flex items-center gap-2">
+                    <AlertDialogTitle className="flex items-center gap-2 text-base">
                       <AlertTriangle className="h-5 w-5 text-destructive" />
                       Exclusão Permanente
                     </AlertDialogTitle>
-                    <AlertDialogDescription className="space-y-2">
+                    <AlertDialogDescription className="space-y-2 text-sm">
                       <p><strong>Esta ação não pode ser desfeita!</strong></p>
                       <p>O orçamento será completamente removido da base de dados e não poderá ser recuperado.</p>
                       
-                      <div className="mt-4 p-3 bg-muted rounded-lg space-y-1">
+                      <div className="mt-4 p-3 bg-muted rounded-lg space-y-1 text-xs">
                         <p><strong>Orçamento:</strong> {item.budget_data.device_model}</p>
                         <p><strong>Cliente:</strong> {item.budget_data.client_name || 'Não informado'}</p>
                         <p><strong>Valor:</strong> {formatPrice(item.budget_data.total_price || 0)}</p>
                       </div>
                     </AlertDialogDescription>
                   </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => onPermanentDelete(item.budget_data.id)} className="bg-destructive hover:bg-destructive/90" disabled={isPermanentDeleting}>
+                  <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                    <AlertDialogCancel className="w-full sm:w-auto">Cancelar</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => onPermanentDelete(item.budget_data.id)} className="bg-destructive hover:bg-destructive/90 w-full sm:w-auto" disabled={isPermanentDeleting}>
                       {isPermanentDeleting ? 'Excluindo...' : 'Confirmar Exclusão'}
                     </AlertDialogAction>
                   </AlertDialogFooter>
@@ -135,9 +135,8 @@ export const TrashCard: React.FC<TrashCardProps> = ({
               </AlertDialog>
             </div>
             
-            <div className={cn("flex items-center gap-2 text-xs", isExpiring ? "text-orange-600" : "text-muted-foreground")}>
-              
-              <span>
+            <div className={cn("flex items-center gap-2 text-xs mt-2 md:mt-0", isExpiring ? "text-orange-600" : "text-muted-foreground")}>
+              <span className="text-center md:text-left">
                 {daysLeft > 0 ? `Exclusão automática em ${daysLeft} dias` : 'Programado para exclusão automática'}
               </span>
             </div>
