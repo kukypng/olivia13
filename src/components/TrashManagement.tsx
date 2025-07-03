@@ -37,7 +37,7 @@ export const TrashManagement = () => {
     search: '',
     sortBy: 'date',
     sortOrder: 'desc',
-    deviceType: '',
+    deviceType: 'all',
     expirationFilter: 'all'
   });
 
@@ -283,7 +283,7 @@ export const TrashManagement = () => {
       }
 
       // Filtro por tipo de dispositivo
-      if (filters.deviceType && item.budget_data.device_type !== filters.deviceType) {
+      if (filters.deviceType && filters.deviceType !== 'all' && item.budget_data.device_type !== filters.deviceType) {
         return false;
       }
 

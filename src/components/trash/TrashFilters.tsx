@@ -48,12 +48,12 @@ export const TrashFiltersComponent: React.FC<TrashFiltersProps> = ({
       search: '',
       sortBy: 'date',
       sortOrder: 'desc',
-      deviceType: '',
+      deviceType: 'all',
       expirationFilter: 'all'
     });
   };
 
-  const hasActiveFilters = filters.search || filters.deviceType || filters.expirationFilter !== 'all';
+  const hasActiveFilters = filters.search || (filters.deviceType && filters.deviceType !== 'all') || filters.expirationFilter !== 'all';
 
   return (
     <Card>
@@ -108,7 +108,7 @@ export const TrashFiltersComponent: React.FC<TrashFiltersProps> = ({
                 <SelectValue placeholder="Tipo de dispositivo" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todos os tipos</SelectItem>
+                <SelectItem value="all">Todos os tipos</SelectItem>
                 {deviceTypes.map((type) => (
                   <SelectItem key={type} value={type}>
                     {type}
