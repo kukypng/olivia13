@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Home, FileText, Plus, Settings, Menu, Shield, LogOut } from 'lucide-react';
+import { Home, FileText, Plus, Settings, Menu, Shield, LogOut, Database } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { useAuth } from '@/hooks/useAuth';
@@ -19,6 +19,7 @@ export const TabletHeaderNav = ({ activeTab, onTabChange, onMenuToggle }: Tablet
   const navItems = [
     { id: 'dashboard', icon: Home, label: 'Dashboard' },
     { id: 'budgets', icon: FileText, label: 'Orçamentos' },
+    { id: 'data-management', icon: Database, label: 'Gestão de Dados' },
     { id: 'admin', icon: Shield, label: 'Admin', permission: 'manage_users' },
     { id: 'settings', icon: Settings, label: 'Configurações' },
   ].filter(item => !item.permission || hasPermission(item.permission));

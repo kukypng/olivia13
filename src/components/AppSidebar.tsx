@@ -21,7 +21,8 @@ import {
   LogOut, 
   User,
   Star,
-  Users
+  Users,
+  Database
 } from 'lucide-react';
 import { ThemeToggle } from './ui/theme-toggle';
 
@@ -38,6 +39,7 @@ export const AppSidebar = ({ activeTab, onTabChange }: AppSidebarProps) => {
     { id: 'dashboard', label: 'Dashboard', icon: Home, permission: true },
     { id: 'budgets', label: 'Orçamentos', icon: FileText, permission: true },
     { id: 'new-budget', label: 'Novo Orçamento', icon: Plus, permission: true },
+    { id: 'data-management', label: 'Gestão de Dados', icon: Database, permission: true },
     { id: 'admin', label: 'Administração', icon: Users, permission: hasRole('admin') },
     { id: 'settings', label: 'Configurações', icon: Settings, permission: true },
   ];

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Home, FileText, Plus, Settings, Shield } from 'lucide-react';
+import { Home, FileText, Plus, Settings, Shield, Database } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLayout } from '@/contexts/LayoutContext';
 
@@ -18,6 +18,7 @@ export const MobileBottomNav = ({ activeTab, onTabChange, hasPermission }: Mobil
     { id: 'dashboard', icon: Home, label: 'Início' },
     { id: 'budgets', icon: FileText, label: 'Orçamentos' },
     { id: 'new-budget', icon: Plus, label: 'Novo', isPrimary: true },
+    { id: 'data-management', icon: Database, label: 'Dados' },
     { id: 'admin', icon: Shield, label: 'Admin', permission: 'manage_users' },
     { id: 'settings', icon: Settings, label: 'Config' },
   ].filter(item => !item.permission || hasPermission(item.permission));

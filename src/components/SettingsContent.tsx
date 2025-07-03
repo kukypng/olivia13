@@ -3,9 +3,7 @@ import React from 'react';
 import { ProfileSettings } from '@/components/ProfileSettings';
 import { CompanySettings } from '@/components/CompanySettings';
 import { SecuritySettings } from '@/components/SecuritySettings';
-import { DataManagementSettings } from './DataManagementSettings';
 import { BudgetWarningSettings } from './BudgetWarningSettings';
-import { TrashManagement } from './TrashManagement';
 import { Separator } from '@/components/ui/separator';
 
 export const SettingsContent = () => {
@@ -40,10 +38,6 @@ export const SettingsContent = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-6">
             <CompanySettings />
             <BudgetWarningSettings />
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-8">
-            <DataManagementSettings />
-            <TrashManagement />
           </div>
         </section>
       </div>

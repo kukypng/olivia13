@@ -8,6 +8,7 @@ import { AdaptiveDashboard } from '@/components/adaptive/AdaptiveDashboard';
 import { BudgetsContent } from '@/components/BudgetsContent';
 import { NewBudgetContent } from '@/components/NewBudgetContent';
 import { SettingsContent } from '@/components/SettingsContent';
+import { DataManagementContent } from '@/components/DataManagementContent';
 import { AdminPanel } from '@/components/AdminPanel';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { ClientsContent } from '@/components/ClientsContent';
@@ -56,6 +57,8 @@ export const Dashboard = () => {
         return <NewBudgetContent />;
       case 'clients':
         return <ClientsContent />;
+      case 'data-management':
+        return <DataManagementContent />;
       case 'admin':
         return (
           <ProtectedRoute requiredRole="admin">
