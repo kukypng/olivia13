@@ -17,7 +17,7 @@ export const HelpAndSupport = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col sm:flex-row gap-4 p-4 lg:p-6 pt-0">
-          <Button onClick={() => setHelpDialogOpen(true)} className="w-full sm:w-auto">
+          <Button onClick={() => setHelpDialogOpen(true)} variant="secondary" className="w-full sm:w-auto bg-foreground text-background hover:bg-foreground/90">
             <LifeBuoy className="mr-2" />
             Ajuda & Dicas
           </Button>
