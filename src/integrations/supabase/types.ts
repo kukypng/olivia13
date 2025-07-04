@@ -422,8 +422,14 @@ export type Database = {
       site_settings: {
         Row: {
           additional_info: string
+          benefits_data: Json | null
+          benefits_section_subtitle: string | null
+          benefits_section_title: string | null
           created_at: string
           cta_button_text: string
+          faq_data: Json | null
+          faq_section_subtitle: string | null
+          faq_section_title: string | null
           id: string
           page_subtitle: string
           page_title: string
@@ -435,16 +441,28 @@ export type Database = {
           plan_period: string
           plan_price: number
           popular_badge_text: string
+          show_benefits_section: boolean | null
+          show_faq_section: boolean | null
           show_popular_badge: boolean
           show_support_info: boolean
+          show_testimonials_section: boolean | null
           support_text: string
+          testimonials_data: Json | null
+          testimonials_section_subtitle: string | null
+          testimonials_section_title: string | null
           updated_at: string
           whatsapp_number: string
         }
         Insert: {
           additional_info?: string
+          benefits_data?: Json | null
+          benefits_section_subtitle?: string | null
+          benefits_section_title?: string | null
           created_at?: string
           cta_button_text?: string
+          faq_data?: Json | null
+          faq_section_subtitle?: string | null
+          faq_section_title?: string | null
           id?: string
           page_subtitle?: string
           page_title?: string
@@ -456,16 +474,28 @@ export type Database = {
           plan_period?: string
           plan_price?: number
           popular_badge_text?: string
+          show_benefits_section?: boolean | null
+          show_faq_section?: boolean | null
           show_popular_badge?: boolean
           show_support_info?: boolean
+          show_testimonials_section?: boolean | null
           support_text?: string
+          testimonials_data?: Json | null
+          testimonials_section_subtitle?: string | null
+          testimonials_section_title?: string | null
           updated_at?: string
           whatsapp_number?: string
         }
         Update: {
           additional_info?: string
+          benefits_data?: Json | null
+          benefits_section_subtitle?: string | null
+          benefits_section_title?: string | null
           created_at?: string
           cta_button_text?: string
+          faq_data?: Json | null
+          faq_section_subtitle?: string | null
+          faq_section_title?: string | null
           id?: string
           page_subtitle?: string
           page_title?: string
@@ -477,9 +507,15 @@ export type Database = {
           plan_period?: string
           plan_price?: number
           popular_badge_text?: string
+          show_benefits_section?: boolean | null
+          show_faq_section?: boolean | null
           show_popular_badge?: boolean
           show_support_info?: boolean
+          show_testimonials_section?: boolean | null
           support_text?: string
+          testimonials_data?: Json | null
+          testimonials_section_subtitle?: string | null
+          testimonials_section_title?: string | null
           updated_at?: string
           whatsapp_number?: string
         }

@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 
-const faqs = [
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface FAQSectionProps {
+  title?: string;
+  subtitle?: string;
+  faqs?: FAQ[];
+  show?: boolean;
+}
+
+const defaultFaqs: FAQ[] = [
   {
     question: "Como funciona o período de teste?",
     answer: "Você tem 7 dias para testar todas as funcionalidades gratuitamente."
@@ -20,19 +32,31 @@ const faqs = [
   }
 ];
 
-export const FAQSection = () => {
+export const FAQSection = ({ 
+  title = "Perguntas Frequentes",
+  subtitle = "Tire suas dúvidas sobre o Oliver",
+  faqs = defaultFaqs,
+  show = true 
+}: FAQSectionProps) => {
+  if (!show) return null;
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   return (
     <section className="animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-      <div className="text-center mb-12 animate-slide-down">
-        <h3 className="text-3xl lg:text-4xl font-bold mb-4 text-foreground">
-          Perguntas Frequentes
-        </h3>
-        <p className="text-muted-foreground text-lg">
-          Tire suas dúvidas sobre o Oliver
-        </p>
-      </div>
+      {(title || subtitle) && (
+        <div className="text-center mb-12 animate-slide-down">
+          {title && (
+            <h3 className="text-3xl lg:text-4xl font-bold mb-4 text-foreground">
+              {title}
+            </h3>
+          )}
+          {subtitle && (
+            <p className="text-muted-foreground text-lg">
+              {subtitle}
+            </p>
+          )}
+        </div>
+      )}
       
       <div className="max-w-3xl mx-auto space-y-4">
         {faqs.map((faq, index) => (
