@@ -288,7 +288,8 @@ export const NewBudgetForm = ({
             </div>
 
             <div>
-              <Label htmlFor="issue">Problema</Label>
+              <Label htmlFor="issue">Defeito do Dispositivo
+            </Label>
               <Textarea id="issue" value={formData.issue} onChange={e => setFormData({
               ...formData,
               issue: e.target.value
