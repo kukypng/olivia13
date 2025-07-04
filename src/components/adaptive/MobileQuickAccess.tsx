@@ -37,7 +37,7 @@ export const MobileQuickAccess = ({
       icon: Database,
       label: 'Dados',
       color: 'text-purple-500',
-      permission: 'manage_data'
+      permission: null
     },
     {
       id: 'settings',
