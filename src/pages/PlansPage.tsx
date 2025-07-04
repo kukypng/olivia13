@@ -168,6 +168,18 @@ export const PlansPage = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-12 space-y-20">
+        {/* Back Button */}
+        <div className="flex justify-start mb-8">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={handleGoBack} 
+            className="interactive-scale text-foreground hover:text-primary hover:bg-primary/10 border border-border/20 rounded-xl"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Voltar
+          </Button>
+        </div>
         <PlansHero pageTitle={config.page_title} pageSubtitle={config.page_subtitle} />
         <BenefitsSection />
         <PlanCard config={config} onPlanSelection={handlePlanSelection} />
