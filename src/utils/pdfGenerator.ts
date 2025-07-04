@@ -41,49 +41,79 @@ const generateSimplePDF = async (data: BudgetPDFData): Promise<Blob> => {
     white: [255, 255, 255]
   };
 
+  // Função auxiliar para placeholder da logo
+  const renderLogoPlaceholder = (doc: any, colors: any) => {
+    // Container com gradiente sutil
+    doc.setFillColor(245, 245, 245);
+    doc.roundedRect(13, 5, 24, 24, 3, 3, 'F');
+    
+    // Borda
+    doc.setDrawColor(colors.lightGray[0], colors.lightGray[1], colors.lightGray[2]);
+    doc.setLineWidth(0.3);
+    doc.roundedRect(13, 5, 24, 24, 3, 3, 'S');
+    
+    // Ícone de imagem estilizado
+    doc.setDrawColor(colors.lightGray[0], colors.lightGray[1], colors.lightGray[2]);
+    doc.setLineWidth(1);
+    
+    // Desenhar ícone de imagem
+    doc.rect(19, 11, 12, 8, 'S');
+    doc.circle(22, 14, 1.5, 'S');
+    doc.line(20, 17, 23, 14);
+    doc.line(23, 14, 26, 17);
+    doc.line(26, 17, 30, 17);
+    
+    // Texto "LOGO"
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7);
+    doc.setTextColor(colors.lightGray[0], colors.lightGray[1], colors.lightGray[2]);
+    doc.text('LOGO', 25, 24, { align: 'center' });
+  };
+
   // HEADER PRINCIPAL - Design simples
   doc.setFillColor(colors.veryLightGray[0], colors.veryLightGray[1], colors.veryLightGray[2]);
   doc.rect(0, 0, 210, 35, 'F');
   
-  // Logo com fundo preto
+  // Logo com design profissional
   if (data.shop_logo_url) {
     try {
-      // Tentar carregar a logo
-      const img = new Image();
-      img.crossOrigin = 'anonymous';
-      
-      await new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = data.shop_logo_url!;
+      // Carregar a logo com tratamento para CORS
+      const logoResponse = await fetch(data.shop_logo_url, {
+        mode: 'cors',
+        credentials: 'omit'
       });
       
-      // Fundo preto para a logo
-      doc.setFillColor(0, 0, 0);
-      doc.rect(15, 7, 20, 20, 'F');
+      if (!logoResponse.ok) {
+        throw new Error('Failed to fetch logo');
+      }
       
-      // Adicionar logo ao PDF
-      doc.addImage(img, 'JPEG', 15, 7, 20, 20);
-    } catch (error) {
-      console.warn('Não foi possível carregar a logo:', error);
-      // Fallback: placeholder para logo com fundo preto
-      doc.setFillColor(0, 0, 0);
-      doc.rect(15, 7, 20, 20, 'F');
+      const logoBlob = await logoResponse.blob();
+      const logoBase64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(logoBlob);
+      });
+      
+      // Container elegante para a logo
+      doc.setFillColor(colors.white[0], colors.white[1], colors.white[2]);
+      doc.roundedRect(13, 5, 24, 24, 3, 3, 'F');
+      
+      // Borda sutil
       doc.setDrawColor(colors.lightGray[0], colors.lightGray[1], colors.lightGray[2]);
-      doc.rect(15, 7, 20, 20, 'S');
-      doc.setFontSize(8);
-      doc.setTextColor(colors.white[0], colors.white[1], colors.white[2]);
-      doc.text('LOGO', 25, 18, { align: 'center' });
+      doc.setLineWidth(0.3);
+      doc.roundedRect(13, 5, 24, 24, 3, 3, 'S');
+      
+      // Logo centralizada com padding
+      doc.addImage(logoBase64, 'JPEG', 15, 7, 20, 20, undefined, 'MEDIUM');
+      
+    } catch (error) {
+      console.warn('Erro ao carregar logo:', error);
+      // Fallback elegante
+      renderLogoPlaceholder(doc, colors);
     }
   } else {
-    // Placeholder para logo com fundo preto
-    doc.setFillColor(0, 0, 0);
-    doc.rect(15, 7, 20, 20, 'F');
-    doc.setDrawColor(colors.lightGray[0], colors.lightGray[1], colors.lightGray[2]);
-    doc.rect(15, 7, 20, 20, 'S');
-    doc.setFontSize(8);
-    doc.setTextColor(colors.white[0], colors.white[1], colors.white[2]);
-    doc.text('LOGO', 25, 18, { align: 'center' });
+    renderLogoPlaceholder(doc, colors);
   }
   
   // Nome da empresa
@@ -417,12 +447,18 @@ export const generatePDFImage = async (data: BudgetPDFData): Promise<string> => 
     const createdDate = new Date(data.created_at).toLocaleDateString('pt-BR');
     const validDate = new Date(data.valid_until).toLocaleDateString('pt-BR');
     
-    // Logo section com fundo preto
+    // Logo section com design profissional
     const logoSection = data.shop_logo_url ? 
-      `<div style="width: 50px; height: 50px; background: black; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-right: 20px; padding: 5px;">
-        <img src="${data.shop_logo_url}" alt="Logo da empresa" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+      `<div style="width: 60px; height: 60px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 20px; padding: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e5e5;">
+        <img src="${data.shop_logo_url}" alt="Logo da empresa" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 4px;" />
       </div>` :
-      `<div style="width: 50px; height: 50px; background: black; border: 2px dashed #ccc; border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-right: 20px; font-weight: bold; color: white; font-size: 10px;">LOGO</div>`;
+      `<div style="width: 60px; height: 60px; background: #f8f8f8; border: 2px dashed #ccc; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: 20px; font-weight: bold; color: #666; font-size: 8px; gap: 4px;">
+        <div style="width: 20px; height: 16px; border: 1px solid #ccc; border-radius: 2px; position: relative;">
+          <div style="width: 6px; height: 6px; border: 1px solid #ccc; border-radius: 50%; position: absolute; top: 2px; left: 2px;"></div>
+          <div style="width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-bottom: 4px solid #ccc; position: absolute; bottom: 2px; right: 2px;"></div>
+        </div>
+        <span>LOGO</span>
+      </div>`;
     
     tempDiv.innerHTML = `
       <!-- Header Principal -->

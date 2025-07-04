@@ -113,10 +113,15 @@ export const useShopProfile = () => {
         throw new Error('O arquivo deve ter no máximo 3MB');
       }
 
-      // Verificar tipo do arquivo
+      // Verificar tipo do arquivo com validação mais rigorosa
       const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
       if (!allowedTypes.includes(file.type)) {
-        throw new Error('Apenas imagens PNG, JPEG, WebP e GIF são permitidas');
+        throw new Error(`Tipo de arquivo "${file.type}" não é aceito. Este sistema não aceita esse tipo de arquivo. Use apenas PNG, JPEG, WebP ou GIF.`);
+      }
+
+      // Verificar se o arquivo não está corrompido
+      if (file.size === 0) {
+        throw new Error('O arquivo parece estar corrompido ou vazio');
       }
 
       // Remover logo anterior se existir

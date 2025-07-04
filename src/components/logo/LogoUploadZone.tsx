@@ -33,13 +33,22 @@ export const LogoUploadZone: React.FC<LogoUploadZoneProps> = ({
       return 'Arquivo muito grande. Máximo 3MB permitido.';
     }
 
-    // Validar tipo
+    // Validar tipo com mensagem mais clara
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
     if (!allowedTypes.includes(file.type)) {
-      return 'Formato não suportado. Use PNG, JPEG, WebP ou GIF.';
+      return `Tipo de arquivo não aceito. Este sistema não aceita arquivos do tipo "${file.type}". Use apenas PNG, JPEG, WebP ou GIF.`;
     }
 
-    // Validar dimensões (opcional - pode ser implementado com Image API)
+    // Validar se o arquivo não está corrompido
+    if (file.size === 0) {
+      return 'Arquivo parece estar corrompido ou vazio.';
+    }
+
+    // Validar nome do arquivo
+    if (file.name.length > 100) {
+      return 'Nome do arquivo muito longo. Use um nome mais curto.';
+    }
+
     return null;
   }, []);
 
@@ -273,10 +282,11 @@ export const LogoUploadZone: React.FC<LogoUploadZoneProps> = ({
         )}
         
         <div className="text-xs text-muted-foreground space-y-1">
-          <p>• Formatos aceitos: PNG, JPEG, WebP, GIF</p>
-          <p>• Tamanho máximo: 3MB</p>
-          <p>• Recomendado: 512x512px ou maior</p>
-          <p>• A imagem será automaticamente otimizada</p>
+          <p>• <strong>Formatos aceitos:</strong> PNG, JPEG, WebP, GIF</p>
+          <p>• <strong>Tamanho máximo:</strong> 3MB</p>
+          <p>• <strong>Recomendado:</strong> 512x512px ou maior para melhor qualidade</p>
+          <p>• <strong>Otimização:</strong> A imagem será automaticamente otimizada</p>
+          <p>• <strong>Qualidade PDF:</strong> Logos de alta resolução aparecem melhor no PDF</p>
         </div>
       </div>
     </div>
