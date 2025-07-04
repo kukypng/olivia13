@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Trash2, Save, Globe, MessageSquare, Star, Lock, Image } from 'lucide-react';
+import { Plus, Trash2, Save, Globe, MessageSquare, Star, Lock, Image, Zap, Shield, Users, Award, CheckCircle, Clock, Target, Eye, EyeOff } from 'lucide-react';
 import { AdminImageManager } from '@/components/admin/AdminImageManager';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -31,6 +31,21 @@ interface SiteSettings {
   show_popular_badge: boolean;
   show_support_info: boolean;
   additional_info: string;
+  // Benefits section
+  benefits_section_title: string;
+  benefits_section_subtitle: string;
+  benefits_data: any[];
+  show_benefits_section: boolean;
+  // Testimonials section
+  testimonials_section_title: string;
+  testimonials_section_subtitle: string;
+  testimonials_data: any[];
+  show_testimonials_section: boolean;
+  // FAQ section
+  faq_section_title: string;
+  faq_section_subtitle: string;
+  faq_data: any[];
+  show_faq_section: boolean;
 }
 
 export const SiteSettingsContent = () => {
@@ -126,6 +141,86 @@ export const SiteSettingsContent = () => {
     
     const updatedFeatures = settings.plan_features.filter((_, i) => i !== index);
     handleInputChange('plan_features', updatedFeatures);
+  };
+
+  // Helper functions for managing benefits, testimonials, and FAQ
+  const getIconComponent = (iconName: string) => {
+    const icons: Record<string, any> = {
+      Zap, Shield, Users, Award, Star, CheckCircle, Clock, Target
+    };
+    return icons[iconName] || Zap;
+  };
+
+  const handleAddBenefit = () => {
+    if (!currentSettings) return;
+    const newBenefit = {
+      icon: "Zap",
+      title: "Novo Benefício",
+      description: "Descrição do benefício"
+    };
+    const updatedBenefits = [...(currentSettings.benefits_data || []), newBenefit];
+    handleInputChange('benefits_data', updatedBenefits);
+  };
+
+  const handleRemoveBenefit = (index: number) => {
+    if (!currentSettings) return;
+    const updatedBenefits = currentSettings.benefits_data.filter((_, i) => i !== index);
+    handleInputChange('benefits_data', updatedBenefits);
+  };
+
+  const handleUpdateBenefit = (index: number, field: string, value: string) => {
+    if (!currentSettings) return;
+    const updatedBenefits = [...currentSettings.benefits_data];
+    updatedBenefits[index] = { ...updatedBenefits[index], [field]: value };
+    handleInputChange('benefits_data', updatedBenefits);
+  };
+
+  const handleAddTestimonial = () => {
+    if (!currentSettings) return;
+    const newTestimonial = {
+      name: "Nome do Cliente",
+      role: "Cargo - Empresa",
+      content: "Depoimento do cliente...",
+      rating: 5
+    };
+    const updatedTestimonials = [...(currentSettings.testimonials_data || []), newTestimonial];
+    handleInputChange('testimonials_data', updatedTestimonials);
+  };
+
+  const handleRemoveTestimonial = (index: number) => {
+    if (!currentSettings) return;
+    const updatedTestimonials = currentSettings.testimonials_data.filter((_, i) => i !== index);
+    handleInputChange('testimonials_data', updatedTestimonials);
+  };
+
+  const handleUpdateTestimonial = (index: number, field: string, value: string | number) => {
+    if (!currentSettings) return;
+    const updatedTestimonials = [...currentSettings.testimonials_data];
+    updatedTestimonials[index] = { ...updatedTestimonials[index], [field]: value };
+    handleInputChange('testimonials_data', updatedTestimonials);
+  };
+
+  const handleAddFaq = () => {
+    if (!currentSettings) return;
+    const newFaq = {
+      question: "Nova pergunta?",
+      answer: "Resposta da pergunta..."
+    };
+    const updatedFaqs = [...(currentSettings.faq_data || []), newFaq];
+    handleInputChange('faq_data', updatedFaqs);
+  };
+
+  const handleRemoveFaq = (index: number) => {
+    if (!currentSettings) return;
+    const updatedFaqs = currentSettings.faq_data.filter((_, i) => i !== index);
+    handleInputChange('faq_data', updatedFaqs);
+  };
+
+  const handleUpdateFaq = (index: number, field: string, value: string) => {
+    if (!currentSettings) return;
+    const updatedFaqs = [...currentSettings.faq_data];
+    updatedFaqs[index] = { ...updatedFaqs[index], [field]: value };
+    handleInputChange('faq_data', updatedFaqs);
   };
 
   // Use local settings if available, otherwise fall back to server settings
@@ -378,6 +473,309 @@ export const SiteSettingsContent = () => {
         </CardHeader>
         <CardContent>
           <AdminImageManager />
+        </CardContent>
+      </Card>
+
+      {/* Benefits Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Zap className="h-5 w-5" />
+            Seção de Benefícios
+          </CardTitle>
+          <CardDescription>Configure a seção de vantagens do sistema</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="benefits_section_title">Título da Seção</Label>
+              <Input
+                id="benefits_section_title"
+                value={currentSettings.benefits_section_title || ''}
+                onChange={(e) => handleInputChange('benefits_section_title', e.target.value)}
+                placeholder="Vantagens do Oliver"
+              />
+            </div>
+            <div>
+              <Label htmlFor="benefits_section_subtitle">Subtítulo da Seção</Label>
+              <Input
+                id="benefits_section_subtitle"
+                value={currentSettings.benefits_section_subtitle || ''}
+                onChange={(e) => handleInputChange('benefits_section_subtitle', e.target.value)}
+                placeholder="Descubra os benefícios..."
+              />
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Exibir Seção de Benefícios</Label>
+              <p className="text-sm text-muted-foreground">Controla se a seção aparece na página</p>
+            </div>
+            <Switch
+              checked={currentSettings.show_benefits_section}
+              onCheckedChange={(checked) => handleInputChange('show_benefits_section', checked)}
+            />
+          </div>
+          
+          <div className="flex justify-between items-center">
+            <h4 className="text-sm font-medium">Benefícios</h4>
+            <Button onClick={handleAddBenefit} size="sm">
+              <Plus className="h-4 w-4 mr-2" />
+              Adicionar Benefício
+            </Button>
+          </div>
+          
+          <div className="space-y-3">
+            {(currentSettings.benefits_data || []).map((benefit, index) => (
+              <div key={index} className="border rounded-lg p-4 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1 space-y-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div>
+                        <Label>Ícone</Label>
+                        <select 
+                          className="w-full p-2 border rounded"
+                          value={benefit.icon}
+                          onChange={(e) => handleUpdateBenefit(index, 'icon', e.target.value)}
+                        >
+                          <option value="Zap">⚡ Zap</option>
+                          <option value="Shield">🛡️ Shield</option>
+                          <option value="Users">👥 Users</option>
+                          <option value="Award">🏆 Award</option>
+                          <option value="Star">⭐ Star</option>
+                          <option value="CheckCircle">✅ CheckCircle</option>
+                          <option value="Clock">🕐 Clock</option>
+                          <option value="Target">🎯 Target</option>
+                        </select>
+                      </div>
+                      <div>
+                        <Label>Título</Label>
+                        <Input
+                          value={benefit.title}
+                          onChange={(e) => handleUpdateBenefit(index, 'title', e.target.value)}
+                          placeholder="Título do benefício"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label>Descrição</Label>
+                      <Textarea
+                        value={benefit.description}
+                        onChange={(e) => handleUpdateBenefit(index, 'description', e.target.value)}
+                        placeholder="Descrição do benefício"
+                        rows={2}
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleRemoveBenefit(index)}
+                    className="text-destructive hover:text-destructive ml-2"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Testimonials Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5" />
+            Seção de Depoimentos
+          </CardTitle>
+          <CardDescription>Configure os depoimentos dos clientes</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="testimonials_section_title">Título da Seção</Label>
+              <Input
+                id="testimonials_section_title"
+                value={currentSettings.testimonials_section_title || ''}
+                onChange={(e) => handleInputChange('testimonials_section_title', e.target.value)}
+                placeholder="O que nossos clientes dizem"
+              />
+            </div>
+            <div>
+              <Label htmlFor="testimonials_section_subtitle">Subtítulo da Seção</Label>
+              <Input
+                id="testimonials_section_subtitle"
+                value={currentSettings.testimonials_section_subtitle || ''}
+                onChange={(e) => handleInputChange('testimonials_section_subtitle', e.target.value)}
+                placeholder="Depoimentos reais..."
+              />
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Exibir Seção de Depoimentos</Label>
+              <p className="text-sm text-muted-foreground">Controla se a seção aparece na página</p>
+            </div>
+            <Switch
+              checked={currentSettings.show_testimonials_section}
+              onCheckedChange={(checked) => handleInputChange('show_testimonials_section', checked)}
+            />
+          </div>
+          
+          <div className="flex justify-between items-center">
+            <h4 className="text-sm font-medium">Depoimentos</h4>
+            <Button onClick={handleAddTestimonial} size="sm">
+              <Plus className="h-4 w-4 mr-2" />
+              Adicionar Depoimento
+            </Button>
+          </div>
+          
+          <div className="space-y-3">
+            {(currentSettings.testimonials_data || []).map((testimonial, index) => (
+              <div key={index} className="border rounded-lg p-4 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1 space-y-3">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <div>
+                        <Label>Nome</Label>
+                        <Input
+                          value={testimonial.name}
+                          onChange={(e) => handleUpdateTestimonial(index, 'name', e.target.value)}
+                          placeholder="Nome do cliente"
+                        />
+                      </div>
+                      <div>
+                        <Label>Cargo/Empresa</Label>
+                        <Input
+                          value={testimonial.role}
+                          onChange={(e) => handleUpdateTestimonial(index, 'role', e.target.value)}
+                          placeholder="Cargo - Empresa"
+                        />
+                      </div>
+                      <div>
+                        <Label>Avaliação (estrelas)</Label>
+                        <Input
+                          type="number"
+                          min="1"
+                          max="5"
+                          value={testimonial.rating}
+                          onChange={(e) => handleUpdateTestimonial(index, 'rating', parseInt(e.target.value))}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label>Depoimento</Label>
+                      <Textarea
+                        value={testimonial.content}
+                        onChange={(e) => handleUpdateTestimonial(index, 'content', e.target.value)}
+                        placeholder="Depoimento do cliente..."
+                        rows={3}
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleRemoveTestimonial(index)}
+                    className="text-destructive hover:text-destructive ml-2"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* FAQ Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5" />
+            Seção de FAQ
+          </CardTitle>
+          <CardDescription>Configure as perguntas frequentes</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="faq_section_title">Título da Seção</Label>
+              <Input
+                id="faq_section_title"
+                value={currentSettings.faq_section_title || ''}
+                onChange={(e) => handleInputChange('faq_section_title', e.target.value)}
+                placeholder="Perguntas Frequentes"
+              />
+            </div>
+            <div>
+              <Label htmlFor="faq_section_subtitle">Subtítulo da Seção</Label>
+              <Input
+                id="faq_section_subtitle"
+                value={currentSettings.faq_section_subtitle || ''}
+                onChange={(e) => handleInputChange('faq_section_subtitle', e.target.value)}
+                placeholder="Tire suas dúvidas..."
+              />
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div>
+              <Label>Exibir Seção de FAQ</Label>
+              <p className="text-sm text-muted-foreground">Controla se a seção aparece na página</p>
+            </div>
+            <Switch
+              checked={currentSettings.show_faq_section}
+              onCheckedChange={(checked) => handleInputChange('show_faq_section', checked)}
+            />
+          </div>
+          
+          <div className="flex justify-between items-center">
+            <h4 className="text-sm font-medium">Perguntas e Respostas</h4>
+            <Button onClick={handleAddFaq} size="sm">
+              <Plus className="h-4 w-4 mr-2" />
+              Adicionar FAQ
+            </Button>
+          </div>
+          
+          <div className="space-y-3">
+            {(currentSettings.faq_data || []).map((faq, index) => (
+              <div key={index} className="border rounded-lg p-4 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1 space-y-3">
+                    <div>
+                      <Label>Pergunta</Label>
+                      <Input
+                        value={faq.question}
+                        onChange={(e) => handleUpdateFaq(index, 'question', e.target.value)}
+                        placeholder="Pergunta frequente..."
+                      />
+                    </div>
+                    <div>
+                      <Label>Resposta</Label>
+                      <Textarea
+                        value={faq.answer}
+                        onChange={(e) => handleUpdateFaq(index, 'answer', e.target.value)}
+                        placeholder="Resposta da pergunta..."
+                        rows={3}
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => handleRemoveFaq(index)}
+                    className="text-destructive hover:text-destructive ml-2"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
