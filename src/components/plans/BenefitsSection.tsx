@@ -32,25 +32,27 @@ export const BenefitsSection = () => {
         {benefits.map((benefit, index) => {
           const Icon = benefit.icon;
           return (
-            <Card 
+            <div 
               key={index} 
-              className="glass-card text-center group hover:scale-105 transition-all duration-300" 
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="stagger-item"
+              style={{ animationDelay: `${0.2 + index * 0.1}s` }}
             >
-              <CardHeader className="pb-4">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 mx-auto flex items-center justify-center mb-4">
-                  <Icon className="h-7 w-7 text-primary group-hover:scale-110 transition-transform duration-300" />
-                </div>
-                <CardTitle className="text-lg text-foreground group-hover:text-primary transition-colors">
-                  {benefit.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {benefit.description}
-                </p>
-              </CardContent>
-            </Card>
+              <Card className="card-interactive text-center group">
+                <CardHeader className="pb-4">
+                  <div className="w-14 h-14 rounded-2xl bg-primary/10 group-hover:bg-primary/20 transition-all duration-300 mx-auto flex items-center justify-center mb-4 interactive-glow">
+                    <Icon className="h-7 w-7 text-primary icon-bounce" />
+                  </div>
+                  <CardTitle className="text-lg text-foreground group-hover:text-primary transition-colors duration-300">
+                    {benefit.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {benefit.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           );
         })}
       </div>

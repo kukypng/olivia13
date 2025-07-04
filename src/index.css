@@ -164,14 +164,33 @@
     transform: translateY(-2px);
   }
 
-  /* Premium Apple-style buttons */
+  /* Enhanced Interactive Buttons */
   .btn-apple {
     @apply relative overflow-hidden rounded-2xl px-6 py-4 font-semibold;
     @apply bg-primary text-primary-foreground;
     @apply transform transition-all duration-300 ease-out;
-    @apply hover:scale-[1.02] active:scale-[0.98];
+    @apply hover:scale-[1.02] active:scale-[0.97];
     @apply shadow-medium hover:shadow-strong;
     background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+    position: relative;
+  }
+
+  .btn-apple::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .btn-apple:active::before {
+    width: 300px;
+    height: 300px;
   }
 
   .btn-apple:hover {
@@ -186,7 +205,40 @@
     background: hsl(var(--secondary));
   }
 
-  /* Premium Card styles */
+  /* Enhanced Interactive Elements */
+  .interactive-scale {
+    @apply transition-all duration-200 ease-out;
+    @apply hover:scale-[1.02] active:scale-[0.97];
+  }
+
+  .interactive-glow:hover {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  /* Form Enhancement */
+  .input-premium {
+    @apply flex h-12 w-full rounded-xl border border-border/50 bg-input/50 px-4 py-3;
+    @apply text-base ring-offset-background file:border-0 file:bg-transparent;
+    @apply file:text-sm file:font-medium placeholder:text-muted-foreground;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20;
+    @apply focus-visible:ring-offset-2 focus-visible:border-primary/50;
+    @apply disabled:cursor-not-allowed disabled:opacity-50;
+    @apply transition-all duration-300 ease-out;
+    backdrop-filter: blur(8px);
+  }
+
+  .input-premium:focus {
+    @apply bg-background/80 shadow-soft border-primary;
+    transform: translateY(-1px);
+    box-shadow: 0 0 15px hsl(var(--primary) / 0.2);
+  }
+
+  .input-error {
+    @apply border-destructive;
+    animation: shake 0.5s ease-in-out;
+  }
+
+  /* Enhanced Card Styles */
   .card-premium {
     @apply bg-card border border-border/50 rounded-2xl shadow-soft;
     @apply transition-all duration-300 ease-out;
@@ -194,13 +246,44 @@
     backdrop-filter: blur(8px);
   }
 
-  /* Enhanced interactive elements */
-  .interactive-scale {
-    @apply transition-transform duration-200 ease-out;
-    @apply hover:scale-[1.02] active:scale-[0.98];
+  .card-interactive {
+    @apply card-premium cursor-pointer;
+    @apply hover:shadow-strong hover:scale-[1.01];
+    @apply active:scale-[0.99];
   }
 
-  /* Premium floating action button */
+  .card-interactive:hover {
+    box-shadow: 0 8px 32px hsl(var(--primary) / 0.15);
+  }
+
+  /* Enhanced Status Badges */
+  .status-badge {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold;
+    @apply transition-all duration-200 ease-out;
+    @apply hover:scale-105;
+  }
+
+  .status-badge.success {
+    @apply bg-green-500/10 text-green-600 border border-green-500/20;
+    @apply hover:bg-green-500/20;
+  }
+
+  .status-badge.warning {
+    @apply bg-amber-500/10 text-amber-600 border border-amber-500/20;
+    @apply hover:bg-amber-500/20;
+  }
+
+  .status-badge.error {
+    @apply bg-red-500/10 text-red-600 border border-red-500/20;
+    @apply hover:bg-red-500/20;
+  }
+
+  .status-badge.info {
+    @apply bg-blue-500/10 text-blue-600 border border-blue-500/20;
+    @apply hover:bg-blue-500/20;
+  }
+
+  /* Enhanced FAB */
   .fab {
     @apply fixed bottom-24 right-6 z-40 lg:bottom-6;
     @apply w-16 h-16 rounded-3xl;
@@ -214,48 +297,10 @@
 
   .fab:hover {
     box-shadow: 0 12px 40px hsl(var(--primary) / 0.5);
+    animation: pulse-scale 1s ease-in-out infinite;
   }
 
-  /* Premium Input styles */
-  .input-premium {
-    @apply flex h-12 w-full rounded-xl border border-border/50 bg-input/50 px-4 py-3;
-    @apply text-base ring-offset-background file:border-0 file:bg-transparent;
-    @apply file:text-sm file:font-medium placeholder:text-muted-foreground;
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/20;
-    @apply focus-visible:ring-offset-2 focus-visible:border-primary/50;
-    @apply disabled:cursor-not-allowed disabled:opacity-50;
-    @apply transition-all duration-200 ease-out;
-    backdrop-filter: blur(8px);
-  }
-
-  .input-premium:focus {
-    @apply bg-background/80 shadow-soft;
-    transform: translateY(-1px);
-  }
-
-  /* Enhanced status badges */
-  .status-badge {
-    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold;
-    @apply transition-all duration-200 ease-out;
-  }
-
-  .status-badge.success {
-    @apply bg-green-500/10 text-green-600 border border-green-500/20;
-  }
-
-  .status-badge.warning {
-    @apply bg-amber-500/10 text-amber-600 border border-amber-500/20;
-  }
-
-  .status-badge.error {
-    @apply bg-red-500/10 text-red-600 border border-red-500/20;
-  }
-
-  .status-badge.info {
-    @apply bg-blue-500/10 text-blue-600 border border-blue-500/20;
-  }
-
-  /* Premium table styles */
+  /* Enhanced Table Styles */
   .table-premium {
     @apply w-full border-separate border-spacing-0 bg-card rounded-2xl overflow-hidden shadow-soft;
   }
@@ -267,34 +312,37 @@
 
   .table-premium td {
     @apply px-6 py-4 border-b border-border/30 text-foreground;
-    @apply transition-colors duration-200;
+    @apply transition-all duration-200;
   }
 
   .table-premium tr:hover td {
     @apply bg-accent/30;
+    transform: scale(1.01);
   }
 
   .table-premium tr:last-child td {
     @apply border-b-0;
   }
 
-  /* Mobile optimizations */
-  .mobile-safe {
-    @apply pb-safe-bottom;
+  /* Icon Animations */
+  .icon-bounce {
+    @apply transition-transform duration-200;
   }
 
-  .mobile-touch {
-    @apply min-h-[44px] min-w-[44px];
-    touch-action: manipulation;
+  .icon-bounce:hover {
+    animation: scale-bounce 0.3s ease-out;
   }
 
-  /* Apple-style focus rings */
-  .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50;
-    @apply transition-all duration-200 ease-out;
+  .icon-glow {
+    @apply transition-all duration-200;
   }
 
-  /* Premium loading states */
+  .icon-glow:hover {
+    color: hsl(var(--primary));
+    filter: drop-shadow(0 0 8px hsl(var(--primary) / 0.4));
+  }
+
+  /* Loading Enhancements */
   .loading-shimmer {
     background: linear-gradient(90deg, 
       hsla(var(--muted)) 25%, 
@@ -304,28 +352,50 @@
     animation: shimmer 2s infinite;
   }
 
-  /* Enhanced animations */
-  .animate-fade-in-up {
-    animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  .loading-spinner {
+    @apply w-6 h-6 border-2 border-muted border-t-primary rounded-full;
+    animation: spin 1s linear infinite;
   }
 
-  .animate-scale-in {
-    animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Page Transitions */
+  .page-enter {
+    animation: fade-in-up 0.3s ease-out;
   }
 
-  .animate-slide-up {
-    animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  .page-exit {
+    animation: fade-out 0.2s ease-out;
   }
 
-  /* Responsive grid system */
-  .grid-responsive {
-    @apply grid gap-6;
-    @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+  /* Staggered Animations */
+  .stagger-item {
+    opacity: 0;
+    animation: fade-in-up 0.5s ease-out forwards;
   }
 
-  .grid-responsive-cards {
-    @apply grid gap-4;
-    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  .stagger-item:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-item:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-item:nth-child(3) { animation-delay: 0.3s; }
+  .stagger-item:nth-child(4) { animation-delay: 0.4s; }
+  .stagger-item:nth-child(5) { animation-delay: 0.5s; }
+
+  /* Mobile Optimizations */
+  .mobile-safe {
+    @apply pb-safe-bottom;
+  }
+
+  .mobile-touch {
+    @apply min-h-[44px] min-w-[44px];
+    touch-action: manipulation;
+  }
+
+  /* Focus Enhancement */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50;
+    @apply transition-all duration-200 ease-out;
+  }
+
+  .focus-ring:focus {
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
   }
 }
 
@@ -369,6 +439,15 @@
   }
   100% {
     background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 

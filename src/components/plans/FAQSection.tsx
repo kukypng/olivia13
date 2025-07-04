@@ -25,7 +25,7 @@ export const FAQSection = () => {
 
   return (
     <section className="animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 animate-slide-down">
         <h3 className="text-3xl lg:text-4xl font-bold mb-4 text-foreground">
           Perguntas Frequentes
         </h3>
@@ -36,28 +36,34 @@ export const FAQSection = () => {
       
       <div className="max-w-3xl mx-auto space-y-4">
         {faqs.map((faq, index) => (
-          <Card key={index} className="glass-card transition-all duration-300">
-            <CardContent className="p-0">
-              <button 
-                onClick={() => setExpandedFaq(expandedFaq === index ? null : index)} 
-                className="w-full text-left p-6 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-2xl"
-              >
-                <div className="flex justify-between items-center">
-                  <h4 className="font-semibold text-foreground">{faq.question}</h4>
-                  <div className={`transform transition-transform duration-200 ${expandedFaq === index ? 'rotate-180' : ''}`}>
-                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+          <div 
+            key={index} 
+            className="stagger-item"
+            style={{ animationDelay: `${0.8 + index * 0.1}s` }}
+          >
+            <Card className="card-interactive transition-all duration-300 hover:shadow-medium">
+              <CardContent className="p-0">
+                <button 
+                  onClick={() => setExpandedFaq(expandedFaq === index ? null : index)} 
+                  className="w-full text-left p-6 focus:outline-none focus:ring-2 focus:ring-primary/20 rounded-2xl transition-all duration-200 hover:bg-accent/10"
+                >
+                  <div className="flex justify-between items-center">
+                    <h4 className="font-semibold text-foreground">{faq.question}</h4>
+                    <div className={`transform transition-all duration-300 ${expandedFaq === index ? 'rotate-180 text-primary' : 'text-muted-foreground'}`}>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
                   </div>
-                </div>
-              </button>
-              {expandedFaq === index && (
-                <div className="px-6 pb-6 animate-fade-in">
-                  <p className="text-muted-foreground">{faq.answer}</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                </button>
+                {expandedFaq === index && (
+                  <div className="px-6 pb-6 animate-fade-in">
+                    <p className="text-muted-foreground">{faq.answer}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         ))}
       </div>
     </section>
