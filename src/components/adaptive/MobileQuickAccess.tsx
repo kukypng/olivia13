@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { PlusCircle, List, Settings, Shield } from 'lucide-react';
+import { PlusCircle, List, Settings, Shield, Database } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLayout } from '@/contexts/LayoutContext';
 
@@ -31,6 +31,13 @@ export const MobileQuickAccess = ({
       label: 'Ver\nOrçamentos',
       color: 'text-blue-500',
       permission: 'view_own_budgets'
+    },
+    {
+      id: 'data-management',
+      icon: Database,
+      label: 'Dados',
+      color: 'text-purple-500',
+      permission: 'manage_data'
     },
     {
       id: 'settings',
