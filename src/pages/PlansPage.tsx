@@ -154,18 +154,6 @@ export const PlansPage = () => {
       }}></div>
       </div>
 
-      {/* Navigation */}
-      <div className="absolute top-6 left-6 z-10">
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={handleGoBack} 
-          className="interactive-scale glass backdrop-blur-xl text-foreground hover:text-primary hover:bg-primary/10 border border-border/20"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Voltar
-        </Button>
-      </div>
 
       <div className="relative z-10 container mx-auto px-4 py-12 space-y-20">
         {/* Back Button */}
