@@ -54,18 +54,23 @@ export const SiteSettingsContent = () => {
   const [newFeature, setNewFeature] = useState('');
   const [localSettings, setLocalSettings] = useState<SiteSettings | null>(null);
 
-  const { data: settings, isLoading } = useQuery({
+  const { data: settings, isLoading, error: queryError } = useQuery({
     queryKey: ['site-settings'],
     queryFn: async () => {
       console.log('Fetching site settings...');
       const { data, error } = await supabase
         .from('site_settings')
         .select('*')
-        .single();
+        .maybeSingle();
       
       if (error) {
         console.error('Error fetching site settings:', error);
         throw error;
+      }
+      
+      if (!data) {
+        console.log('No site settings found, will show empty form');
+        return null;
       }
       
       console.log('Site settings fetched:', data);
@@ -234,10 +239,26 @@ export const SiteSettingsContent = () => {
     );
   }
 
-  if (!currentSettings) {
+  if (queryError) {
+    console.error('Query error:', queryError);
     return (
-      <div className="text-center py-8">
+      <div className="text-center py-8 space-y-4">
+        <p className="text-destructive">Erro ao carregar configurações: {queryError.message}</p>
+        <p className="text-sm text-muted-foreground">
+          Verifique se você tem permissões de administrador e tente novamente.
+        </p>
+      </div>
+    );
+  }
+
+  if (!currentSettings) {
+    console.log('No settings found, showing not found message');
+    return (
+      <div className="text-center py-8 space-y-4">
         <p className="text-muted-foreground">Configurações não encontradas.</p>
+        <p className="text-sm text-muted-foreground">
+          As configurações padrão serão criadas automaticamente. Recarregue a página.
+        </p>
       </div>
     );
   }
