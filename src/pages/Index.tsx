@@ -150,7 +150,7 @@ const Index = () => {
               <img alt="Oliver Logo" className="h-8 w-8" src="/lovable-uploads/logoo.png" />
               <span className="text-2xl font-bold text-foreground">Oliver</span>
             </div>
-            <p className="text-muted-foreground mb-4">© 2025 Oliver. Sistema profissional para gestão de orçamentos.</p>
+            <p className="text-muted-foreground mb-4">© 2025 Sistema profissional para gestão de orçamentos.</p>
             <p className="text-sm text-muted-foreground/80">
               Transformando a gestão de assistências técnicas através da tecnologia
             </p>
