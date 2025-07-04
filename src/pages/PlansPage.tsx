@@ -110,11 +110,7 @@ export const PlansPage = () => {
   };
 
   const handleGoBack = () => {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      navigate('/');
-    }
+    navigate('/');
   };
 
   // Show loading state while fetching settings
