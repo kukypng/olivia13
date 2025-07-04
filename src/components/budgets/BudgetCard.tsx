@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { MessageCircle, Eye, Edit, Clock, Trash2 } from '@/components/ui/icons';
+import { MessageCircle, FileText, Edit, Clock, Trash2 } from '@/components/ui/icons';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useLayout } from '@/contexts/LayoutContext';
 import { cn } from '@/lib/utils';
@@ -146,7 +146,7 @@ export const BudgetCard = ({
               isMobile ? "h-10 px-3 text-sm" : "h-9"
             )}
           >
-            <Eye className="h-4 w-4" />
+            <FileText className="h-4 w-4" />
             <span className="hidden sm:inline">Ver PDF</span>
           </Button>
           
