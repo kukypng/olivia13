@@ -175,7 +175,7 @@ export const PlansPage = () => {
     show_support_info: true,
     additional_info: '✓ Sem taxa de setup • ✓ Cancele quando quiser • ✓ Suporte brasileiro'
   };
-  return <div className="min-h-screen relative overflow-hidden" style={{backgroundColor: 'hsl(210 10% 11%)'}}>
+  return <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Enhanced Background decoration com as novas cores */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-1/2 -right-1/2 w-96 h-96 bg-gradient-to-br from-primary/15 to-primary/5 rounded-full blur-3xl animate-pulse"></div>

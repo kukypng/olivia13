@@ -7,45 +7,48 @@
 
 @layer base {
   :root {
-    /* Light theme - updated with green-dark palette */
-    --background: 153 10% 96%;
-    --foreground: 153 20% 15%;
+    /* Oliver Design System - Professional Black & Yellow */
+    --background: 0 0% 0%; /* #000000 - Preto absoluto */
+    --foreground: 0 0% 93%; /* #EEEEEE - Cinza claro para texto principal */
 
-    --card: 0 0% 100%;
-    --card-foreground: 153 20% 15%;
+    --card: 0 0% 7%; /* #111111 - Cartões em cinza escuro */
+    --card-foreground: 0 0% 93%; /* #EEEEEE - Texto nos cartões */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 153 20% 15%;
+    --popover: 0 0% 7%; /* #111111 - Popovers escuros */
+    --popover-foreground: 0 0% 93%; /* #EEEEEE - Texto nos popovers */
 
-    --primary: 160 80% 45%; /* Verde principal */
-    --primary-foreground: 0 0% 100%;
+    --primary: 43 98% 59%; /* #fec832 - Amarelo accent principal */
+    --primary-foreground: 0 0% 0%; /* #000000 - Texto em botões amarelos */
 
-    --secondary: 153 8% 92%;
-    --secondary-foreground: 153 20% 15%;
+    --secondary: 0 0% 13%; /* #222222 - Elementos secundários */
+    --secondary-foreground: 0 0% 67%; /* #AAAAAA - Texto secundário */
 
-    --muted: 153 8% 92%;
-    --muted-foreground: 153 8% 45%;
+    --muted: 0 0% 13%; /* #222222 - Elementos silenciados */
+    --muted-foreground: 0 0% 67%; /* #AAAAAA - Texto secundário */
 
-    --accent: 153 8% 88%;
-    --accent-foreground: 153 20% 15%;
+    --accent: 43 98% 59%; /* #fec832 - Amarelo para destaques */
+    --accent-foreground: 0 0% 0%; /* #000000 - Texto em elementos accent */
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 5 73% 53%; /* #E03E2D - Vermelho para erros */
+    --destructive-foreground: 0 0% 93%; /* #EEEEEE - Texto em erros */
 
-    --border: 153 8% 85%;
-    --input: 153 8% 85%;
-    --ring: 160 80% 45%;
+    --success: 129 73% 53%; /* #3ECF50 - Verde para sucesso */
+    --success-foreground: 0 0% 0%; /* #000000 - Texto em sucessos */
+
+    --border: 0 0% 27%; /* #444444 - Bordas */
+    --input: 0 0% 7%; /* #111111 - Campos de input */
+    --ring: 43 98% 59%; /* #fec832 - Focus ring */
 
     --radius: 0.75rem;
 
-    --sidebar-background: 153 10% 96%;
-    --sidebar-foreground: 153 20% 15%;
-    --sidebar-primary: 160 80% 45%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 153 8% 88%;
-    --sidebar-accent-foreground: 153 20% 15%;
-    --sidebar-border: 153 8% 85%;
-    --sidebar-ring: 160 80% 45%;
+    --sidebar-background: 0 0% 0%; /* #000000 - Sidebar preta */
+    --sidebar-foreground: 0 0% 93%; /* #EEEEEE - Texto da sidebar */
+    --sidebar-primary: 43 98% 59%; /* #fec832 - Amarelo para itens ativos */
+    --sidebar-primary-foreground: 0 0% 0%; /* #000000 - Texto em amarelo */
+    --sidebar-accent: 0 0% 7%; /* #111111 - Hover states */
+    --sidebar-accent-foreground: 0 0% 93%; /* #EEEEEE - Texto em hover */
+    --sidebar-border: 0 0% 27%; /* #444444 - Bordas da sidebar */
+    --sidebar-ring: 43 98% 59%; /* #fec832 - Focus ring */
 
     /* Apple-style shadows */
     --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -68,51 +71,7 @@
     --transition-spring: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
-  .dark {
-    /* Nova paleta baseada na imagem - tons de laranja e fundo escuro */
-    --background: 210 10% 11%; /* Fundo azul escuro similar à imagem */
-    --foreground: 0 0% 97%; /* Branco para texto */
-
-    --card: 210 8% 15%; /* Cards um pouco mais claros */
-    --card-foreground: 0 0% 95%;
-
-    --popover: 210 8% 15%;
-    --popover-foreground: 0 0% 95%;
-
-    --primary: 35 95% 74%; /* #f1ca84 - Laranja dourado principal */
-    --primary-foreground: 210 10% 11%;
-
-    --secondary: 35 80% 60%; /* #ecb251 - Laranja mais escuro */
-    --secondary-foreground: 0 0% 97%;
-
-    --muted: 210 12% 18%; /* Tom de cinza para elementos muted */
-    --muted-foreground: 35 30% 70%; /* Laranja suave para texto muted */
-
-    --accent: 35 95% 74%; /* Mesmo tom do primary para destaques */
-    --accent-foreground: 210 10% 11%;
-
-    --destructive: 0 73% 57%; /* Vermelho para ações destrutivas */
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 210 15% 25%; /* Bordas mais definidas */
-    --input: 210 12% 18%;
-    --ring: 35 95% 74%; /* Mesmo tom do primary */
-
-    --sidebar-background: 210 12% 8%; /* Sidebar mais escura */
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 35 95% 74%;
-    --sidebar-primary-foreground: 210 10% 11%;
-    --sidebar-accent: 210 12% 18%;
-    --sidebar-accent-foreground: 0 0% 90%;
-    --sidebar-border: 210 15% 20%;
-    --sidebar-ring: 35 95% 74%;
-
-    /* Enhanced shadows for dark mode */
-    --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-    --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
-    --shadow-strong: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.6);
-  }
+  /* Dark mode removed - using single Oliver design system */
 }
 
 @layer base {
@@ -125,8 +84,6 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     overscroll-behavior: none;
-    /* Fundo escuro similar à imagem */
-    background: hsl(210 10% 11%) !important;
   }
 
   /* Apple-style scrollbars */
