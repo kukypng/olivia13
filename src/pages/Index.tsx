@@ -125,7 +125,7 @@ const Index = () => {
 
       {/* CTA Section */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-primary/10"></div>
+        <div className="absolute inset-0 bg-background"></div>
         <div className="relative max-w-4xl mx-auto text-center">
           <div className="animate-fade-in-up">
             <h3 className="text-3xl lg:text-4xl font-bold mb-6 text-foreground">
