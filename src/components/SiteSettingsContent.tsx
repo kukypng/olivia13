@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -53,6 +53,31 @@ export const SiteSettingsContent = () => {
   const queryClient = useQueryClient();
   const [newFeature, setNewFeature] = useState('');
   const [localSettings, setLocalSettings] = useState<SiteSettings | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [isCheckingRole, setIsCheckingRole] = useState(true);
+
+  // Verificar se o usuário é admin
+  useEffect(() => {
+    const checkUserRole = async () => {
+      try {
+        const { data, error } = await supabase.rpc('get_user_role');
+        if (error) {
+          console.error('Error checking user role:', error);
+          setUserRole(null);
+        } else {
+          console.log('User role:', data);
+          setUserRole(data);
+        }
+      } catch (error) {
+        console.error('Error checking user role:', error);
+        setUserRole(null);
+      } finally {
+        setIsCheckingRole(false);
+      }
+    };
+
+    checkUserRole();
+  }, []);
 
   const { data: settings, isLoading, error: queryError } = useQuery({
     queryKey: ['site-settings'],
@@ -77,7 +102,8 @@ export const SiteSettingsContent = () => {
       const settingsData = data as SiteSettings;
       setLocalSettings(settingsData);
       return settingsData;
-    }
+    },
+    enabled: userRole === 'admin' && !isCheckingRole // Only fetch if user is admin
   });
 
   const updateSettingsMutation = useMutation({
@@ -230,6 +256,33 @@ export const SiteSettingsContent = () => {
 
   // Use local settings if available, otherwise fall back to server settings
   const currentSettings = localSettings || settings;
+
+  if (isCheckingRole) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (userRole !== 'admin') {
+    return (
+      <div className="text-center py-8 space-y-4">
+        <div className="bg-destructive/10 p-3 rounded-xl w-fit mx-auto">
+          <Lock className="h-8 w-8 text-destructive" />
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold text-destructive">Acesso Restrito</h2>
+          <p className="text-muted-foreground mt-2">
+            Apenas usuários com role <strong>admin</strong> podem acessar as configurações do site.
+          </p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Seu role atual: <Badge variant="outline">{userRole || 'Não definido'}</Badge>
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
