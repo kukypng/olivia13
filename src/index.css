@@ -7,24 +7,24 @@
 
 @layer base {
   :root {
-    /* Oliver Design System - Professional Black & Yellow */
-    --background: 0 0% 0%; /* #000000 - Preto absoluto */
-    --foreground: 0 0% 93%; /* #EEEEEE - Cinza claro para texto principal */
+    /* Oliver Design System - Professional Dark & Yellow */
+    --background: 0 0% 7%; /* #121212 - Cinza escuro suave */
+    --foreground: 0 0% 94%; /* #F0F0F0 - Off-white para melhor legibilidade */
 
-    --card: 0 0% 7%; /* #111111 - Cartões em cinza escuro */
-    --card-foreground: 0 0% 93%; /* #EEEEEE - Texto nos cartões */
+    --card: 0 0% 9%; /* #171717 - Cartões ligeiramente mais claros */
+    --card-foreground: 0 0% 94%; /* #F0F0F0 - Texto nos cartões */
 
-    --popover: 0 0% 7%; /* #111111 - Popovers escuros */
-    --popover-foreground: 0 0% 93%; /* #EEEEEE - Texto nos popovers */
+    --popover: 0 0% 9%; /* #171717 - Popovers ligeiramente mais claros */
+    --popover-foreground: 0 0% 94%; /* #F0F0F0 - Texto nos popovers */
 
     --primary: 43 98% 59%; /* #fec832 - Amarelo accent principal */
     --primary-foreground: 0 0% 0%; /* #000000 - Texto em botões amarelos */
 
-    --secondary: 0 0% 13%; /* #222222 - Elementos secundários */
-    --secondary-foreground: 0 0% 67%; /* #AAAAAA - Texto secundário */
+    --secondary: 0 0% 15%; /* #262626 - Elementos secundários mais suaves */
+    --secondary-foreground: 0 0% 70%; /* #B3B3B3 - Texto secundário melhorado */
 
-    --muted: 0 0% 13%; /* #222222 - Elementos silenciados */
-    --muted-foreground: 0 0% 67%; /* #AAAAAA - Texto secundário */
+    --muted: 0 0% 15%; /* #262626 - Elementos silenciados mais suaves */
+    --muted-foreground: 0 0% 70%; /* #B3B3B3 - Texto secundário melhorado */
 
     --accent: 43 98% 59%; /* #fec832 - Amarelo para destaques */
     --accent-foreground: 0 0% 0%; /* #000000 - Texto em elementos accent */
@@ -35,26 +35,26 @@
     --success: 129 73% 53%; /* #3ECF50 - Verde para sucesso */
     --success-foreground: 0 0% 0%; /* #000000 - Texto em sucessos */
 
-    --border: 0 0% 27%; /* #444444 - Bordas */
-    --input: 0 0% 7%; /* #111111 - Campos de input */
+    --border: 0 0% 20%; /* #333333 - Bordas mais suaves */
+    --input: 0 0% 9%; /* #171717 - Campos de input ligeiramente mais claros */
     --ring: 43 98% 59%; /* #fec832 - Focus ring */
 
     --radius: 0.75rem;
 
-    --sidebar-background: 0 0% 0%; /* #000000 - Sidebar preta */
-    --sidebar-foreground: 0 0% 93%; /* #EEEEEE - Texto da sidebar */
+    --sidebar-background: 0 0% 7%; /* #121212 - Sidebar com mesmo fundo */
+    --sidebar-foreground: 0 0% 94%; /* #F0F0F0 - Texto da sidebar */
     --sidebar-primary: 43 98% 59%; /* #fec832 - Amarelo para itens ativos */
     --sidebar-primary-foreground: 0 0% 0%; /* #000000 - Texto em amarelo */
-    --sidebar-accent: 0 0% 7%; /* #111111 - Hover states */
-    --sidebar-accent-foreground: 0 0% 93%; /* #EEEEEE - Texto em hover */
-    --sidebar-border: 0 0% 27%; /* #444444 - Bordas da sidebar */
+    --sidebar-accent: 0 0% 9%; /* #171717 - Hover states */
+    --sidebar-accent-foreground: 0 0% 94%; /* #F0F0F0 - Texto em hover */
+    --sidebar-border: 0 0% 20%; /* #333333 - Bordas da sidebar */
     --sidebar-ring: 43 98% 59%; /* #fec832 - Focus ring */
 
-    /* Apple-style shadows */
-    --shadow-soft: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-strong: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    /* Sombras suaves para modo escuro */
+    --shadow-soft: 0 2px 4px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(255, 255, 255, 0.02);
+    --shadow-medium: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 2px 4px 0 rgba(255, 255, 255, 0.03);
+    --shadow-strong: 0 8px 16px 0 rgba(0, 0, 0, 0.6), 0 4px 8px 0 rgba(255, 255, 255, 0.04);
+    --shadow-xl: 0 16px 32px 0 rgba(0, 0, 0, 0.7), 0 8px 16px 0 rgba(255, 255, 255, 0.05);
 
     /* Premium spacing system */
     --spacing-xs: 0.25rem;
