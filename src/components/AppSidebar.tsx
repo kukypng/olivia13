@@ -24,6 +24,7 @@ import {
   Users,
   Database
 } from 'lucide-react';
+import { HelpButton } from '@/components/help/HelpButton';
 
 
 interface AppSidebarProps {
@@ -93,6 +94,9 @@ export const AppSidebar = ({ activeTab, onTabChange }: AppSidebarProps) => {
       <SidebarFooter className="p-2 mt-auto">
         <div className="flex flex-col gap-2 items-center">
             <SidebarMenu className="w-full">
+                <SidebarMenuItem className="p-1">
+                    <HelpButton variant="sidebar" />
+                </SidebarMenuItem>
                 <SidebarMenuItem className="p-1">
                     <SidebarMenuButton
                         className="w-full h-12 text-base font-medium rounded-lg text-muted-foreground hover:text-foreground"
