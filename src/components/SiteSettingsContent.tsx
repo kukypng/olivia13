@@ -497,21 +497,19 @@ export const SiteSettingsContent = () => {
           <CardDescription>Configure informações de contato e suporte</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* URL de Pagamento - Agora somente leitura */}
+          {/* URL de Pagamento */}
           <div>
             <Label htmlFor="payment_url" className="flex items-center gap-2">
               URL de Pagamento
-              <Lock className="h-4 w-4 text-muted-foreground" />
             </Label>
             <Input
               id="payment_url"
-              value="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=bbb0d6d04e3440f395e562d80f870761"
-              readOnly
-              disabled
-              className="bg-muted text-muted-foreground cursor-not-allowed"
+              value={currentSettings.payment_url || 'https://mpago.la/246f2WV'}
+              onChange={(e) => handleInputChange('payment_url', e.target.value)}
+              placeholder="https://mpago.la/246f2WV"
             />
             <p className="text-sm text-muted-foreground mt-1">
-              ⚠️ Este link de pagamento é fixo e não pode ser alterado por questões de segurança
+              Este link será usado para redirecionamento do pagamento
             </p>
           </div>
           

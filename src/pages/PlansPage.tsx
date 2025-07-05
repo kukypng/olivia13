@@ -63,8 +63,6 @@ interface SiteSettings {
   show_faq_section?: boolean;
 }
 
-// Link fixo de pagamento - não pode ser alterado
-const FIXED_PAYMENT_URL = 'https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=bbb0d6d04e3440f395e562d80f870761';
 export const PlansPage = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
@@ -118,8 +116,9 @@ export const PlansPage = () => {
   
   const handleConfirmPayment = () => {
     setShowConfirmation(false);
-    console.log('Redirecting to fixed payment URL:', FIXED_PAYMENT_URL);
-    window.location.href = FIXED_PAYMENT_URL;
+    const paymentUrl = settings?.payment_url || 'https://mpago.la/246f2WV';
+    console.log('Redirecting to payment URL:', paymentUrl);
+    window.location.href = paymentUrl;
   };
 
   const handleGoBack = () => {
