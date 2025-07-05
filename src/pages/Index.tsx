@@ -59,6 +59,9 @@ const Index = () => {
               <Button asChild className="btn-apple text-lg px-8 py-4">
                 <Link to="/plans">Começar Agora</Link>
               </Button>
+              <Button className="btn-mercadopago text-lg px-8 py-4" onClick={() => window.open('https://wa.me/556496028022?text=Olá! Gostaria de confirmar meu pagamento do Oliver.', '_blank')}>
+                Confirmar Pagamento
+              </Button>
               <Button variant="outline" className="btn-apple-secondary text-lg px-8 py-4" onClick={() => window.open('https://wa.me/556496028022', '_blank')}>
                 Entre em contato
               </Button>

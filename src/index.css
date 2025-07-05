@@ -205,6 +205,17 @@
     background: hsl(var(--secondary));
   }
 
+  .btn-mercadopago {
+    @apply btn-apple text-white font-semibold;
+    background: linear-gradient(135deg, #009EE3 0%, #007BB8 100%);
+    @apply hover:shadow-xl;
+  }
+
+  .btn-mercadopago:hover {
+    background: linear-gradient(135deg, #007BB8 0%, #005A8B 100%);
+    box-shadow: 0 0 20px rgba(0, 158, 227, 0.4);
+  }
+
   /* Enhanced Interactive Elements */
   .interactive-scale {
     @apply transition-all duration-200 ease-out;
