@@ -55,8 +55,7 @@ export const HelpDialog = ({ open, onOpenChange }: HelpDialogProps) => {
                     Sistema de Ajuda em Desenvolvimento
                 </h3>
                 <p className="text-muted-foreground max-w-md">
-                    Desculpe, estamos trabalhando duro para criar a melhor experiência de ajuda para você. 
-                    Enquanto isso, que tal um cookie virtual? 🍪
+                    Desculpe, estamos trabalhando duro para criar o sistema de ajuda. Enquanto isso, você aceita um cookie? 🍪
                 </p>
                 <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mt-4">
                     <p className="text-sm text-amber-700 dark:text-amber-300">
