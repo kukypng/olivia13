@@ -19,7 +19,7 @@ export const FinalCTA = ({ additionalInfo, ctaButtonText, onPlanSelection }: Fin
           {additionalInfo}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button onClick={onPlanSelection} className="btn-apple text-lg px-8 py-4">
+          <Button onClick={onPlanSelection} className="btn-premium text-lg px-8 py-4">
             {ctaButtonText}
           </Button>
           <p className="text-sm text-muted-foreground">
