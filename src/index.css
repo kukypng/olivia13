@@ -223,7 +223,7 @@
     @apply shadow-xl hover:shadow-2xl;
     background: linear-gradient(135deg, #fec832 0%, #ff9500 50%, #fec832 100%);
     background-size: 200% 200%;
-    animation: gradient-shift 8s ease-in-out infinite;
+    animation: gradient-shift 15s ease-in-out infinite;
     box-shadow: 0 8px 32px rgba(254, 200, 50, 0.4);
   }
 
