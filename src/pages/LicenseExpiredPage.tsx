@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, CreditCard, ShieldCheck } from 'lucide-react';
+import { Clock, CreditCard, ShieldCheck, User, Heart } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 export const LicenseExpiredPage = () => {
@@ -10,8 +10,8 @@ export const LicenseExpiredPage = () => {
 
   const pageContent = {
     icon: isNewUser
-      ? <img src="/lovable-uploads/logoo.png" alt="Ativar Conta" className="w-12 h-12" />
-      : <img src="/icones/coracao.png" alt="Licença Expirada" className="w-12 h-12" />,
+      ? <User className="w-12 h-12 text-primary" />
+      : <Heart className="w-12 h-12 text-red-500" />,
     title: isNewUser ? 'Ative sua Conta' : 'Licença Expirada',
     titleColor: isNewUser ? 'text-primary' : 'text-[#ff0000]',
     statusIcon: isNewUser ? <ShieldCheck className="w-5 h-5" /> : <Clock className="w-5 h-5" />,
