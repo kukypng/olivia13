@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
 import { differenceInDays, parseISO } from 'date-fns';
-import { CreditCard, MessageCircle, Heart, AlertTriangle, Shield } from 'lucide-react';
+import { CreditCard, MessageCircle, HeartCrack, AlertTriangle, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const LicenseStatus = () => {
@@ -27,7 +27,7 @@ export const LicenseStatus = () => {
       return {
         title: "Licença Expirada",
         description: `Sua licença expirou. Renove para continuar usando o sistema.`,
-        icon: <Heart className="h-8 w-8 text-red-500" />,
+        icon: <HeartCrack className="h-8 w-8 text-red-500" />,
         cardClass: "border-red-500/30 bg-gradient-to-br from-red-500/20 via-red-400/15 to-red-600/25",
         showRenew: true
       };
@@ -38,7 +38,7 @@ export const LicenseStatus = () => {
       return {
         title: `Urgente: Sua licença expira ${dayText}!`,
         description: `Renove para não perder o acesso ao sistema.`,
-        icon: <Heart className="h-8 w-8 text-red-500" />,
+        icon: <HeartCrack className="h-8 w-8 text-red-500" />,
         cardClass: "border-red-500/50 bg-gradient-to-br from-red-600/30 via-red-500/25 to-red-700/35 shadow-red-500/20 shadow-lg animate-pulse",
         showRenew: true
       };
