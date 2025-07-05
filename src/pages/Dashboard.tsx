@@ -1,9 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { AuthGuard } from '@/components/AuthGuard';
 import { LayoutProvider } from '@/contexts/LayoutContext';
-import { HelpProvider } from '@/contexts/HelpContext';
 import { AdaptiveLayout } from '@/components/adaptive/AdaptiveLayout';
 import { AdaptiveDashboard } from '@/components/adaptive/AdaptiveDashboard';
 import { BudgetsContent } from '@/components/BudgetsContent';
@@ -13,25 +12,12 @@ import { DataManagementContent } from '@/components/DataManagementContent';
 import { AdminPanel } from '@/components/AdminPanel';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { ClientsContent } from '@/components/ClientsContent';
-import { InteractiveTour } from '@/components/help/InteractiveTour';
-import { HelpAssistant } from '@/components/help/HelpAssistant';
-import { HelpButton } from '@/components/help/HelpButton';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
 export const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const { profile, hasPermission, user } = useAuth();
-
-  // Listener para navegação entre abas do HelpAssistant
-  useEffect(() => {
-    const handleNavigateTab = (event: any) => {
-      setActiveTab(event.detail.tab);
-    };
-    
-    window.addEventListener('navigate-tab', handleNavigateTab);
-    return () => window.removeEventListener('navigate-tab', handleNavigateTab);
-  }, []);
 
   const { data: stats } = useQuery({
     queryKey: ['dashboard-weekly-growth', user?.id],
@@ -95,16 +81,11 @@ export const Dashboard = () => {
 
   return (
     <AuthGuard>
-      <HelpProvider>
-        <LayoutProvider>
-          <AdaptiveLayout activeTab={activeTab} onTabChange={setActiveTab}>
-            {renderContent()}
-            <InteractiveTour />
-            <HelpAssistant />
-            <HelpButton variant="fab" showProgress />
-          </AdaptiveLayout>
-        </LayoutProvider>
-      </HelpProvider>
+      <LayoutProvider>
+        <AdaptiveLayout activeTab={activeTab} onTabChange={setActiveTab}>
+          {renderContent()}
+        </AdaptiveLayout>
+      </LayoutProvider>
     </AuthGuard>
   );
 };

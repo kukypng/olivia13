@@ -248,8 +248,8 @@ export const NewBudgetForm = ({
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6 budget-form">
-        <Card className="device-section">
+      <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
+        <Card>
           <CardHeader>
             <CardTitle>Informações do Dispositivo</CardTitle>
           </CardHeader>
@@ -331,7 +331,7 @@ export const NewBudgetForm = ({
           </CardContent>
         </Card>
 
-        <Card className="pricing-section">
+        <Card>
           <CardHeader>
             <CardTitle>Preços e Condições</CardTitle>
           </CardHeader>

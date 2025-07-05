@@ -19,7 +19,7 @@ export const SettingsContent = () => {
       </header>
 
       <div className="space-y-12">
-        <section id="account-settings" className="profile-settings">
+        <section id="account-settings">
           <h2 className="text-2xl font-semibold tracking-tight text-foreground pb-4">
             Conta e Segurança
           </h2>
@@ -30,7 +30,7 @@ export const SettingsContent = () => {
           </div>
         </section>
         
-        <section id="app-settings" className="company-settings">
+        <section id="app-settings">
           <h2 className="text-2xl font-semibold tracking-tight text-foreground pb-4">
             Preferências da Aplicação
           </h2>

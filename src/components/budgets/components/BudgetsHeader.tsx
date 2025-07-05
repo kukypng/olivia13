@@ -17,7 +17,7 @@ export const BudgetsHeader = ({
   budgets,
   onDeleteComplete
 }: BudgetsHeaderProps) => {
-  return <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 animate-slide-up budgets-header">
+  return <div className="flex flex-col space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 animate-slide-up">
       <div className="space-y-2">
         <h1 className="text-2xl lg:text-3xl font-bold text-foreground">Meus Orçamentos</h1>
         <div className="flex items-center space-x-2">
