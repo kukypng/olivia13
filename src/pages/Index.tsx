@@ -56,7 +56,7 @@ const Index = () => {
               clientes e relatórios de forma eficiente e organizada.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild className="btn-apple text-lg px-8 py-4">
+              <Button asChild className="btn-premium text-lg px-8 py-4">
                 <Link to="/plans">Começar Agora</Link>
               </Button>
               <Button className="btn-mercadopago text-lg px-8 py-4" onClick={() => window.open('https://wa.me/556496028022?text=Olá! Gostaria de confirmar meu pagamento do Oliver.', '_blank')}>
@@ -138,7 +138,7 @@ const Index = () => {
               Junte-se a centenas de profissionais que já utilizam o Oliver 
               para gerenciar seus negócios de forma mais eficiente.
             </p>
-            <Button asChild className="btn-apple text-lg px-8 py-4">
+            <Button asChild className="btn-premium text-lg px-8 py-4">
               <Link to="/plans">Começar Agora</Link>
             </Button>
           </div>
