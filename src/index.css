@@ -218,12 +218,12 @@
 
   .btn-premium {
     @apply relative overflow-hidden rounded-2xl px-8 py-4 font-bold text-white;
-    @apply transform transition-all duration-700 ease-out;
+    @apply transform transition-all duration-1000 ease-out;
     @apply hover:scale-[1.05] active:scale-[0.98];
     @apply shadow-xl hover:shadow-2xl;
     background: linear-gradient(135deg, #fec832 0%, #ff9500 50%, #fec832 100%);
     background-size: 200% 200%;
-    animation: gradient-shift 5s ease-in-out infinite;
+    animation: gradient-shift 8s ease-in-out infinite;
     box-shadow: 0 8px 32px rgba(254, 200, 50, 0.4);
   }
 
@@ -235,7 +235,7 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    transition: left 1s ease-out;
+    transition: left 1.5s ease-out;
   }
 
   .btn-premium:hover::before {
@@ -246,7 +246,7 @@
     background: linear-gradient(135deg, #ff9500 0%, #fec832 50%, #ff9500 100%);
     box-shadow: 0 12px 40px rgba(254, 200, 50, 0.6);
     transform: scale(1.05) translateY(-2px);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   @keyframes gradient-shift {
