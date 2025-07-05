@@ -13,6 +13,11 @@ interface SmartTooltipProps {
   showOnce?: boolean;
   delay?: number;
   className?: string;
+  triggerOnFirstVisit?: boolean;
+  actionButton?: {
+    label: string;
+    action: () => void;
+  };
 }
 
 export const SmartTooltip: React.FC<SmartTooltipProps> = ({
@@ -22,11 +27,14 @@ export const SmartTooltip: React.FC<SmartTooltipProps> = ({
   tourId,
   showOnce = false,
   delay = 0,
-  className = ''
+  className = '',
+  triggerOnFirstVisit = true,
+  actionButton
 }) => {
   const { showHints, startTour } = useHelp();
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenShown, setHasBeenShown] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
     if (!showHints) return;
@@ -40,12 +48,27 @@ export const SmartTooltip: React.FC<SmartTooltipProps> = ({
       }
     }
 
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, delay);
+    // Only show on first interaction if triggerOnFirstVisit is true
+    if (triggerOnFirstVisit && !hasInteracted) {
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+      }, delay);
+      return () => clearTimeout(timer);
+    }
+  }, [showHints, showOnce, title, content, delay, triggerOnFirstVisit, hasInteracted]);
 
-    return () => clearTimeout(timer);
-  }, [showHints, showOnce, title, content, delay]);
+  // Track first interaction
+  const handleFirstInteraction = () => {
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      if (!triggerOnFirstVisit && showHints) {
+        const timer = setTimeout(() => {
+          setIsVisible(true);
+        }, 500);
+        return () => clearTimeout(timer);
+      }
+    }
+  };
 
   const handleDismiss = () => {
     setIsVisible(false);
@@ -70,7 +93,12 @@ export const SmartTooltip: React.FC<SmartTooltipProps> = ({
   return (
     <TooltipProvider>
       <Tooltip open={isVisible} onOpenChange={setIsVisible}>
-        <TooltipTrigger asChild className={className}>
+        <TooltipTrigger 
+          asChild 
+          className={className}
+          onMouseEnter={handleFirstInteraction}
+          onClick={handleFirstInteraction}
+        >
           {children}
         </TooltipTrigger>
         <TooltipContent 
@@ -113,6 +141,19 @@ export const SmartTooltip: React.FC<SmartTooltipProps> = ({
                 >
                   <Play className="h-3 w-3" />
                   Ver tutorial
+                </Button>
+              )}
+              {actionButton && (
+                <Button
+                  onClick={() => {
+                    actionButton.action();
+                    handleDismiss();
+                  }}
+                  size="sm"
+                  variant="default"
+                  className="h-7 text-xs gap-1"
+                >
+                  {actionButton.label}
                 </Button>
               )}
             </div>

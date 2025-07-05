@@ -56,74 +56,109 @@ const TOURS: Record<string, TourStep[]> = {
     {
       target: '.dashboard-header',
       title: 'Bem-vindo ao Oliver!',
-      content: 'Este é seu painel principal onde você pode ver um resumo da sua assistência técnica.',
+      content: 'Este é seu painel principal onde você pode ver um resumo da sua assistência técnica. Aqui você acompanha o crescimento do seu negócio.',
       placement: 'bottom'
     },
     {
       target: '.quick-access',
-      title: 'Acesso Rápido',
-      content: 'Use estes botões para acessar rapidamente as funcionalidades mais importantes.',
+      title: 'Acesso Rápido - Suas Ferramentas Principais',
+      content: 'Use estes botões para acessar rapidamente as funcionalidades mais importantes. Comece criando um orçamento!',
       placement: 'bottom'
     },
     {
       target: '.stats-cards',
-      title: 'Estatísticas',
-      content: 'Acompanhe suas métricas principais: faturamento, ticket médio e crescimento.',
+      title: 'Suas Métricas de Crescimento',
+      content: 'Acompanhe quantos orçamentos você criou esta semana. Esse número vai crescer conforme você usa o sistema!',
       placement: 'top'
     }
   ],
   budgets: [
     {
       target: '.budgets-header',
-      title: 'Gerenciamento de Orçamentos',
-      content: 'Aqui você visualiza e gerencia todos os seus orçamentos.',
+      title: 'Central de Orçamentos',
+      content: 'Aqui você visualiza e gerencia todos os seus orçamentos. Veja quantos você já criou!',
       placement: 'bottom'
     },
     {
-      target: '.budget-filters',
-      title: 'Filtros Inteligentes',
-      content: 'Use os filtros para encontrar rapidamente orçamentos específicos.',
+      target: '.budget-search',
+      title: 'Busca Inteligente',
+      content: 'Digite o nome do cliente, modelo do dispositivo ou qualquer palavra-chave para encontrar orçamentos rapidamente.',
       placement: 'bottom'
     },
     {
       target: '.budget-actions',
-      title: 'Ações Rápidas',
-      content: 'Edite, compartilhe ou delete orçamentos diretamente da lista.',
+      title: 'Ações do Orçamento',
+      content: 'Compartilhe via WhatsApp, edite, visualize ou delete orçamentos. Tudo em um clique!',
       placement: 'left'
     }
   ],
   newBudget: [
     {
       target: '.budget-form',
-      title: 'Criando um Novo Orçamento',
-      content: 'Preencha as informações do cliente e do dispositivo para criar um orçamento profissional.',
+      title: 'Formulário de Orçamento',
+      content: 'Preencha as informações para criar um orçamento profissional. Comece sempre pelas informações do dispositivo.',
       placement: 'top'
     },
     {
       target: '.device-section',
-      title: 'Informações do Dispositivo',
-      content: 'Selecione o tipo, marca e modelo do dispositivo para um orçamento mais preciso.',
-      placement: 'right'
+      title: 'Passo 1: Informações do Dispositivo',
+      content: 'Preencha o modelo do aparelho e o tipo de serviço (campos obrigatórios). Isso é essencial para um orçamento preciso.',
+      placement: 'bottom'
     },
     {
       target: '.pricing-section',
-      title: 'Preços e Condições',
-      content: 'Configure preços, condições de pagamento e prazos de garantia.',
-      placement: 'left'
+      title: 'Passo 2: Defina os Preços',
+      content: 'Configure o valor à vista (obrigatório) e ative o parcelamento se desejar. Você pode definir condições de pagamento personalizadas.',
+      placement: 'top'
     }
   ],
   settings: [
     {
       target: '.company-settings',
-      title: 'Configurações da Empresa',
-      content: 'Configure as informações da sua assistência técnica que aparecerão nos orçamentos.',
-      placement: 'right'
+      title: 'Configure Sua Empresa',
+      content: 'Defina nome da loja, endereço e telefone. Essas informações aparecerão nos seus orçamentos para dar credibilidade.',
+      placement: 'left'
     },
     {
       target: '.profile-settings',
-      title: 'Perfil do Usuário',
-      content: 'Gerencie suas informações pessoais e preferências do sistema.',
-      placement: 'right'
+      title: 'Suas Preferências',
+      content: 'Atualize seus dados pessoais e configure alertas de orçamentos. Personalize sua experiência no Oliver.',
+      placement: 'left'
+    }
+  ],
+  // Tours para onboarding de primeiros passos
+  'getting-started': [
+    {
+      target: '.dashboard-header',
+      title: '👋 Bem-vindo ao Oliver!',
+      content: 'Parabéns por escolher o Oliver! Este é seu dashboard onde tudo acontece. Vamos te ensinar os primeiros passos.',
+      placement: 'bottom'
+    },
+    {
+      target: '.quick-access',
+      title: '🚀 Seus Atalhos Principais',
+      content: 'Estes botões são seus melhores amigos! Use "Novo Orçamento" para começar e "Configurações" para personalizar.',
+      placement: 'bottom'
+    }
+  ],
+  'budget-mastery': [
+    {
+      target: '.budget-form',
+      title: '💼 Dominando os Orçamentos',
+      content: 'Aqui está o coração do Oliver! Vamos criar seu primeiro orçamento profissional juntos.',
+      placement: 'top'
+    },
+    {
+      target: '.device-section',
+      title: '📱 Informações Essenciais',
+      content: 'Sempre comece aqui: modelo do aparelho e tipo de serviço são obrigatórios. O resto você preenche conforme necessário.',
+      placement: 'bottom'
+    },
+    {
+      target: '.pricing-section',
+      title: '💰 Precificação Inteligente',
+      content: 'Defina o valor à vista e ative parcelamento se quiser. Dica: valores justos geram mais vendas!',
+      placement: 'top'
     }
   ]
 };

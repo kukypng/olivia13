@@ -67,9 +67,33 @@ const faqData = [
 ];
 
 const quickActions = [
-  { icon: Rocket, label: 'Tour Inicial', action: 'dashboard', description: 'Conheça o básico do sistema' },
-  { icon: FileText, label: 'Criar Orçamento', action: 'newBudget', description: 'Aprenda a criar orçamentos profissionais' },
-  { icon: Settings, label: 'Configurar Sistema', action: 'settings', description: 'Personalize sua assistência técnica' },
+  { 
+    icon: Rocket, 
+    label: 'Configure sua Empresa', 
+    action: 'company-setup',
+    description: 'Defina nome, endereço e dados da sua assistência técnica',
+    mission: true,
+    actionType: 'navigate',
+    actionData: 'settings'
+  },
+  { 
+    icon: FileText, 
+    label: 'Crie seu Primeiro Orçamento', 
+    action: 'first-budget',
+    description: 'Aprenda criando um orçamento real passo a passo',
+    mission: true,
+    actionType: 'navigate',
+    actionData: 'new-budget'
+  },
+  { 
+    icon: Users, 
+    label: 'Explore seus Orçamentos', 
+    action: 'budget-management',
+    description: 'Domine busca, filtros e ações dos orçamentos',
+    mission: true,
+    actionType: 'navigate',
+    actionData: 'budgets'
+  },
 ];
 
 export const HelpAssistant: React.FC = () => {
@@ -86,6 +110,13 @@ export const HelpAssistant: React.FC = () => {
   
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+
+  // Hook para navegar entre abas (assumindo que está no Dashboard)
+  const navigateToTab = (tab: string) => {
+    // Usando evento customizado para comunicar com Dashboard
+    window.dispatchEvent(new CustomEvent('navigate-tab', { detail: { tab } }));
+    closeHelp();
+  };
 
   const filteredFAQ = faqData.filter(item => {
     const matchesSearch = item.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -227,36 +258,72 @@ export const HelpAssistant: React.FC = () => {
               <div className="grid gap-4">
                 <div className="card-premium p-6 text-center">
                   <Rocket className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">Comece Agora!</h3>
+                  <h3 className="text-xl font-semibold mb-2">🎯 Suas Missões no Oliver</h3>
                   <p className="text-muted-foreground mb-4">
-                    Escolha uma das ações abaixo para começar a usar o Oliver de forma eficiente.
+                    Complete estas 3 missões essenciais para dominar o Oliver e transformar sua assistência técnica!
                   </p>
                 </div>
 
                 {quickActions.map((action, index) => {
                   const IconComponent = action.icon;
+                  const isCompleted = localStorage.getItem(`oliver-mission-${action.action}`) === 'completed';
+                  
                   return (
-                    <div key={index} className="card-premium p-4 hover:shadow-strong transition-all duration-300">
+                    <div key={index} className={`card-premium p-4 hover:shadow-strong transition-all duration-300 ${
+                      isCompleted ? 'bg-green-50 border-green-200' : ''
+                    }`}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                            <IconComponent className="h-5 w-5 text-primary" />
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                            isCompleted ? 'bg-green-500' : 'bg-primary/10'
+                          }`}>
+                            {isCompleted ? (
+                              <CheckCircle2 className="h-5 w-5 text-white" />
+                            ) : (
+                              <IconComponent className="h-5 w-5 text-primary" />
+                            )}
                           </div>
                           <div>
-                            <h4 className="font-medium text-foreground">{action.label}</h4>
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-medium text-foreground">{action.label}</h4>
+                              {isCompleted && (
+                                <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20 text-xs">
+                                  ✅ Concluída
+                                </Badge>
+                              )}
+                            </div>
                             <p className="text-sm text-muted-foreground">{action.description}</p>
                           </div>
                         </div>
                         <Button
-                          onClick={() => startTour(action.action)}
+                          onClick={() => {
+                            if (action.actionType === 'navigate') {
+                              navigateToTab(action.actionData);
+                            } else {
+                              startTour(action.action);
+                            }
+                          }}
                           size="sm"
+                          variant={isCompleted ? "outline" : "default"}
                         >
-                          Iniciar
+                          {isCompleted ? '✅ Feita' : '🚀 Fazer'}
                         </Button>
                       </div>
+                      {!isCompleted && (
+                        <div className="mt-3 text-xs text-muted-foreground bg-primary/5 p-2 rounded">
+                          💡 <strong>Dica:</strong> Esta é uma tarefa prática! Você vai fazer de verdade, não é só tutorial.
+                        </div>
+                      )}
                     </div>
                   );
                 })}
+
+                <div className="card-premium p-4 text-center mt-4">
+                  <Trophy className="h-8 w-8 text-primary mx-auto mb-2" />
+                  <p className="text-sm text-muted-foreground">
+                    <strong>🏆 Meta:</strong> Complete as 3 missões para se tornar um expert no Oliver!
+                  </p>
+                </div>
               </div>
             </TabsContent>
 

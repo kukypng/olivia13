@@ -27,7 +27,7 @@ const quickAccessButtons: QuickAccessButton[] = [
 
 export const QuickAccess = ({ onTabChange, hasPermission }: QuickAccessProps) => {
   return (
-    <Card className="glass-card shadow-strong animate-slide-up">
+    <Card className="glass-card shadow-strong animate-slide-up quick-access">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl lg:text-2xl font-bold text-foreground">
           Acesso Rápido

@@ -73,7 +73,7 @@ const tourLocale = {
 };
 
 export const InteractiveTour: React.FC = () => {
-  const { isTourRunning, currentTour, tours, stopTour, markCompleted } = useHelp();
+  const { isTourRunning, currentTour, tours, stopTour, markCompleted, startTour } = useHelp();
 
   const currentSteps: Step[] = currentTour && tours[currentTour] 
     ? tours[currentTour].map(step => ({
@@ -110,12 +110,12 @@ export const InteractiveTour: React.FC = () => {
     if (!hasSeenOnboarding && !isTourRunning) {
       // Give a small delay to ensure DOM is ready
       const timer = setTimeout(() => {
-        // You can trigger the dashboard tour here
-        // startTour('dashboard');
-      }, 2000);
+        // Auto-start the getting-started tour for new users
+        startTour('getting-started');
+      }, 3000);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [startTour, isTourRunning]);
 
   if (!isTourRunning || !currentTour || currentSteps.length === 0) {
     return null;
