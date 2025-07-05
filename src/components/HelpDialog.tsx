@@ -48,19 +48,23 @@ export const HelpDialog = ({ open, onOpenChange }: HelpDialogProps) => {
             Um guia rápido para você aproveitar ao máximo todas as funcionalidades.
           </DialogDescription>
         </DialogHeader>
-        <ScrollArea className="max-h-[60vh] pr-4">
-            <div className="space-y-6 py-4">
-                {helpSections.map((section, index) => (
-                    <div key={index} className="flex items-start">
-                        {section.icon}
-                        <div>
-                            <h4 className="font-semibold">{section.title}</h4>
-                            <p className="text-sm text-muted-foreground">{section.description}</p>
-                        </div>
-                    </div>
-                ))}
+        <div className="flex flex-col items-center text-center py-8 space-y-4">
+            <div className="text-6xl mb-4">🍪</div>
+            <div className="space-y-3">
+                <h3 className="text-lg font-semibold text-foreground">
+                    Sistema de Ajuda em Desenvolvimento
+                </h3>
+                <p className="text-muted-foreground max-w-md">
+                    Desculpe, estamos trabalhando duro para criar a melhor experiência de ajuda para você. 
+                    Enquanto isso, que tal um cookie virtual? 🍪
+                </p>
+                <div className="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mt-4">
+                    <p className="text-sm text-amber-700 dark:text-amber-300">
+                        <span className="font-semibold">🎉 Parabéns!</span> Você ganhou um cookie virtual por sua paciência!
+                    </p>
+                </div>
             </div>
-        </ScrollArea>
+        </div>
         <DialogFooter>
           <Button onClick={() => onOpenChange(false)}>Entendi</Button>
         </DialogFooter>
